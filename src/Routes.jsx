@@ -15,6 +15,8 @@ const Signin = React.lazy(() => import("pages/Signin"));
 const MyProjects = React.lazy(() => import("pages/MyProjects"));
 const MyProfile = React.lazy(() => import("pages/MyProfile"));
 const Startingpage = React.lazy(() => import("pages/Startingpage"));
+const UpdateProject = React.lazy(()=> import ("pages/MyProjects/update"))
+
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -35,6 +37,7 @@ const ProjectRoutes = () => {
           <Route path="/graphs" element={<Graphs />} />
           <Route path="/calendarview" element={<CalendarView />} />
           <Route path="/newproject" element={<NewProject />} />
+          <Route path="/updateproject" element={<UpdateProject />} />
         </Routes>
       </Router>
     </React.Suspense>

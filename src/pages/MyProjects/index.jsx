@@ -79,7 +79,7 @@ const MyProjectsPage = () => {
             <div className="flex flex-col gap-[51px] items-start justify-start w-full">
               <div className="flex flex-row sm:gap-10 gap-[639px] items-start justify-start md:ml-[0] ml-[3px] w-[92%] md:w-full">
                 <Text
-                  className="mb-[7px] sm:text-3xl md:text-[32px] text-[34px] text-center text-indigo-800"
+                  className="mb-[7px] sm:text-3xl md:text-[32px] text-[34px] text-left text-indigo-800"
                   size="txtPoppinsBold34"
                 >
                   My Projects
@@ -99,7 +99,7 @@ const MyProjectsPage = () => {
                     key={project.id}
                     className="common-pointer bg-cover bg-no-repeat flex flex-1 flex-col h-[252px] items-center justify-end p-7 sm:px-5 w-full"
                     style={{ backgroundImage: "url('images/img_group6.svg')" }}
-                    onClick={() => navigate(`/graphs/${project.id}`, { state: project })}
+                    onClick={() => navigate(`/updateproject/${project.id}`)}
                     
                   >
                     
