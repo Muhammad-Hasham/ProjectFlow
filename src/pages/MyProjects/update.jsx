@@ -17,7 +17,7 @@ const ProjectDetailsPage = () => {
 
   const handleDeleteProject = () => {
     // Implement project deletion logic here
-    navigate("/projects");
+    navigate("/myprojects");
   };
 
   return (
