@@ -12,6 +12,7 @@ const projectSchema=new mongoose.Schema({
     },
     start_date:{
         type:Date,
+        default: Date.now,
         required:[true,'Project Must have start Date']
     },
     end_date:{
