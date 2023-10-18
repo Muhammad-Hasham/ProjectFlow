@@ -77,11 +77,8 @@ const DashboardPage = () => {
             </div>
           </div>
           <div className="flex flex-col justify-start w-[73%] md:w-full">
-            <Text
-              className="common-pointer md:ml-[0] ml-[845px] text-base text-indigo-800 tracking-[0.44px]"
-              size="txtPoppinsRegular16"
-              onClick={() => navigate("/myprofile")}
-            >
+          <Text className="flex flex-row items-baseline justify-around md:ml-[0] ml-[800px] text-base text-indigo-800 tracking-[0.44px]"
+              onClick = {()=> navigate('/myprofile')}>
               My Profile
             </Text>
             <div className="flex sm:flex-col flex-row gap-[58px] items-start justify-start md:ml-[0] ml-[139px] mt-2 w-[54%] md:w-full">

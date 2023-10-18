@@ -32,7 +32,7 @@ const MyProjectsPage = () => {
               <Text
                 className="text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl"
                 size="txtPoppinsBold22"
-                onClick = {() => navigate("/")}
+                onClick = {() => navigate("/dashboard")}
               >
                 ProjectFlow
               </Text>

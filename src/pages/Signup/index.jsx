@@ -67,7 +67,6 @@ const SignupPage = () => {
                   <input
                     type="text"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                    placeholder="Enter Name"
                   />
                 </div>
               </div>
@@ -85,7 +84,7 @@ const SignupPage = () => {
                   <input
                     type="email"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                    placeholder="Enter Email"
+                    
                   />
                 </div>
               </div>
@@ -103,7 +102,7 @@ const SignupPage = () => {
                   <input
                     type="password"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                    placeholder="Enter Password"
+                    
                   />
                 </div>
               </div>
@@ -120,7 +119,7 @@ const SignupPage = () => {
                 <input
                   type="password"
                   className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                  placeholder="Confirm Password"
+                  
                 />
               </div>
 

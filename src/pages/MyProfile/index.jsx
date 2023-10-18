@@ -1,10 +1,11 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Sidebar } from "react-pro-sidebar";
 
 import { Button, Img, Text } from "components";
 
 const MyProfilePage = () => {
+  const navigate = useNavigate()
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-poppins items-center justify-start mx-auto w-full">
@@ -15,12 +16,14 @@ const MyProfilePage = () => {
               <Text
                 className="text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl"
                 size="txtPoppinsBold22"
+                onClick={() => navigate("/dashboard")}
               >
                 ProjectFlow
               </Text>
               <Text
                 className="ml-7 md:ml-[0] mt-[102px] text-base text-indigo-800 tracking-[0.44px]"
                 size="txtPoppinsRegular16"
+                onClick={() => navigate("/dashboard")}
               >
                 Dashboard
               </Text>
@@ -28,18 +31,21 @@ const MyProfilePage = () => {
                 <Text
                   className="md:ml-[0] ml-[3px] text-base text-indigo-800 tracking-[0.44px]"
                   size="txtPoppinsRegular16"
+                  onClick={() => navigate("/myprojects")}
                 >
                   Projects
                 </Text>
                 <Text
                   className="text-base text-indigo-800 tracking-[0.44px]"
                   size="txtPoppinsRegular16"
+                  onClick={() => navigate("/mytasks")}
                 >
                   My Tasks
                 </Text>
                 <Text
                   className="md:ml-[0] ml-[9px] text-base text-indigo-800 tracking-[0.44px]"
                   size="txtPoppinsRegular16"
+                  onClick={() => navigate("/apps")}
                 >
                   Apps
                 </Text>
@@ -50,6 +56,7 @@ const MyProfilePage = () => {
             <Text
               className="md:ml-[0] ml-[844px] text-base text-indigo-800 tracking-[0.44px]"
               size="txtPoppinsRegular16"
+              onClick={() => navigate("/myprofile")}
             >
               My Profile
             </Text>
@@ -101,6 +108,7 @@ const MyProfilePage = () => {
                     className="cursor-pointer leading-[normal] min-w-[83px] md:ml-[0] ml-[759px] mr-[39px] mt-1.5 text-base text-center tracking-[0.44px]"
                     shape="round"
                     color="indigo_800"
+                    onClick={() => navigate("/dashboard")}
                   >
                     Save
                   </Button>
@@ -149,6 +157,7 @@ const MyProfilePage = () => {
                       className="cursor-pointer leading-[normal] min-w-[83px] md:ml-[0] ml-[172px] md:mt-0 mt-6 text-base text-center tracking-[0.44px]"
                       shape="round"
                       color="indigo_800"
+                      onClick={() => navigate("/dashboard")}
                     >
                       Save
                     </Button>
