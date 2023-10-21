@@ -96,7 +96,6 @@ exports.updateMe = catchAsync(async(req,res,next) =>{
 
 exports.getAllUsers=async(req,res,next)=>{
         
-    // ******* Use of 130 ******
     try{
     const users = await User.find();
     res.status(200).json({

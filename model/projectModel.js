@@ -12,14 +12,13 @@ const projectSchema=new mongoose.Schema({
     },
     start_date:{
         type:Date,
-        default: Date.now,
-        required:[true,'Project Must have start Date']
+        default:Date.now,
     },
     end_date:{
         type:Date,
         required:[true,'Project Must have end Date']
     },
-    project_manager_id:{
+    project_manager:{
         type: mongoose.Schema.ObjectId,   
         ref: "User",
     },
@@ -29,6 +28,14 @@ const projectSchema=new mongoose.Schema({
             ref: "User"
         }
     ]
+})
+
+projectSchema.pre(/^find/,function(next){
+    this.populate({
+        path:'project_manager',
+        select:'-__v'
+    });
+    next();
 })
 
 const Project= mongoose.model('Project',projectSchema);

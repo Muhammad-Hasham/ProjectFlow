@@ -17,7 +17,7 @@ const userSchema=new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'manager', 'member','client'],
+        enum: ['admin', 'Project Manager', 'Team Member','Client'],
         default: 'Member'
     },
     photo:{
@@ -49,6 +49,11 @@ const userSchema=new mongoose.Schema({
         default: true,
         select: false 
     }
+},
+{ 
+    // Schema options
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
 })
 
 userSchema.pre('save',async function(next){
@@ -59,6 +64,13 @@ userSchema.pre('save',async function(next){
     this.passwordConfirm=undefined;
     next();
 })
+
+
+userSchema.virtual('projects',{
+    ref:"Project",
+    foreignField:'project_manager', 
+    localField: '_id'
+});
 
 userSchema.methods.correctPassword = async function(candidatePassword,userPassword)
 {

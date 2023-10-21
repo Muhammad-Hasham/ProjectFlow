@@ -4,7 +4,12 @@ const catchAsync=require("../utils/catchAsync");
 
 
 exports.CreateProject=catchAsync(async (req,res,next)=>{
-    const project=await Project.create(req.body);
+    const projectData = {
+        ...req.body,
+        project_manager: req.user.id
+    };
+    
+    const project=await Project.create(projectData);
         res.status(201).json({
             status:'success',
             data:{
@@ -13,9 +18,32 @@ exports.CreateProject=catchAsync(async (req,res,next)=>{
         });
 })
 
+exports.getAllProjects=async(req,res,next)=>{
+
+    let filter={};
+    if(req.params.userId) filter= { project_manager:req.params.userId}
+    
+    try{
+    const projects = await Project.find(filter);
+    res.status(200).json({
+        status:"success",
+        results: projects.length, 
+        data:{
+            projects
+        } 
+    })
+    }
+    catch(err)
+    {
+        res.status(404).json({
+            status:"fail",
+            message:err
+        })
+    }
+}
 
 exports.getParticularProject=catchAsync(async (req,res,next)=>{
-    let project = await Project.findById(req.params.id);
+    let project = await Project.findById(req.params.id)
 
     if(!project){
         return next(new AppError('No project Found with that ID',404))

@@ -2,12 +2,13 @@ const express=require('express');
 const projectController=require("../controller/projectController");
 const authController=require("../controller/authController")
 
-const router=express.Router();
+const router=express.Router({mergeParams:true}) 
 
 
 router
    .route('/')
-   .post(authController.protect,authController.restrictTo('manager'),projectController.CreateProject);
+   .get(authController.protect,authController.restrictTo('Project Manager'),projectController.getAllProjects)
+   .post(authController.protect,authController.restrictTo('Project Manager'),projectController.CreateProject);
 
 router
    .route('/:id')
@@ -17,12 +18,12 @@ router
     )
    .patch(
       authController.protect,
-      authController.restrictTo('manager'),
+      authController.restrictTo('Project Manager'),
       projectController.UpdateProject
       )
    .delete(
       authController.protect,
-      authController.restrictTo('manager'),
+      authController.restrictTo('Project Manager'),
       projectController.DeleteProject
       );
 
