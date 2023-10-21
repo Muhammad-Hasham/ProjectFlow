@@ -1,12 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Line, Text } from "components";
+import { useState } from "react";
 
 const SignupPage = () => {
   const navigate = useNavigate();
 
+  const [name,setName]=useState("")
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+  const [confirmpassword,setConfirmpassword]=useState("")
+
+  
+
   const handleSignup = () => {
-    navigate("/signuprole");
+    const SignupData = {
+      name: name,
+      email: email,
+      password: password,
+      passwordConfirm: confirmpassword,
+    };
+    navigate("/signuprole", { state: SignupData });
   };
 
   return (
@@ -67,6 +81,8 @@ const SignupPage = () => {
                   <input
                     type="text"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                   />
                 </div>
               </div>
@@ -84,7 +100,8 @@ const SignupPage = () => {
                   <input
                     type="email"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                    
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -102,7 +119,8 @@ const SignupPage = () => {
                   <input
                     type="password"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                    
+                    value={password}
+                    onChange={(e)=>setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -119,7 +137,8 @@ const SignupPage = () => {
                 <input
                   type="password"
                   className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
-                  
+                  value={confirmpassword}
+                    onChange={(e)=>setConfirmpassword(e.target.value)}
                 />
               </div>
 

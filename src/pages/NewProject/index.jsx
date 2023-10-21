@@ -1,19 +1,71 @@
-import React, {useState} from "react";
-
+import React, { useState } from "react";
+import { Button, Text } from "components";
 import { Sidebar } from "react-pro-sidebar";
-
-import { Button, Img, Line, Text, MyDatePicker } from "components";
-
 import { useNavigate } from "react-router-dom";
-
+import { MyDatePicker } from "components";
 
 const NewProjectPage = () => {
-
   const navigate = useNavigate();
-  const [selectedDueDate, setSelectedDueDate] = useState(null);
+  const [formData, setFormData] = useState({
+    projectName: "",
+    teamMembers: "",
+    startDate:null,
+    dueDate: null,
+    description: "",
+  });
+
+
 
   const handleDueDateChange = (date) => {
-    setSelectedDueDate(date);
+    setFormData({ ...formData, dueDate: date });
+  };
+
+  const handleStartDateChange = (date) => {
+    setFormData({ ...formData, startDate: date });
+  };
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCreateProject = () => {
+    
+    if (!formData.projectName || !formData.description || !formData.dueDate) {
+      console.error('Please fill out all required fields.');
+      alert("Please fill out all required fields.")
+      return;
+    }
+  
+    // Create a new project object with the form data
+    const projectData = {
+      name: formData.projectName,
+      end_date: formData.dueDate,
+      description: formData.description,
+    };
+      let token=localStorage.getItem("token");
+    // Send a POST request to the backend
+    fetch("http://127.0.0.1:3000/api/v1/projects", {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(projectData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+  
+        
+        alert("Project Created Successfully")
+        navigate("/myprojects");
+      })
+      .catch((error) => {
+        // Handle API error, e.g., show an error message
+        alert("Project creation failed")
+        console.error("Project creation failed", error);
+      });
   };
 
   return (
@@ -81,32 +133,27 @@ const NewProjectPage = () => {
                 {/* Project Creation Date */}
                 <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full">
                   <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                    Project Creation Date
+                    Project Start Date
                   </Text>
-                  <input
-                    type="text"
-                    className="border-b border-indigo-800_01 text-base w-[76%]"
-                    placeholder="Enter Date"
-                  />
+                  <MyDatePicker selectedDate={formData.startDate} handleDateChange={handleStartDateChange} />
                 </div>
 
                 {/* Project Name */}
                 <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                  <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                    Project Name
-                  </Text>
-                  <div className="h-12 relative w-[76%] md:w-full">
-                    <input type="text" className="text-base w-full" />
-                  </div>
-                </div>
-
-                {/* Project Manager */}
-                <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[17px] w-[97%] md:w-full">
-                  <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                    Project Manager
-                  </Text>
-                  <input type="text" className="border-b border-indigo-800_01 text-base w-[76%]" />
-                </div>
+                    <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
+                      Project Name
+                    </Text>
+                    <div className="h-12 relative w-[76%] md:w-full">
+                      <input
+                        type="text"
+                        name="projectName"
+                        value={formData.projectName}
+                        onChange={handleInputChange}
+                        className="text-base w-full"
+                      />
+                    </div>
+              </div>
+                
 
                 {/* Team Members */}
                 <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[37px] w-[97%] md:w-full">
@@ -116,32 +163,38 @@ const NewProjectPage = () => {
                   <input type="text" className="border-b border-indigo-800_01 text-base w-[76%]" />
                 </div>
 
-                {/* Due Date */}
-                  <div className="flex flex-row items-end justify-between mt-3.5 w-[32%] md:w-full">
-                    <Text className="mb-[3px] mt-6 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                      Due Date
-                    </Text>
-                    <MyDatePicker selectedDate={selectedDueDate} handleDateChange={handleDueDateChange} />
-                  </div>
-                {/* Description */}
+                {/* Project Creation Date */}
+                <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full">
+                  <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
+                    Due Date
+                  </Text>
+                  <MyDatePicker
+                    selectedDate={formData.dueDate}
+                    handleDateChange={handleDueDateChange}
+                  />
+                </div>
                 <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-9 w-[97%] md:w-full">
                   <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
                     Description
                   </Text>
                   <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
                     className="border border-indigo-800 border-solid h-[70px] md:mt-0 mt-2.5 w-[74%]"
                     placeholder="Enter project description"
                   />
                 </div>
 
+
                 <Button
-                  className="cursor-pointer leading-[normal] min-w-[84px] md:ml-[0] ml-[745px] mt-[63px] text-base text-center tracking-[0.44px]"
-                  shape="round"
-                  color="indigo_800_01"
-                  onClick={() => navigate("/myprojects")}
-                >
-                  Create
-                </Button>
+        className="cursor-pointer leading-[normal] min-w-[84px] md:ml-[0] ml-[745px] mt-[63px] text-base text-center tracking-[0.44px]"
+        shape="round"
+        color="indigo_800_01"
+        onClick={handleCreateProject} // Handle the project creation when the button is clicked
+      >
+        Create
+      </Button>
               </div>
             </div>
           </div>

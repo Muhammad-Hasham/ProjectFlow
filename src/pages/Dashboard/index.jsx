@@ -10,6 +10,8 @@ const DashboardPage = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
 
+  let name=localStorage.getItem("username")
+
   // Function to fetch data from the backend API
   const fetchData = async () => {
     try {
@@ -88,10 +90,10 @@ const DashboardPage = () => {
                 alt="imageFour"
               />
               <Text
-                className="grid justify-center sm:mt-0 mt-[59px] sm:text-3xl md:text-[32px] text-[34px] text-center text-indigo-800"
+                className="grid justify-center sm:mt-0 mt-[59px] sm:text-3xl md:text-[32px] text-[31px] text-center text-indigo-800"
                 size="txtPoppinsBold34"
               >
-                Welcome , User
+                Welcome , {name}
               </Text>
             </div>
             <List

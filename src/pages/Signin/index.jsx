@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios"; // Import axios
 import { useNavigate } from "react-router-dom";
 import { Button, Text } from "components";
 
 const SigninPage = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSignIn = async () => {
+    try {
+      // Send a POST request to your backend's login endpoint
+      const response = await axios.post("http://127.0.0.1:3000/api/v1/users/login", formData);
+
+      // Assuming that your backend returns a token upon successful login, you can save it in localStorage
+      localStorage.setItem("token", response.data.token);
+      // Redirect to the dashboard or any other page upon successful login
+      
+      localStorage.setItem("userid",response.data.data.user._id)
+      localStorage.setItem("username",response.data.data.user.name)
+      localStorage.setItem("email",response.data.data.user.email)
+      alert("LoggedIn Successfully")
+      navigate("/dashboard");
+      
+    } catch (error) {
+      console.error("Login failed", error);
+      // Handle login error, e.g., show an error message to the user
+    }
+  }
 
   return (
     <>
@@ -52,40 +83,44 @@ const SigninPage = () => {
               <Text size="txtPoppinsBold20">Sign In</Text>
             </a>
             <div className="flex flex-col items-start justify-start w-full">
-              <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between w-full">
-                <Text
-                  className="text-base text-indigo-800 tracking-[0.44px]"
-                  size="txtPoppinsRegular16"
-                >
-                  Email Address
-                </Text>
-                <input
-                  type="email"
-                  className="bg-white-A700 border border-blue_gray-100 border-solid h-12 rounded-[12px] w-[73%]"
-                  
-                />
-              </div>
-              <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between mt-[53px] w-full">
-                <Text
-                  className="text-base text-indigo-800 tracking-[0.44px]"
-                  size="txtPoppinsRegular16"
-                >
-                  Password
-                </Text>
-                <input
-                  type="password"
-                  className="bg-white-A700 border border-blue_gray-100 border-solid h-12 rounded-[12px] w-[73%]"
-                  
-                />
-              </div>
-              <Button
-                className="common-pointer cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[311px] mt-[70px] text-base text-center tracking-[0.44px]"
-                onClick={() => navigate("/dashboard")}
-                shape="round"
-                color="indigo_800"
-              >
-                Sign In
-              </Button>
+            <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between w-full">
+      <Text
+        className="text-base text-indigo-800 tracking-[0.44px]"
+        size="txtPoppinsRegular16"
+      >
+        Email Address
+      </Text>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        className="bg-white-A700 border border-blue_gray-100 border-solid h-12 rounded-[12px] w-[73%]"
+      />
+    </div>
+    <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between mt-[53px] w-full">
+      <Text
+        className="text-base text-indigo-800 tracking-[0.44px]"
+        size="txtPoppinsRegular16"
+      >
+        Password
+      </Text>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleInputChange}
+        className="bg-white-A700 border border-blue_gray-100 border-solid h-12 rounded-[12px] w-[73%]"
+      />
+    </div>
+    <Button
+      className="common-pointer cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[311px] mt-[70px] text-base text-center tracking-[0.44px]"
+      onClick={handleSignIn} // Handle the login when the button is clicked
+      shape="round"
+      color="indigo_800"
+    >
+      Sign In
+    </Button>
             </div>
           </div>
         </div>

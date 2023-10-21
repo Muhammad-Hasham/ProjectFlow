@@ -8,20 +8,48 @@ const MyProjectsPage = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Fetch project data from your API or database here
-    // Example: fetch("your_api_url_here")
-    //   .then((response) => response.json())
-    //   .then((data) => setProjects(data));
+    const id = localStorage.getItem("userid");
+    console.log("User ID from localStorage:", id);
 
-    // Simulated project data for demonstration
-    const simulatedProjects = [
-      { id: 1, title: "Project A", dueDate: "01/15/2023" },
-      { id: 2, title: "Project B", dueDate: "02/28/2023" },
-      // Add more projects as needed
-    ];
-    setProjects(simulatedProjects);
+    let token=localStorage.getItem("token");
+    // Make a GET request to your backend API to fetch projects for the user
+    fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+
+
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Assuming the response contains an array of projects
+        console.log(data)
+        const apiProjects = data.data.projects;
+        
+        // Map the API projects to the format you want and set them in state
+        const mappedProjects = apiProjects.map((project) => ({
+          id: project._id, // Use _id as the ID
+          title: project.name, // Use name as the title
+          dueDate: project.end_date, // Use end_date as the due date
+        }));
+        
+        
+        setProjects(mappedProjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
   }, []);
-
+  
+  
+  
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-poppins items-center justify-start mx-auto w-full">
@@ -121,7 +149,7 @@ const MyProjectsPage = () => {
                         className="mt-[15px] text-base text-indigo-800 tracking-[0.44px]"
                         size="txtPoppinsRegular16"
                       >
-                        Due {project.dueDate}
+                        Due {project.dueDate ? project.dueDate.substring(0, 10) : ""}
                       </Text>
                     </div>
                   </div>

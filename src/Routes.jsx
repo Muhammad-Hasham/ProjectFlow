@@ -15,7 +15,7 @@ const Signin = React.lazy(() => import("pages/Signin"));
 const MyProjects = React.lazy(() => import("pages/MyProjects"));
 const MyProfile = React.lazy(() => import("pages/MyProfile"));
 const Startingpage = React.lazy(() => import("pages/Startingpage"));
-const UpdateProject = React.lazy(()=> import ("pages/MyProjects/update"))
+const UpdateProject = React.lazy(()=> import ("./pages/MyProjects/update.jsx"))
 
 const ProjectRoutes = () => {
   return (
@@ -37,7 +37,7 @@ const ProjectRoutes = () => {
           <Route path="/graphs" element={<Graphs />} />
           <Route path="/calendarview" element={<CalendarView />} />
           <Route path="/newproject" element={<NewProject />} />
-          <Route path="/updateproject" element={<UpdateProject />} />
+          <Route path="/updateproject/:projectId" element={<UpdateProject />} />
         </Routes>
       </Router>
     </React.Suspense>
