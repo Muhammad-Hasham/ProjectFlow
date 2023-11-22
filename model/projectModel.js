@@ -27,8 +27,12 @@ const projectSchema=new mongoose.Schema({
             type: mongoose.Schema.ObjectId,   
             ref: "User"
         }
-    ]
-})
+    ],
+},
+{ 
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
+}); 
 
 projectSchema.pre(/^find/,function(next){
     this.populate({
@@ -37,6 +41,13 @@ projectSchema.pre(/^find/,function(next){
     });
     next();
 })
+
+
+projectSchema.virtual('stories',{
+    ref:"UserStory",
+    foreignField:'project',
+    localField: '_id'  
+});
 
 const Project= mongoose.model('Project',projectSchema);
 module.exports=Project;

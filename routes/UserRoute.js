@@ -2,11 +2,13 @@ const express=require('express');
 const userController=require("../controller/userController");
 const authController=require("../controller/authController")
 const projectRouter=require("../routes/projectRoute")
+const taskRouter=require("../routes/taskRoute")
 
 const router=express.Router();
 
 
 router.use('/:userId/projects',projectRouter)
+router.use('/:userId/tasks',taskRouter)
 
 // Authentication
 router.post('/signup',authController.signup);

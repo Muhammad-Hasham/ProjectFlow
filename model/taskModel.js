@@ -12,7 +12,7 @@ const taskSchema=new mongoose.Schema({
     },
     start_date:{
         type:Date,
-        required:[true,'Task Must have start Date']
+        default:Date.now,
     },
     end_date:{
         type:Date,
@@ -20,10 +20,6 @@ const taskSchema=new mongoose.Schema({
     },
     last_updation_date:{
         type:Date
-    },
-    project_manager_id:{
-        type: mongoose.Schema.ObjectId,   
-        ref: "User",
     },
     assignee:{
         type: mongoose.Schema.ObjectId,   
@@ -36,9 +32,26 @@ const taskSchema=new mongoose.Schema({
     },
     status:{
         type:String,
+        required:[true,'Task must have status'],
         enum: ['todo','on-track','done']
-    }
-})
+    },
+    story:{
+        type: mongoose.Schema.ObjectId,
+        ref:'UserStory',
+        required:[true,'Task must belong to a User-Story']
+    },
+},
+{ 
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
+}); 
+
+
+taskSchema.virtual('subtasks',{
+    ref:"subTask",
+    foreignField:'task',
+    localField: '_id'  
+});
 
 const Task= mongoose.model('Task',taskSchema);
 module.exports=Task;

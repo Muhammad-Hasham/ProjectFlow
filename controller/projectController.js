@@ -43,7 +43,10 @@ exports.getAllProjects=async(req,res,next)=>{
 }
 
 exports.getParticularProject=catchAsync(async (req,res,next)=>{
-    let project = await Project.findById(req.params.id)
+    let project = await Project.findById(req.params.id).populate({
+        path: 'stories',
+        select: 'description'
+      });
 
     if(!project){
         return next(new AppError('No project Found with that ID',404))

@@ -4,6 +4,9 @@ const authController=require("../controller/authController")
 
 const router=express.Router({mergeParams:true}) 
 
+const storyRouter=require("../routes/userStoryRoute");
+
+router.use('/:projectId/stories',storyRouter)
 
 router
    .route('/')
