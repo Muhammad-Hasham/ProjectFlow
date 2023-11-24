@@ -3,6 +3,8 @@ import { Sidebar } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
 import { Button, Img, Text } from "components";
 import { useSpring, animated } from 'react-spring';
+import Lottie from 'lottie-react';
+
 
 const MyProjectsPage = () => {
   const navigate = useNavigate();
@@ -159,10 +161,10 @@ const MyProjectsPage = () => {
                         onClick={() => navigate(`/updateproject/${project.id}`)}
                       >
                         <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
-                          <div className="bg-light_green-600 flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
+                          <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
                             <Img
-                              className="h-6 md:h-auto object-cover w-[90%]"
-                              src="images/img_image2.png"
+                              className="h-12 md:h-auto object-cover w-full"
+                              src="images/engineering_6755119.png"
                               alt="Project Image"
                             />
                           </div>
@@ -186,16 +188,18 @@ const MyProjectsPage = () => {
                         key={project.id}
                         className="common-pointer bg-cover bg-no-repeat flex flex-1 flex-col h-[252px] items-center justify-end p-7 sm:px-5 w-full"
                         style={{ backgroundImage: "url('images/img_group6.svg')" }}
-                        onClick={() => navigate(`/updateproject/${project.id}`)}
+                        onClick={() => navigate(`/projectdetails/${project.id}`)}
                       >
-                        <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
-                          <div className="bg-light_green-600 flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
+                       <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
+                          <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
                             <Img
-                              className="h-6 md:h-auto object-cover w-[90%]"
-                              src="images/img_image2.png"
+                              className="h-12 md:h-auto object-cover w-full" // Adjust the height and width classes
+                              src="images/engineering_6755119.png"
                               alt="Project Image"
                             />
                           </div>
+                        </div>
+
                           <Text
                             className="mt-[33px] text-base text-indigo-800 tracking-[0.44px]"
                             size="txtPoppinsRegular16"
@@ -209,7 +213,7 @@ const MyProjectsPage = () => {
                             Due {project.dueDate ? project.dueDate.substring(0, 10) : ""}
                           </Text>
                         </div>
-                      </div>
+                      
                     ))}
               </div>
             </div>

@@ -16,6 +16,7 @@ const MyProjects = React.lazy(() => import("pages/MyProjects"));
 const MyProfile = React.lazy(() => import("pages/MyProfile"));
 const Startingpage = React.lazy(() => import("pages/Startingpage"));
 const UpdateProject = React.lazy(()=> import ("./pages/MyProjects/update.jsx"))
+const ProjectDetails = React.lazy(()=> import ("./pages/ProjectVisualization/details.jsx"))
 
 const ProjectRoutes = () => {
   return (
@@ -38,6 +39,7 @@ const ProjectRoutes = () => {
           <Route path="/calendarview" element={<CalendarView />} />
           <Route path="/newproject" element={<NewProject />} />
           <Route path="/updateproject/:projectId" element={<UpdateProject />} />
+          <Route path="/projectdetails/:projectId" element={<ProjectDetails />} />
         </Routes>
       </Router>
     </React.Suspense>
