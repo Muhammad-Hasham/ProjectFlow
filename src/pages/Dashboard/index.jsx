@@ -51,6 +51,8 @@ const DashboardPage = () => {
   const [showCreateButton, setShowCreateButton] = useState(false);
   const [projectButton, setprojectButton] = useState(false);
 
+  let name=localStorage.getItem("username")
+
   // Animation Springs
   const [projectsAnimation, setProjectsAnimation] = useSpring(() => ({
     opacity: 1,
@@ -233,7 +235,7 @@ const DashboardPage = () => {
           <Img className="h-[148px] md:h-auto object-cover w-[36%] sm:w-full" src="images/welcome.gif" alt="welcome" />
           <animated.div>
             <Text className="grid justify-center sm:mt-0 mt-[59px] sm:text-3xl md:text-[32px] text-[31px] text-center text-indigo-800" size="txtPoppinsBold34">
-              Welcome, User
+              Welcome, {name}
             </Text>
           </animated.div>
         </div>
