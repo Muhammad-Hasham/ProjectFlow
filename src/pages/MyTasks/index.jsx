@@ -4,11 +4,14 @@ import { Text, Button } from 'components';
 import Navigation from 'pages/Sidebar';
 import { FaCheck, FaCalendarAlt } from 'react-icons/fa';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import TaskDetailsPopup from './taskdetails';
 
 const MyTasksPage = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [hoveredTask, setHoveredTask] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+
 
   useEffect(() => {
     const currentDate = new Date();
@@ -48,6 +51,15 @@ const MyTasksPage = () => {
         return 'gray-900';
     }
   };
+
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedTask(null);
+  };
+
 
   const markTaskAsComplete = (taskId) => {
     const updatedTasks = tasks.map((task) =>
@@ -140,6 +152,7 @@ const MyTasksPage = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            onClick={() => handleTaskClick(task)}
                             onMouseEnter={() => setHoveredTask(task)}
                             onMouseLeave={() => setHoveredTask(null)}
                             style={{
@@ -199,6 +212,7 @@ const MyTasksPage = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            onClick={() => handleTaskClick(task)}
                             onMouseEnter={() => setHoveredTask(task)}
                             onMouseLeave={() => setHoveredTask(null)}
                             style={{
@@ -257,6 +271,7 @@ const MyTasksPage = () => {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             {...provided.dragHandleProps}
+                            onClick={() => handleTaskClick(task)}
                             onMouseEnter={() => setHoveredTask(task)}
                             onMouseLeave={() => setHoveredTask(null)}
                             style={{
@@ -264,7 +279,7 @@ const MyTasksPage = () => {
                               padding: 16,
                               margin: '0 0 8px 0',
                               minHeight: '50px',
-                              backgroundColor: '#ED2B2A',
+                              backgroundColor: '#E74646',
                               color: '#ffffff',
                               border: '1px solid #ff1a1a',
                               borderRadius: '8px',
@@ -290,6 +305,11 @@ const MyTasksPage = () => {
             </Droppable>
           </div>
         </DragDropContext>
+
+        {selectedTask && (
+          <TaskDetailsPopup task={selectedTask} onClose={handleClosePopup} />
+        )}
+
       </div>
     </div>
   );

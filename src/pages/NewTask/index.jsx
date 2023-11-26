@@ -294,14 +294,16 @@ const NewTaskPage = () => {
             style={{
               position: 'absolute',
               bottom: '-50px',
-              left: "-4px" // Adjust this value to fine-tune the position
+              left: "-4px", // Adjust this value to fine-tune the position
+              color: 'white',
+              width: '50'
             }}
           >
             {isRecording ? 'Stop Recording' : 'Speak Now'}
           </button>
           <div
             className={`text-white mt-2 ${transcript ? '' : 'hidden'}`}
-            style={{ position: 'absolute', bottom: '-50px', left: "100px" }}
+            style={{ position: 'absolute', bottom: '-50px', left: "100px", color: 'white' }}
           >
             Recorded Text: {transcript}
           </div>

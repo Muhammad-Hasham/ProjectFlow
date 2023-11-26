@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Text, Img, Button } from 'components';
 import { PieChart } from 'react-minimal-pie-chart';
 import Navigation from 'pages/Sidebar';
+import KanbanComponent from './kanban';
+import CalendarComponent from './calendar';
 
 const ProjectStatistics = ({ statisticsData }) => {
   return (
@@ -25,6 +27,7 @@ const ProjectStatistics = ({ statisticsData }) => {
 const ProjectProgress = ({ progress, statisticsData }) => {
   const navigate = useNavigate();
   const [hovered, setHovered] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('Statistics');
 
   const pieChartSize = 300;
 
@@ -59,6 +62,20 @@ const ProjectProgress = ({ progress, statisticsData }) => {
     transform: `scale(${showSuccessPopup ? 1 : 0.5})`,
   });
 
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleNavigate = () => {
+    if (selectedCategory === 'Kanban') {
+      navigate(`/kanban`);
+    }
+    
+    if (selectedCategory === 'Calendar') {
+      navigate(`/calendar`);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       {/* Sidebar */}
@@ -78,6 +95,19 @@ const ProjectProgress = ({ progress, statisticsData }) => {
         >
           Project Name
         </Text>
+
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', marginLeft: '60px' }}>
+          <label htmlFor="category" style={{ marginRight: '10px' }}>
+            Select Category:
+          </label>
+          <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="Statistics">Statistics</option>
+            <option value="Kanban">Kanban</option>
+            <option value="Calendar">Calendar</option>
+          </select>
+
+          <button onClick={handleNavigate}>Navigate</button>
+        </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: '50px' }}>
           {/* Update Button */}
@@ -119,7 +149,8 @@ const ProjectProgress = ({ progress, statisticsData }) => {
 
         <div style={{ display: 'flex', marginTop: '10px', marginLeft: '60px', alignItems: 'center' }}>
           {/* Bar chart for project statistics */}
-          <ProjectStatistics statisticsData={statisticsData} />
+          {selectedCategory === 'Statistics' && <ProjectStatistics statisticsData={statisticsData} />}
+          
 
           {/* Animated Pie Chart */}
           <animated.div
