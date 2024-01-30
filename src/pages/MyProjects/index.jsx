@@ -21,13 +21,16 @@ const MyProjectsPage = () => {
     }, 2000);
   };
 
+
   useEffect(() => {
     const id = localStorage.getItem("userid");
     console.log("User ID from localStorage:", id);
 
     let token=localStorage.getItem("token");
     // Make a GET request to your backend API to fetch projects for the user
-    fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+    if(localStorage.getItem('role') === 'Team Member')
+    {
+    fetch(`http://127.0.0.1:3000/api/v1/projects`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -53,6 +56,34 @@ const MyProjectsPage = () => {
       .catch((error) => {
         console.error("Error fetching projects:", error);
       });
+    }  else if (localStorage.getItem('role') === 'Project Manager') {
+      fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const apiProjects = data.data.projects;
+
+        const mappedProjects = apiProjects.map((project) => ({
+          id: project._id,
+          title: project.name,
+          dueDate: project.end_date,
+        }));
+
+        setProjects(mappedProjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
+    }
   }, []);
 
   // Dummy data for testing
@@ -158,7 +189,7 @@ const MyProjectsPage = () => {
                         key={project.id}
                         className="common-pointer bg-cover bg-no-repeat flex flex-1 flex-col h-[252px] items-center justify-end p-7 sm:px-5 w-full"
                         style={{ backgroundImage: "url('images/img_group6.svg')" }}
-                        onClick={() => navigate(`/updateproject/${project.id}`)}
+                        onClick={() => navigate(`/details/${project.id}`)}
                       >
                         <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
                           <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
@@ -188,7 +219,7 @@ const MyProjectsPage = () => {
                         key={project.id}
                         className="common-pointer bg-cover bg-no-repeat flex flex-1 flex-col h-[252px] items-center justify-end p-7 sm:px-5 w-full"
                         style={{ backgroundImage: "url('images/img_group6.svg')" }}
-                        onClick={() => navigate(`/projectdetails/${project.id}`)}
+                        onClick={() => navigate(`/details/`)}
                       >
                        <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
                           <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">

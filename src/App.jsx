@@ -4,8 +4,9 @@ import Routes from "./Routes";
 
 function App() {
   return (
+
     <ProSidebarProvider>
-      <Routes />
+        <Routes />
     </ProSidebarProvider>
   );
 }

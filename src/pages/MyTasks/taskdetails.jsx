@@ -63,7 +63,7 @@ const TaskDetailsPopup = ({ task, onClose }) => {
             {task.name}
           </Text>
           <div style={{ marginBottom: '10px' }}>
-            <Text style={{ fontSize: '16px' }}>Due Date: {task.dueDate}</Text>
+            <Text style={{ fontSize: '16px' }}>Due Date: {task.end_date.substring(0, 10)}</Text>
           </div>
 
             <div style={{ marginBottom: '10px' }}>
@@ -73,7 +73,7 @@ const TaskDetailsPopup = ({ task, onClose }) => {
           <Text style={{ fontSize: '16px' }}>Status: {task.status}</Text>
         </div>
         <div style={{ marginBottom: '10px' }}>
-          <Text style={{ fontSize: '16px' }}>Task Assignee: {task.assignee}</Text>
+          <Text style={{ fontSize: '16px' }}>Task Assignee: {task.assignee.name}</Text>
         </div>
         <div style={{ marginBottom: '10px' }}>
           <Text style={{ fontSize: '16px' }}>Subtasks: {task.subtasks && task.subtasks.length > 0 ? task.subtasks.join(', ') : 'None'}</Text>

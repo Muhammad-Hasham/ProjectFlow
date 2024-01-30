@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Line, Text } from "components";
+import '../../styles/my.css';
 import { useState } from "react";
 
 const SignupPage = () => {
@@ -47,12 +48,12 @@ const SignupPage = () => {
             Academy
           </Text>
           <Text
-            className="common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
-            size="txtPoppinsRegular16"
-            onClick={() => navigate("/signin")}
-          >
-            Signin
-          </Text>
+                className={`common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px] hover-signin`}
+                size="txtPoppinsRegular16"
+                onClick={() => navigate("/signin")}
+              >
+              Signin
+            </Text>
           <Button
             className="cursor-pointer leading-[normal] mb-[867px] min-w-[109px] sm:ml-[0] ml-[92px] sm:mt-0 mt-[13px] text-base text-center tracking-[0.44px]"
             shape="round"

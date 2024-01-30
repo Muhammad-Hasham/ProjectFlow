@@ -1,60 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Text, Img, Button } from 'components';
 import { PieChart } from 'react-minimal-pie-chart';
 import Navigation from 'pages/Sidebar';
-import KanbanComponent from './kanban';
-import CalendarComponent from './calendar';
 
-const ProjectStatistics = ({ statisticsData }) => {
-  return (
-    <div style={{ marginLeft: '50px', marginRight: '50px', width: '300px', height: '300px', marginTop: '70px' }}>
-      <ResponsiveContainer>
-        <LineChart data={statisticsData}>
-          <XAxis label={{ value: 'Duration', position: 'insideBottom', offset: -10 }} />
-          <YAxis label={{ value: 'Progress', angle: -90, position: 'insideLeft' }} />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="progress" stroke="#860A35" />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const ProjectProgress = ({ progress, statisticsData }) => {
+
+const ProjectProgress = ({ progress, statisticsData, tasks }) => {
+
+  const[projectname,setProjectname]=useState("");
   const navigate = useNavigate();
+  const {projectId}=useParams()
+
+  console.log(projectId)
+  useEffect(() => {
+    // Fetch project details from the API based on the 'projectId' parameter
+    const token = localStorage.getItem("token");
+
+    // Fetch the project details using a GET request
+    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Project not found");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.data.project.name);
+        // setProjectDetails(data);
+        setProjectname(data.data.project.name)
+
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, [projectId]);
+
+
+ 
   const [hovered, setHovered] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('Statistics');
 
-  const pieChartSize = 300;
-
-  const pieChartData = [{ value: progress, color: '#860A35' }, { value: 100 - progress, color: '#e0e0e0' }];
-
-  const progressAnimation = useSpring({
-    opacity: 1,
-    value: progress,
-    from: { opacity: 0, value: 0 },
-  });
-
+  
   const [loading, setLoading] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleDeletionProject = async () => {
-    setLoading(true);
 
-    // Simulate asynchronous operation (API call, etc.)
-    setTimeout(() => {
-      setLoading(false);
-      setShowSuccessPopup(true);
+    navigate(`/updateproject/${projectId}`)
+    // setLoading(true);
 
-      // Reset success message after a few seconds
-      setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 3000);
-    }, 2000);
+    // // Simulate asynchronous operation (API call, etc.)
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   setShowSuccessPopup(true);
+
+    //   // Reset success message after a few seconds
+    //   setTimeout(() => {
+    //     setShowSuccessPopup(false);
+    //   }, 3000);
+    // }, 2000);
+  };
+
+  const navigateToStatistics = () => {
+    navigate(`/details/${projectId}`);
+  };
+
+  const navigateToKanban = () => {
+    navigate(`/kanban/${projectId}`);
+  };
+
+  const navigateToCalendar = () => {
+    navigate(`/calendar/${projectId}`);
   };
 
   const successPopupAnimation = useSpring({
@@ -62,22 +86,8 @@ const ProjectProgress = ({ progress, statisticsData }) => {
     transform: `scale(${showSuccessPopup ? 1 : 0.5})`,
   });
 
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  const handleNavigate = () => {
-    if (selectedCategory === 'Kanban') {
-      navigate(`/kanban`);
-    }
-    
-    if (selectedCategory === 'Calendar') {
-      navigate(`/calendar`);
-    }
-  };
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+    <div style={{ display: 'flex', height: '100vh' }}>
       {/* Sidebar */}
       <Navigation />
 
@@ -93,28 +103,16 @@ const ProjectProgress = ({ progress, statisticsData }) => {
           className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
           size="txtPoppinsBold34"
         >
-          Project Name
+         {projectname}
         </Text>
 
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', marginLeft: '60px' }}>
-          <label htmlFor="category" style={{ marginRight: '10px' }}>
-            Select Category:
-          </label>
-          <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
-            <option value="Statistics">Statistics</option>
-            <option value="Kanban">Kanban</option>
-            <option value="Calendar">Calendar</option>
-          </select>
-
-          <button onClick={handleNavigate}>Navigate</button>
-        </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: '50px' }}>
           {/* Update Button */}
           <Button
             className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
             style={{ width: '100px', marginLeft: '50px' }}
-            onClick={() => navigate(`/updateproject/`)}
+            onClick={() => navigate(`/updateproject/${projectId}`)}
             shape="round"
             color="indigo_800_01"
           >
@@ -147,112 +145,17 @@ const ProjectProgress = ({ progress, statisticsData }) => {
           Project Deleted Successfully!
         </animated.div>
 
-        <div style={{ display: 'flex', marginTop: '10px', marginLeft: '60px', alignItems: 'center' }}>
-          {/* Bar chart for project statistics */}
-          {selectedCategory === 'Statistics' && <ProjectStatistics statisticsData={statisticsData} />}
-          
-
-          {/* Animated Pie Chart */}
-          <animated.div
-            style={{
-              position: 'relative',
-              width: `${pieChartSize}px`,
-              height: `${pieChartSize}px`,
-            }}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-          >
-            <PieChart
-              style={{
-                position: 'absolute',
-                width: '100%',
-                textAlign: 'center',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: '#323F73',
-                fontWeight: 'bold',
-                justifyContent: 'flex-end',
-              }}
-              animate
-              animationDuration={1000}
-              animationEasing="ease-out"
-              center={[pieChartSize / 2, pieChartSize / 2]}
-              data={pieChartData}
-              label={({ dataEntry }) => Math.round(dataEntry.value) + '%'}
-              labelPosition={50}
-              labelStyle={{
-                fontSize: '10px',
-                fontFamily: 'sans-serif',
-                fill: '#323F73',
-                pointerEvents: 'none',
-              }}
-              lengthAngle={360}
-              lineWidth={30}
-              onClick={() => console.log('Click on pie chart')}
-              onMouseEnter={() => console.log('Mouse enter')}
-              onMouseLeave={() => console.log('Mouse leave')}
-              paddingAngle={0}
-              radius={100}
-              startAngle={0}
-              viewBoxSize={[pieChartSize, pieChartSize]}
-            />
-            {hovered && (
-              <div
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  textAlign: 'center',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: '#323F73',
-                  fontWeight: 'bold',
-                }}
-              >
-                {Math.round(progress)}%
-              </div>
-            )}
-          </animated.div>
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', cursor: 'pointer' }}>
+          <h3 onClick={navigateToStatistics} style={{ margin: '0 20px', borderBottom: '1px solid #323F73' }}>Statistics</h3>
+          <h3 onClick={navigateToKanban} style={{ margin: '0 30%', borderBottom: '1px solid #323F73' }}>Kanban</h3>
+          <h3  onClick={navigateToCalendar} style={{ margin: '0 30px', borderBottom: '1px solid #323F73' }}>Calendar</h3>
         </div>
+
       </div>
     </div>
   );
 };
 
-// Example usage:
-const ProjectVisualization = () => {
-  const [projectDetails, setProjectDetails] = useState(null);
 
-  useEffect(() => {
-    // Fetch project details based on the project ID (replace with your actual logic)
-    const projectId = 'your_project_id';
-    const placeholderProjectDetails = {
-      progress: 60,
-      statisticsData: [
-        { progress: 30 },
-        { progress: 20 },
-        { progress: 50 },
-        // ... more data points
-      ],
-    };
-    setProjectDetails(placeholderProjectDetails);
-  }, []);
 
-  if (!projectDetails) {
-    // Placeholder loading state
-    return (
-      <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-        <Img className="h-[100px] w-[100px]" src="images/loading.gif" alt="Loading" />
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      {/* Render the progress component */}
-      <ProjectProgress progress={projectDetails.progress} statisticsData={projectDetails.statisticsData} />
-      {/* Render the statistics component */}
-    </div>
-  );
-};
-
-export default ProjectVisualization;
+export default ProjectProgress;

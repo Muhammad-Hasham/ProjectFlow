@@ -2,41 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Text, Button } from 'components';
 import Navigation from 'pages/Sidebar';
-import { FaCheck, FaCalendarAlt } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDetailsPopup from './taskdetails';
+
+import axios from 'axios';
 
 const MyTasksPage = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [hoveredTask, setHoveredTask] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
-
+  const [popUp, setPopUp] = useState({ type: '', message: '' });
 
   useEffect(() => {
-    const currentDate = new Date();
-    const fetchData = async () => {
-      const dummyTasks = [
-        { id: 'task-1', name: 'Task 1', dueDate: '2023-11-30', priority: 'High', status: 'Due', description: 'This task does smth smth to ensure smth smth and needs to be done in sm time. Thankyou for oming tomy ted talk' },
-        { id: 'task-2', name: 'Task 2', dueDate: '2023-11-20', priority: 'Medium', status: 'Due', description: 'Description 2' },
-        { id: 'task-3', name: 'Task 3', dueDate: '2023-11-25', priority: 'Normal', status: 'Overdue', description: 'Description 3' },
-        { id: 'task-4', name: 'Task 4', dueDate: '2023-11-30', priority: 'High', status: 'Completed', description: 'Description 4' },
-        { id: 'task-5', name: 'Task 5', dueDate: '2023-12-05', priority: 'Medium', status: 'Completed', description: 'Description 5' },
-      ];
+    let token = localStorage.getItem('token');
+    const id = localStorage.getItem('userid');
 
-      // Update the status of tasks based on the due date
-      const updatedTasks = dummyTasks.map((task) => {
-        const taskDueDate = new Date(task.dueDate);
-        if (currentDate > taskDueDate && task.status === 'Due') {
-          return { ...task, status: 'Overdue' };
-        }
-        return task;
-      });
-
-      setTasks(updatedTasks);
-    };
-
-    fetchData();
+    if (localStorage.getItem('role') === 'Team Member') {
+      axios
+        .get('http://127.0.0.1:3000/api/v1/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          setTasks(response.data.data.tasks);
+          setPopUp({ type: 'success', message: 'Tasks loaded successfully!' });
+        })
+        .catch((error) => {
+          setPopUp({ type: 'error' });
+          console.error('Error loading tasks:', error);
+        });
+    } else if (localStorage.getItem('role') === 'Project Manager') {
+      axios
+        .get(`http://127.0.0.1:3000/api/v1/users/${id}/tasks`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          setTasks(response.data.data.tasks);
+          setPopUp({ type: 'success', message: 'Tasks loaded successfully!' });
+        })
+        .catch((error) => {
+          setPopUp({ type: 'error' });
+          console.error('Error loading tasks:', error);
+        });
+    }
   }, []);
 
   const getPriorityColor = (priority) => {
@@ -60,7 +75,6 @@ const MyTasksPage = () => {
     setSelectedTask(null);
   };
 
-
   const markTaskAsComplete = (taskId) => {
     const updatedTasks = tasks.map((task) =>
       task.id === taskId ? { ...task, status: 'Completed' } : task
@@ -77,22 +91,45 @@ const MyTasksPage = () => {
     let newStatus;
     switch (result.destination.droppableId) {
       case 'dueTasks':
-        newStatus = 'Due';
+        newStatus = 'todo';
         break;
       case 'completedTasks':
-        newStatus = 'Completed';
+        newStatus = 'completed';
         break;
       case 'overdueTasks':
-        newStatus = 'Overdue';
+        newStatus = 'overdue';
         break;
       default:
-        newStatus = 'Due';
+        newStatus = 'todo';
     }
 
     const updatedTaskWithStatus = { ...reorderedItem, status: newStatus };
     updatedTasks.splice(result.destination.index, 0, updatedTaskWithStatus);
 
     setTasks(updatedTasks);
+
+    const taskId = reorderedItem.id;
+    const token = localStorage.getItem('token');
+
+    axios
+      .patch(
+        `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
+        {
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((response) => {
+        console.log(`Task ${taskId} status updated successfully:`, response.data);
+      })
+      .catch((error) => {
+        console.error(`Error updating task ${taskId} status:`, error);
+      });
   };
 
   return (
@@ -114,18 +151,15 @@ const MyTasksPage = () => {
           My Tasks
         </Text>
 
-        <Button
-          className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
-          style={{ width: '100px', marginLeft: '850px' }}
-          onClick={() => navigate(`/newtask`)}
-          shape="round"
-          color="indigo_800_01"
-        >
-          Create
-        </Button>
-
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', margin: '20px 50px' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              margin: '20px 50px',
+            }}
+          >
             {/* Due Tasks */}
             <Droppable droppableId="dueTasks">
               {(provided) => (
@@ -136,17 +170,16 @@ const MyTasksPage = () => {
                     background: 'white',
                     padding: 10,
                     width: 250,
-                    marginBottom: '40px', // Add margin-bottom
+                    marginBottom: '40px',
                   }}
                 >
-                  <Text style = {{marginBottom: '20px'}}
-                  className="text-base text-indigo-800" size="txtPoppinsBold16">
+                  <Text style={{ marginBottom: '20px' }} className="text-base text-indigo-800" size="txtPoppinsBold16">
                     Due
                   </Text>
                   {tasks
-                    .filter((task) => task.status === 'Due')
+                    .filter((task) => task.status === 'todo')
                     .map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id} index={index}>
+                      <Draggable key={task.id} draggableId={`due-${task.id}`} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -168,9 +201,9 @@ const MyTasksPage = () => {
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>
-                            <Text style={{ color: '#6B7280' }}>Due Date: {task.dueDate}</Text>
+                            <Text style={{ color: '#6B7280' }}>Due Date: {task.end_date.substring(0, 10)}</Text>
                             <Text style={{ color: `#${getPriorityColor(task.priority)}` }}>Priority: {task.priority}</Text>
-                            <FaCheck  onClick={() => markTaskAsComplete(task.id)} size={20} color={`#323F73`} />
+                            <FaCheck onClick={() => markTaskAsComplete(task.id)} size={20} color={`#323F73`} />
                             {hoveredTask && hoveredTask.id === task.id && (
                               <div>
                                 <Text>Description: {task.description}</Text>
@@ -196,17 +229,16 @@ const MyTasksPage = () => {
                     padding: 10,
                     width: 250,
                     marginLeft: '20px',
-                    marginBottom: '20px', // Add margin-bottom
+                    marginBottom: '20px',
                   }}
                 >
-                  <Text style = {{marginBottom: '20px'}}
-                  className="text-base text-indigo-800" size="txtPoppinsBold16">
+                  <Text style={{ marginBottom: '20px' }} className="text-base text-indigo-800" size="txtPoppinsBold16">
                     Completed
                   </Text>
                   {tasks
-                    .filter((task) => task.status === 'Completed')
+                    .filter((task) => task.status === 'completed')
                     .map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id} index={index}>
+                      <Draggable key={task.id} draggableId={`completed-${task.id}`} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -228,7 +260,7 @@ const MyTasksPage = () => {
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>
-                            <Text style={{ color: '#6B7280' }}>Due Date: {task.dueDate}</Text>
+                            <Text style={{ color: '#6B7280' }}>Due Date: {task.end_date}</Text>
                             <Text style={{ color: `#${getPriorityColor(task.priority)}` }}>Priority: {task.priority}</Text>
                             <FaCheck size={20} color={`#${getPriorityColor(task.priority)}`} />
                             {hoveredTask && hoveredTask.id === task.id && (
@@ -256,16 +288,16 @@ const MyTasksPage = () => {
                     padding: 10,
                     width: 250,
                     marginLeft: '20px',
-                    marginBottom: '20px', // Add margin-bottom
+                    marginBottom: '20px',
                   }}
                 >
-                  <Text style = {{marginBottom: '20px'}} className="text-base text-indigo-800" size="txtPoppinsBold16">
+                  <Text style={{ marginBottom: '20px' }} className="text-base text-indigo-800" size="txtPoppinsBold16">
                     Overdue
                   </Text>
                   {tasks
-                    .filter((task) => task.status === 'Overdue')
+                    .filter((task) => task.status === 'overdue')
                     .map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id} index={index}>
+                      <Draggable key={task.id} draggableId={`overdue-${task.id}`} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -306,10 +338,7 @@ const MyTasksPage = () => {
           </div>
         </DragDropContext>
 
-        {selectedTask && (
-          <TaskDetailsPopup task={selectedTask} onClose={handleClosePopup} />
-        )}
-
+        {selectedTask && <TaskDetailsPopup task={selectedTask} onClose={handleClosePopup} />}
       </div>
     </div>
   );

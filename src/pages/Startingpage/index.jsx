@@ -1,5 +1,6 @@
 import React from "react";
-
+import { useState} from "react";
+import '../../styles/my.css';
 import { useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
@@ -13,7 +14,7 @@ const StartingpagePage = () => {
         <div className="flex md:flex-col flex-row md:gap-10 gap-[99px] items-start justify-end w-full">
           <div className="flex md:flex-1 flex-col md:gap-10 gap-[212px] justify-start md:mt-0 mt-[70px] w-2/5 md:w-full">
             <Text
-              className="ml-2.5 md:ml-[0] text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl"
+              className="ml-2.5 md:ml-[0] text-[38px] text-center text-indigo-800 sm:text-lg md:text-xl"
               size="txtPoppinsBold22"
               onClick={() => navigate("/")}
             >
@@ -75,12 +76,12 @@ const StartingpagePage = () => {
                 Academy
               </Text>
               <Text
-                className="common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
+                className={`common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px] hover-signin`}
                 size="txtPoppinsRegular16"
                 onClick={() => navigate("/signin")}
               >
-                Signin
-              </Text>
+              Signin
+            </Text>
               <Button
                 className="common-pointer cursor-pointer leading-[normal] mb-[867px] min-w-[109px] sm:ml-[0] ml-[92px] sm:mt-0 mt-[13px] text-base text-center tracking-[0.44px]"
                 onClick={() => navigate("/signup")}

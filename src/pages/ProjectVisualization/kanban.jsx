@@ -1,66 +1,121 @@
-import React, { useState } from 'react';
+// Import necessary modules and styles
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Text, Button, Img } from 'components'; // Assuming Img is imported from 'components'
-import { useNavigate } from 'react-router-dom'; // Assuming you are using react-router-dom
-import Navigation from 'pages/Sidebar';
+import { Button } from 'components'; // Assuming Button is imported from 'components'
+import { useNavigate, useParams } from 'react-router-dom';
+import ProjectProgress from './details';
+import KanbanPopup from './kanbanpopup';
+import './KanbanComponent.css'; // Import your CSS file with responsive styles
+import axios from 'axios';
+const KanbanComponent = () => {
+  const navigate = useNavigate();
+  const { projectId } = useParams();
 
-const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionProject, loading, successPopupAnimation, statisticsData, pieChartSize, hovered, pieChartData }) => {
-  const navigate = useNavigate(); // Assuming you are using react-router-dom
   const [tasks, setTasks] = useState({
-    todo: [
-      { id: '1', content: 'Task 1' },
-      { id: '2', content: 'Task 2' },
-    ],
-    inProgress: [
-      { id: '3', content: 'Task 3' },
-    ],
-    done: [
-      { id: '4', content: 'Task 4' },
-    ],
+    todo: [],
+    inProgress: [],
+    completed: [],
   });
+  const { todo, inProgress, completed } = tasks;
+
+  useEffect(() => {
+    // Fetch project details from the API based on the 'projectId' parameter
+    const token = localStorage.getItem("token");
+
+    // Fetch the project details using a GET request
+    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Project not found");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.data.project.tasks);
+        setTasks({
+          todo: data.data.project.tasks.filter((task) => task.status === 'todo'),
+          inProgress: data.data.project.tasks.filter((task) => task.status === 'inProgress'),
+          completed: data.data.project.tasks.filter((task) => task.status === 'completed'),
+        });
+
+        setAssigne(data.data.project.Members);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }, [projectId]);
 
   const [newCategory, setNewCategory] = useState('');
   const [showAddCategoryPopup, setShowAddCategoryPopup] = useState(false);
-
+  const [showKanbanPopup, setShowKanbanPopup] = useState(false);
+  const [categoryToAddTask, setCategoryToAddTask] = useState('');
+  const [assigne, setAssigne] = useState([]);
   const onDragEnd = (result) => {
     const { source, destination, draggableId } = result;
 
-    // If dropped outside the list
     if (!destination) {
       return;
     }
 
-    // If dropped in the same list and position hasn't changed
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
       return;
     }
 
-    // Create a copy of the tasks object
     const newTasks = { ...tasks };
 
-    // If dropped in a new category
     if (!newTasks[destination.droppableId]) {
       newTasks[destination.droppableId] = [];
     }
 
-    // Remove the task from the source column
     const sourceTasks = [...newTasks[source.droppableId]];
     const [removedTask] = sourceTasks.splice(source.index, 1);
 
-    // Add the task to the destination column
     const destinationTasks = [...newTasks[destination.droppableId]];
     destinationTasks.splice(destination.index, 0, removedTask);
 
-    // Update the tasks object
     newTasks[source.droppableId] = sourceTasks;
     newTasks[destination.droppableId] = destinationTasks;
 
     setTasks(newTasks);
+
+    // Update task status in the API
+    const taskToUpdate = tasks[source.droppableId][source.index];
+    const newStatus = destination.droppableId;
+
+    // Make API call to update task status
+    updateTaskStatus(taskToUpdate.id, newStatus);
   };
 
+  const updateTaskStatus = (taskId, newStatus) => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .patch(
+        `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
+        {
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((response) => {
+        console.log(`Task ${taskId} status updated successfully:`, response.data);
+      })
+      .catch((error) => {
+        console.error(`Error updating task ${taskId} status:`, error);
+      });
+  };
+
+  // Add a new category
   const handleAddCategory = () => {
     if (newCategory.trim() !== '') {
       setTasks((prevTasks) => ({
@@ -72,101 +127,108 @@ const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionP
     }
   };
 
+  // Delete a category
   const handleDeleteCategory = (category) => {
     const updatedTasks = { ...tasks };
     delete updatedTasks[category];
     setTasks(updatedTasks);
   };
 
+  // Open KanbanPopup for adding a task to a category
   const handleAddTaskToCategory = (category) => {
-    const newTaskContent = prompt('Enter task content:');
-    if (newTaskContent) {
-      setTasks((prevTasks) => ({
-        ...prevTasks,
-        [category]: [
-          ...prevTasks[category],
-          { id: String(Date.now()), content: newTaskContent },
-        ],
-      }));
-    }
+    setCategoryToAddTask(category);
+    setShowKanbanPopup(true);
   };
 
+  // Close KanbanPopup
+  const closeKanbanPopup = () => {
+    setShowKanbanPopup(false);
+    setCategoryToAddTask('');
+  };
+
+  const handleAddTask = (newTaskData, category) => {
+    const token = localStorage.getItem("token");
+  
+    // Your logic for creating the task
+    const formData = {
+      name: newTaskData.name,
+      end_date: newTaskData.end_date,
+      description: newTaskData.description,
+      assignee: newTaskData.assignee, // Correct the property name
+      project: projectId,
+      status: category,
+    };
+    
+  
+    axios
+      .post("http://127.0.0.1:3000/api/v1/tasks", JSON.stringify(formData), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Response from server:", response); // Log the response
+        return response; // Try to parse response as JSON
+      })
+      .then((data) => {
+        console.log("Task created successfully:", data);
+        // Update the state to reflect the new task in the specified category
+        setTasks((prevTasks) => {
+          const categoryTasks = [...prevTasks[category]];
+          const newTask = {
+            id: data.id, // Use the task ID returned from the server
+            content: newTaskData.name,
+            project: newTaskData.projectId,
+            assignee:newTaskData.assign,
+            end_date: newTaskData.end_date,
+            
+            description: newTaskData.description,
+          };
+  
+          categoryTasks.push(newTask);
+  
+          return {
+            ...prevTasks,
+            [category]: categoryTasks,
+          };
+        });
+  
+        // Close the KanbanPopup
+        setShowKanbanPopup(false);
+      })
+      .catch((error) => {
+        console.error("Task creation failed", error);
+        // Handle errors and show appropriate messages
+      });
+  };
+  
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      {/* Sidebar */}
-      <Navigation />
+    <div>
+      <ProjectProgress />
 
-      <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
-        <Text
-          className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px]"
-          size="txtPoppinsRegular16"
-          onClick={() => navigate('/myprofile')}
-        >
-          My Profile
-        </Text>
-        <Text
-          className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
-          size="txtPoppinsBold34"
-        >
-          Project Name
-        </Text>
-
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', marginLeft: '60px' }}>
-          <label htmlFor="category" style={{ marginRight: '10px' }}>
-            Select Category:
-          </label>
-          <select id="category" onChange={handleCategoryChange}>
-            {Object.keys(tasks).map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-
-          <Button color="indigo_800_01" shape="round"
-            onClick={handleNavigate}
-            style={{ marginLeft: '10px', color: '#ffffff' }}
-          >
-            Navigate
-          </Button>
-        </div>
-
-                {/* Update and Delete Buttons */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: '50px', marginTop: '20px' }}>
-          <Button
-            className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
-            style={{ width: '100px', marginLeft: '50px', color: '#ffffff' }}
-            onClick={() => navigate(`/updateproject/`)}
-            shape="round"
-            color="indigo_800_01"
-          >
-            Update
-          </Button>
-
-          <Button
-            className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
-            style={{ width: '100px', marginLeft: '50px', backgroundColor: '#BE3144', color: '#ffffff' }}
-            onClick={handleDeletionProject}
-            shape="round"
-          >
-            Delete
-          </Button>
-        </div>
-
-        <div>
-          {/* KanbanComponent content */}
-          <DragDropContext onDragEnd={onDragEnd}>
-            <div style={{ marginTop: '20px', display: 'flex' }}>
-              {Object.keys(tasks).map((columnId) => (
-                <div key={columnId} style={{ flex: 1, margin: '8px', backgroundColor: '#E2E8F0', borderRadius: '8px', padding: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <h3>{columnId.toUpperCase()}</h3>
-                    <div>
-                      <Button shape="round" onClick={() => handleDeleteCategory(columnId)} style={{ marginRight: '8px', backgroundColor: '#BE3144', color: '#ffffff' }}>
-                        Delete
+      <div className="kanban-container">
+        {/* KanbanComponent content */}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="kanban-columns">
+            {/* Render existing categories */}
+            {Object.keys(tasks)
+              .sort()
+              .map((columnId) => (
+                <div key={columnId} className="kanban-column">
+                  <div className="column-header">
+                    <h3>{columnId === 'inProgress' ? 'IN PROGRESS' : columnId.toUpperCase()}</h3>
+                    <div className="column-buttons">
+                      <Button shape="round" onClick={() => handleDeleteCategory(columnId)} className="delete-button">
+                        -
                       </Button>
-                      <Button shape="round" color="indigo_800_01" onClick={() => handleAddTaskToCategory(columnId)} style={{ color: '#ffffff' }}>
-                        Add Task
+                      <Button
+                        shape="round"
+                        color="indigo_800_01"
+                        onClick={() => handleAddTaskToCategory(columnId)}
+                      >
+                        +
                       </Button>
                     </div>
                   </div>
@@ -176,12 +238,12 @@ const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionP
                         ref={provided.innerRef}
                         style={{
                           background: snapshot.isDraggingOver ? '#A3BFFA' : '#EDF2F7',
-                          padding: '15px',
-                          minHeight: '100px',
+                          padding: '16px',
+                          minHeight: '150px',
                           borderRadius: '8px',
                         }}
                       >
-                        {tasks[columnId].map((task, index) => (
+                        {tasks[columnId]?.map((task, index) => (
                           <Draggable key={task.id} draggableId={task.id} index={index}>
                             {(provided, snapshot) => (
                               <div
@@ -191,7 +253,7 @@ const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionP
                                 style={{
                                   userSelect: 'none',
                                   padding: '16px',
-                                  margin: '0 0 8px 0',
+                                  margin: '0 0 16px 0',
                                   minHeight: '50px',
                                   backgroundColor: snapshot.isDragging ? '#4299E1' : '#2C5282',
                                   color: 'white',
@@ -199,7 +261,7 @@ const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionP
                                   ...provided.draggableProps.style,
                                 }}
                               >
-                                {task.content}
+                                {task.name}
                               </div>
                             )}
                           </Draggable>
@@ -210,37 +272,105 @@ const KanbanComponent = ({ handleCategoryChange, handleNavigate, handleDeletionP
                   </Droppable>
                 </div>
               ))}
-            </div>
-          </DragDropContext>
-        </div>
 
-        <div>
-          {showAddCategoryPopup && (
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'rgba(253, 249, 249, 0.8)', padding: '16px', borderRadius: '8px', backdropFilter: 'blur(5px)' }}>
-              <label htmlFor="newCategory">Enter Category Name: </label>
-              <input
-                type="text"
-                id="newCategory"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-              />
-              <Button color="indigo_800_01" shape="round" onClick={handleAddCategory} style={{ color: '#ffffff', marginRight: '8px' }}>
-                Add Category
-              </Button>
-              <Button shape="round" onClick={() => setShowAddCategoryPopup(false)} style={{ backgroundColor: '#BE3144', color: '#ffffff' }}>
-                Cancel
-              </Button>
-            </div>
-          )}
+            {/* Render the new category if it exists */}
+            {newCategory.trim() !== '' && (
+              <div key={newCategory} className="kanban-column">
+                <div className="column-header">
+                  <h3>{newCategory.toUpperCase()}</h3>
+                  <div className="column-buttons">
+                    <Button shape="round" onClick={() => handleDeleteCategory(newCategory)} className="delete-button">
+                      -
+                    </Button>
+                    <Button shape="round" color="indigo_800_01" onClick={() => handleAddTaskToCategory(newCategory)}>
+                      +
+                    </Button>
+                  </div>
+                </div>
+                <Droppable droppableId={newCategory} key={newCategory}>
+                  {/* Content for the new category */}
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver ? '#A3BFFA' : '#EDF2F7',
+                        padding: '16px',
+                        minHeight: '150px',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      {tasks[newCategory]?.map((task, index) => (
+                        <Draggable key={task.id} draggableId={task.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={{
+                                userSelect: 'none',
+                                padding: '16px',
+                                margin: '0 0 16px 0',
+                                minHeight: '50px',
+                                backgroundColor: snapshot.isDragging ? '#4299E1' : '#2C5282',
+                                color: 'white',
+                                borderRadius: '8px',
+                                ...provided.draggableProps.style,
+                              }}
+                            >
+                              {task.name}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            )}
+          </div>
+        </DragDropContext>
 
-          <div>
-            <Button shape="round" color="indigo_800_01" onClick={() => setShowAddCategoryPopup(true)} style={{ color: '#ffffff' }}>
-              +
+       {/* Add category popup */}
+       {showAddCategoryPopup && (
+          <div className="add-category-popup">
+            <label htmlFor="newCategory">Enter Category Name: </label>
+            <input
+              type="text"
+              id="newCategory"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+            <Button shape="round" color="indigo_800_01" onClick={handleAddCategory}>
+              Add
+            </Button>
+            <Button shape="round" onClick={() => setShowAddCategoryPopup(false)} className="cancel-button">
+              Cancel
             </Button>
           </div>
+        )}
+
+        {/* Kanban popup */}
+        {showKanbanPopup && (
+          <KanbanPopup
+            task={{
+              name: '',
+              end_date: '',
+              assignee:'',
+              description: '',
+            }}
+            onClose={closeKanbanPopup}
+            onAddTask={(newTaskData) => handleAddTask(newTaskData, categoryToAddTask)}
+            assigne={assigne}
+          />
+        )}
+
+        {/* Button to add a new category */}
+        <div className="add-category-button">
+          <Button style={{ position: 'absolute', top: 400, right: 80, margin: '8px' }} shape="round" color="indigo_800_01" onClick={() => setShowAddCategoryPopup(true)}>
+            +
+          </Button>
         </div>
-
-
       </div>
     </div>
   );

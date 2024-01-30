@@ -29,6 +29,7 @@ const SignuprolePage = () => {
       localStorage.setItem("userid",data.data.user._id)
       localStorage.setItem("username",data.data.user.name)
       localStorage.setItem("email",data.data.user.email)
+      localStorage.setItem("role",data.data.user.role)
       alert("Signup Successfully")
         navigate("/dashboard"); // Navigate to the dashboard or appropriate page.
       })

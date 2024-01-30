@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Sidebar } from 'react-pro-sidebar';
-import { useNavigate } from 'react-router-dom';
 import { Img, Text, List } from 'components';
-import { useSpring, animated } from 'react-spring';
-
-// Styles
+import { useNavigate } from 'react-router-dom';
+import Navigation from 'pages/Sidebar';
+import axios from 'axios';
 const projectContainerStyles = {
   position: 'relative',
   perspective: '1000px',
 };
 
 const styles = {
-  relativeHoverButton: {
-    opacity: 1,
-    transform: 'translateY(0px)',
-  },
   projectItem: {
-    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '100%',
-    height: '100%',
-    backfaceVisibility: 'hidden',
-    transformStyle: 'preserve-3d',
-    transition: 'transform 0.5s, opacity 0.5s',
+    minHeight: '100px', // Adjust as needed
+    padding: '16px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '8px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+    marginBottom: '16px',
   },
-
 };
 
 const dummyProjects = [
@@ -32,196 +29,162 @@ const dummyProjects = [
   { id: 3, name: 'Project C', dueDate: '2023-12-25' },
 ];
 
-// Dummy tasks data
 const dummyTasks = [
   { id: 101, name: 'Task 1', dueDate: '2023-12-18' },
   { id: 102, name: 'Task 2', dueDate: '2023-12-22' },
   { id: 103, name: 'Task 3', dueDate: '2023-12-28' },
 ];
 
-
 const DashboardPage = () => {
   const navigate = useNavigate();
 
-  // State
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showCreateButton, setShowCreateButton] = useState(false);
-  const [projectButton, setprojectButton] = useState(false);
+  const [showCreateProjects, setShowCreateProjects] = useState(false);
+  const [showCreateTasks, setShowCreateTasks] = useState(false);
+  const [popUp, setPopUp] = useState({ type: "", message: "" });
 
-  let name=localStorage.getItem("username")
+  let name = localStorage.getItem("username");
 
-  // Animation Springs
-  const [projectsAnimation, setProjectsAnimation] = useSpring(() => ({
-    opacity: 1,
-    transform: 'rotateY(0deg)',
-  }));
+  // let role=localStorage.getItem("role");
 
-  const [tasksAnimation, setTasksAnimation] = useSpring(() => ({
-    opacity: 1,
-    transform: 'rotateY(0deg)',
-  }));
 
-  // Fetch Data Effect
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const projectsResponse = await fetch('YOUR_PROJECTS_API_URL');
-        const tasksResponse = await fetch('YOUR_TASKS_API_URL');
+    let token = localStorage.getItem('token');
+    const id = localStorage.getItem('userid');
 
-        if (!projectsResponse.ok || !tasksResponse.ok) {
-          throw new Error('Failed to fetch data');
+    if (localStorage.getItem('role') === 'Team Member') {
+      axios
+        .get('http://127.0.0.1:3000/api/v1/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          setTasks(response.data.data.tasks);
+          setPopUp({ type: 'success', message: 'Tasks loaded successfully!' });
+        })
+        .catch((error) => {
+          setPopUp({ type: 'error' });
+          console.error('Error loading tasks:', error);
+        });
+    } else if (localStorage.getItem('role') === 'Project Manager') {
+      axios
+        .get(`http://127.0.0.1:3000/api/v1/users/${id}/tasks`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          setTasks(response.data.data.tasks);
+          setPopUp({ type: 'success', message: 'Tasks loaded successfully!' });
+        })
+        .catch((error) => {
+          setPopUp({ type: 'error' });
+          console.error('Error loading tasks:', error);
+        });
+    }
+  }, []);
+
+
+
+  useEffect(() => {
+    const id = localStorage.getItem("userid");
+    console.log("User ID from localStorage:", id);
+
+    let token=localStorage.getItem("token");
+    // Make a GET request to your backend API to fetch projects for the user
+    if(localStorage.getItem('role') === 'Team Member')
+    {
+    fetch(`http://127.0.0.1:3000/api/v1/projects`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        return response.json();
+      })
+      .then((data) => {
+        const apiProjects = data.data.projects;
 
-        const projectsData = await projectsResponse.json();
-        const tasksData = await tasksResponse.json();
+        const mappedProjects = apiProjects.map((project) => ({
+          id: project._id,
+          title: project.name,
+          dueDate: project.end_date,
+        }));
 
-        setProjects(projectsData);
-        setTasks(tasksData.map((task) => ({ ...task, hovered: false })));
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-        setError('Failed to fetch data');
-      } finally {
-        setLoading(false);
-      }
-    };
+        setProjects(mappedProjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
+    }  else if (localStorage.getItem('role') === 'Project Manager') {
+      fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const apiProjects = data.data.projects;
 
-    // Trigger animations when the component mounts
-    fetchData();
+        const mappedProjects = apiProjects.map((project) => ({
+          id: project._id,
+          title: project.name,
+          dueDate: project.end_date,
+        }));
+
+        setProjects(mappedProjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
+    }
   }, []);
- 
 
-  /*useEffect(() => {
-    // Set dummy data instead of fetching from an API
-    setProjects(dummyProjects);
-    setTasks(dummyTasks.map((task) => ({ ...task, hovered: false })));
 
-    setLoading(false);
-  }, []);
-*/
-  // Event Handlers
   const handleProjectsHover = () => {
-    setProjectsAnimation({ opacity: 0, transform: 'rotateY(180deg)' });
-    setprojectButton(true);
-  };
-  
-  const handleProjectsLeave = () => {
-    setProjectsAnimation({ opacity: 1, transform: 'rotateY(0deg)' });
-    if (projectButton) {
-      setprojectButton(false);
-    }
-  };
-  
-  const handleTasksHover = () => {
-    setTasksAnimation({ opacity: 0, transform: 'rotateY(180deg)' });
-    setShowCreateButton(true);
-  };
-  
-  const handleTasksLeave = () => {
-    setTasksAnimation({ opacity: 1, transform: 'rotateY(0deg)' });
-    if (showCreateButton) {
-      setShowCreateButton(false);
-    }
+    setShowCreateProjects(true);
   };
 
-  const handleCreateClick = () => {
-    // Navigate to "/newproject" when "Create" is clicked
+  const handleProjectsLeave = () => {
+    setShowCreateProjects(false);
+  };
+
+  const handleTasksHover = () => {
+    setShowCreateTasks(true);
+  };
+
+  const handleTasksLeave = () => {
+    setShowCreateTasks(false);
+  };
+
+  const handleCreateProjectClick = () => {
     navigate('/newproject');
   };
 
-  const handleTaskClick = () => {
-    // Navigate to "/newtask" when "Create" is clicked
-    navigate('/newtask');
-  };
+  const handleCreateTaskClick = () => {
+    // Replace 'dummy' with the actual project ID or fetch it from your state
+    const projectId = 123456;
+    navigate(`/newtask/${projectId}`);
+  };
 
-
-  // Render Projects
-  const renderProjects = () => {
-    return projects.map((project) => (
-      <div key={project.id} style={projectContainerStyles}>
-        <animated.div
-          style={{ ...styles.projectItem, ...projectsAnimation }}
-          onMouseEnter={handleProjectsHover}
-          onMouseLeave={handleProjectsLeave}
-        >
-          <Text
-            className="common-pointer"
-            size="txtPoppinsRegular16"
-            onClick={() => navigate(`/project/${project.id}`)}
-          >
-            {project.name}
-          </Text>
-          <Text>{`Due ${project.dueDate}`}</Text>
-        </animated.div>
-      </div>
-    ));
-  };
-  
-  // Render Tasks
-  const renderTasks = () => {
-    return tasks.map((task) => (
-      <div key={task.id} style={projectContainerStyles}>
-        <animated.div
-          style={{ ...styles.projectItem, ...tasksAnimation }}
-          onMouseEnter={handleTasksHover}
-          onMouseLeave={handleTasksLeave}
-        >
-          <Text
-            className="common-pointer"
-            size="txtPoppinsRegular16"
-            onClick={() => navigate(`/task/${task.id}`)}
-          >
-            {task.name}
-          </Text>
-          <Text>{`Due ${task.dueDate}`}</Text>
-        </animated.div>
-      </div>
-    ));
-  };
-  // Main Render
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      {/* Sidebar */}
-      <div style={{ width: '23%', position: 'relative', backgroundColor: '#EDEFF5' }}>
-        <Sidebar
-          style={{
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(180deg, #EDEFF5 0%, white 100%)',
-            cursor: 'pointer',
-          }}
-        >
-          <div className="absolute flex flex-col inset-x-[0] justify-start mx-auto top-[6%] w-[45%]">
-            <animated.div>
-              <Text className="font-bold text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl">
-                ProjectFlow
-              </Text>
-            </animated.div>
-            <animated.div>
-              <Text onClick={() => navigate('/dashboard')} className="ml-7 md:ml-[0] mt-[102px] text-base text-indigo-800 tracking-[0.44px]">
-                Dashboard
-              </Text>
-            </animated.div>
-            <animated.div>
-              <div className="flex flex-col gap-[46px] items-start justify-start md:ml-[0] ml-[35px] mt-[47px]">
-                <Text onClick={() => navigate('/myprojects')} className="md:ml-[0] ml-[3px] text-base text-indigo-800 tracking-[0.44px]">
-                  Projects
-                </Text>
-                <Text onClick={() => navigate('/mytasks')} className="text-base text-indigo-800 tracking-[0.44px]">
-                  My Tasks
-                </Text>
-                <Text onClick={() => navigate('/apps')} className="md:ml-[0] ml-[7px] text-base text-indigo-800 tracking-[0.44px]">
-                  Apps
-                </Text>
-              </div>
-            </animated.div>
-          </div>
-        </Sidebar>
-      </div>
+      <Navigation />
 
-      {/* Main Content */}
       <div style={{ width: '73%', padding: '20px' }}>
         <Text
           className="flex flex-row items-baseline justify-around md:ml-[0] ml-[800px] text-base text-indigo-800 tracking-[0.44px]"
@@ -233,86 +196,94 @@ const DashboardPage = () => {
 
         <div className="flex sm:flex-col flex-row gap-[58px] items-start justify-start md:ml-[0] ml-[139px] mt-2 w-[54%] md:w-full">
           <Img className="h-[148px] md:h-auto object-cover w-[36%] sm:w-full" src="images/welcome.gif" alt="welcome" />
-          <animated.div>
+          <div>
             <Text className="grid justify-center sm:mt-0 mt-[59px] sm:text-3xl md:text-[32px] text-[31px] text-center text-indigo-800" size="txtPoppinsBold34">
               Welcome, {name}
             </Text>
-          </animated.div>
+          </div>
         </div>
 
         <List
           className="sm:flex-col flex-row md:gap-10 gap-[70px] grid md:grid-cols-1 grid-cols-2 justify-center mt-[49px] w-full"
           orientation="horizontal"
         >
-          {/* My Projects */}
-        <div
-          onMouseEnter={handleProjectsHover}
-          onMouseLeave={handleProjectsLeave}
-          className="bg-gray-50 flex flex-1 flex-col items-center justify-start p-8 sm:px-5 rounded-[30px] w-full"
-        >
-          <animated.div style={projectsAnimation}>
-            <div className="flex flex-col md:gap-10 gap-[81px] justify-start mb-[186px] mt-[23px] w-full">
-              <Text
-                onClick={handleCreateClick}
-                style={{
-                  fontSize: projectButton ? '40px' : '22px',
-                  color: '#323F73',
-                  height: '32px',
-                  width: '152px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: projectButton ? '200px 0' : '0',
-                }}
-                size="txtPoppinsBold22"
-              >
-                {projectButton ? 'Create' : 'My Projects'}
-              </Text>
-              <div className="flex flex-col items-start justify-start w-full">
-                <div className="flex flex-row items-start justify-between ml-1 md:ml-[0] mt-[42px] w-[84%] md:w-full">
-                  {renderProjects()}
-                </div>
+          <div
+            onMouseEnter={handleProjectsHover}
+            onMouseLeave={handleProjectsLeave}
+            className="bg-gray-50 flex flex-1 flex-col items-center justify-start p-8 sm:px-5 rounded-[30px] w-full"
+          >
+            <Text
+              style={{
+                fontSize: showCreateProjects ? '40px' : '22px',
+                color: '#323F73',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: showCreateProjects ? '200px 0' : '0',
+              }}
+              size="txtPoppinsBold22"
+              onClick={handleCreateProjectClick}
+            >
+              {showCreateProjects ? 'Create' : 'My Projects'}
+            </Text>
+            {!showCreateProjects && (
+              <div style={{ marginTop: '30px' }}>
+                {projects.map((project) => (
+                  <div
+                    key={project.id}
+                    style={styles.projectItem}
+                    onClick={() => navigate(`/project/${project.id}`)}
+                  >
+                    <Text className="common-pointer" size="txtPoppinsRegular16" color="indigo-800">
+                      {project.title}
+                    </Text>
+                    <Text color="indigo-800">{project && project.dueDate ? `Due ${project.dueDate.substring(0, 10)}` : 'Due Date Not Available'}</Text>
+
+
+                  </div>
+                ))}
               </div>
-            </div>
-          </animated.div>
-        </div>
+            )}
+          </div>
 
-
-          {/* My Tasks */}
           <div
             onMouseEnter={handleTasksHover}
             onMouseLeave={handleTasksLeave}
             className="bg-gray-50 flex flex-1 flex-col items-center justify-center p-[30px] sm:px-5 rounded-[30px] w-full"
           >
-            <animated.div style={tasksAnimation}>
-              <div className="flex flex-col items-center justify-center mb-[189px] mt-[26px] w-[99%] md:w-full relative">
-                <div>
-                  <Text
-                    onClick={handleTaskClick}
-                    style={{
-                      fontSize: showCreateButton ? '40px' : '22px',
-                      color: '#323F73',
-                      height: '32px',
-                      width: '165px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: showCreateButton ? '200px 0' : '0',
-                    }}
-                    size="txtPoppinsBold22"
+            <Text
+              style={{
+                fontSize: showCreateTasks ? '40px' : '22px',
+                color: '#323F73',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: showCreateTasks ? '200px 0' : '0',
+              }}
+              size="txtPoppinsBold22"
+              onClick={handleCreateTaskClick}
+            >
+              {showCreateTasks ? 'Create' : 'My Tasks'}
+            </Text>
+            {!showCreateTasks && (
+              <div style={{ marginTop: '30px' }}>
+                {tasks.map((task) => (
+                  <div
+                    key={task.id}
+                    style={styles.projectItem}
+                    onClick={() => navigate(`/task/${task.id}`)}
                   >
-                    {showCreateButton ? 'Create' : 'My Tasks'}
-                  </Text>
-                  <div className="flex flex-col gap-11 items-start justify-start md:ml-[0] ml-[17px] mt-[78px] w-[84%] md:w-full">
-                    <div className="flex flex-row items-center justify-between w-full">
-                      {renderTasks()}
-                    </div>
+                    <Text className="common-pointer" size="txtPoppinsRegular16" color="indigo-800">
+                      {task.name}
+                    </Text>
+                    <Text color="indigo-800">{task && task.end_date ? `Due ${task.end_date.substring(0, 10)}` : 'Due Date Not Available'}</Text>
+
                   </div>
-                </div>
+                ))}
               </div>
-            </animated.div>
+            )}
           </div>
         </List>
       </div>
