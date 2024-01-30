@@ -3,12 +3,13 @@ const AppError=require("../utils/appError");
 const catchAsync=require("../utils/catchAsync");
 
 exports.CreateTask=catchAsync(async (req,res,next)=>{
-   
-    if(!req.body.story) {
-        req.body.story=req.params.storyId
-    }
+
+    const TaskData = {
+        ...req.body,
+        project_manager: req.user.id
+    };
     
-    const task=await Task.create(req.body);
+    const task=await Task.create(TaskData);
         res.status(201).json({
             status:'success',
             data:{
@@ -20,9 +21,8 @@ exports.CreateTask=catchAsync(async (req,res,next)=>{
 exports.getAllTasks=async(req,res,next)=>{
 
     let filter={};
-        if(req.params.storyId){
-            filter={story:req.params.storyId};
-        }
+    if(req.params.userId) filter= { project_manager:req.params.userId}
+    else  filter= { assignee:req.user.id}
     
     try{
     const tasks = await Task.find(filter);

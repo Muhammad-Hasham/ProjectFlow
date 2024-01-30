@@ -10,7 +10,7 @@ router.use('/:taskId/subTasks',subTaskRouter)
 
 router
    .route('/')
-   .get(authController.protect,authController.restrictTo('Project Manager'),taskController.getAllTasks)
+   .get(authController.protect,taskController.getAllTasks)
    .post(authController.protect,authController.restrictTo('Project Manager'),taskController.CreateTask);
 
 router
@@ -18,7 +18,6 @@ router
    .get(taskController.getTask)
    .patch(
       authController.protect,
-      authController.restrictTo('Project Manager'),
       taskController.UpdateTask
       )
    .delete(

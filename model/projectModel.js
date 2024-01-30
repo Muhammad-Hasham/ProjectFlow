@@ -28,6 +28,8 @@ const projectSchema=new mongoose.Schema({
             ref: "User"
         }
     ],
+   
+
 },
 { 
     toJSON:{virtuals:true},
@@ -43,11 +45,34 @@ projectSchema.pre(/^find/,function(next){
 })
 
 
-projectSchema.virtual('stories',{
-    ref:"UserStory",
+projectSchema.virtual('week').get(function () {
+    // Calculate the difference in milliseconds between endDate and startDate.
+    const timeDifference = this.endDate - this.startDate;
+
+    // Calculate the number of days between the current date and startDate.
+    const currentDate = new Date();
+
+    const daysDifference = Math.floor((currentDate - this.start_date) / (24 * 60 * 60 * 1000));
+
+    // Calculate the number of weeks based on the days difference, considering a week has passed when 7 or more days have passed.
+    const weeks = Math.floor(daysDifference / 7);
+
+    return weeks;
+});
+
+projectSchema.virtual('tasks',{
+    ref:"Task",
     foreignField:'project',
     localField: '_id'  
 });
+
+projectSchema.pre(/^find/,function(next){
+    this.populate({
+        path: 'Members', // name of field we want to populate
+        select: '-__v -passwordChangedAt'  // fields we dont want in output/response. 
+    })
+    next();
+})
 
 const Project= mongoose.model('Project',projectSchema);
 module.exports=Project;

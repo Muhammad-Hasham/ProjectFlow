@@ -16,29 +16,36 @@ const taskSchema=new mongoose.Schema({
     },
     end_date:{
         type:Date,
-        required:[true,'Task Must have end Date']
+        // required:[true,'Task Must have end Date']
     },
     last_updation_date:{
         type:Date
     },
     assignee:{
+       
         type: mongoose.Schema.ObjectId,   
         ref: "User",
+        required:true
     },
     priority:{
         type:String,
-        required:[true,'Task must have priority'],
+        // required:[true,'Task must have priority'],
         enum: ['low','medium','high']
     },
     status:{
         type:String,
-        required:[true,'Task must have status'],
-        enum: ['todo','on-track','done']
+        default:"todo",
+        // required:[true,'Task must have status'],
+        enum: ['todo','inProgress','completed', 'overdue']
     },
-    story:{
+    project_manager:{
+        type: mongoose.Schema.ObjectId,   
+        ref: "User",
+    },
+    project:{
         type: mongoose.Schema.ObjectId,
-        ref:'UserStory',
-        required:[true,'Task must belong to a User-Story']
+        ref:'Project',
+        // required:[true,'Task must belong to a Project']
     },
 },
 { 
@@ -52,6 +59,17 @@ taskSchema.virtual('subtasks',{
     foreignField:'task',
     localField: '_id'  
 });
+
+
+
+
+taskSchema.pre(/^find/,function(next){
+    this.populate({
+        path: 'assignee', // name of field we want to populate
+        select: '-__v -passwordChangedAt'  // fields we dont want in output/response. 
+    })
+    next();
+})
 
 const Task= mongoose.model('Task',taskSchema);
 module.exports=Task;

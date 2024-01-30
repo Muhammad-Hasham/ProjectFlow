@@ -13,7 +13,7 @@ router.use('/:userId/tasks',taskRouter)
 // Authentication
 router.post('/signup',authController.signup);
 router.post('/login',authController.login); 
-router.get('/logout',authController.logout);
+router.get('/logout',authController.protect,authController.logout);
 
 // Protected Routes
 router.use(authController.protect);
