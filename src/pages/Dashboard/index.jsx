@@ -210,12 +210,24 @@ const DashboardPage = () => {
           <div
             onMouseEnter={handleProjectsHover}
             onMouseLeave={handleProjectsLeave}
-            className="bg-gray-50 flex flex-1 flex-col items-center justify-start p-8 sm:px-5 rounded-[30px] w-full"
+            style={{
+              backgroundColor: '#EBD9B4', // Change this color to your desired background color
+              display: 'flex',
+              flex: '1',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '30px',
+              paddingLeft: '5px', // Adjust according to your needs
+              paddingRight: '5px', // Adjust according to your needs
+              borderRadius: '30px',
+              width: '100%',
+            }}
           >
             <Text
               style={{
                 fontSize: showCreateProjects ? '40px' : '22px',
-                color: '#323F73',
+                color: '#1F2544',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -250,12 +262,24 @@ const DashboardPage = () => {
           <div
             onMouseEnter={handleTasksHover}
             onMouseLeave={handleTasksLeave}
-            className="bg-gray-50 flex flex-1 flex-col items-center justify-center p-[30px] sm:px-5 rounded-[30px] w-full"
+            style={{
+              backgroundColor: '#EBD9B4', // Change this color to your desired background color
+              display: 'flex',
+              flex: '1',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '30px',
+              paddingLeft: '5px', // Adjust according to your needs
+              paddingRight: '5px', // Adjust according to your needs
+              borderRadius: '30px',
+              width: '100%',
+            }}
           >
             <Text
               style={{
                 fontSize: showCreateTasks ? '40px' : '22px',
-                color: '#323F73',
+                color: '#1F2544',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',

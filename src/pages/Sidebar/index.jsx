@@ -12,7 +12,7 @@ return (
           style={{
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(180deg, #EDEFF5 0%, white 100%)',
+            background: 'linear-gradient(180deg, #EDEFF5 0%, #99BC85 100%)',
             cursor: 'pointer',
           }}
         >

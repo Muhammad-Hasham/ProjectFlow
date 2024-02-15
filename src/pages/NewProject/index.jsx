@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Text } from 'components';
 import { useNavigate } from 'react-router-dom';
-import { MyDatePicker } from 'components'; // Make sure this is the correct import path
-import Navigation from 'pages/Sidebar'; // Make sure this is the correct import path
+import Navigation from 'pages/Sidebar';
 import { useSpring, animated } from 'react-spring';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 
 const NewProjectPage = () => {
   const navigate = useNavigate();
@@ -70,6 +73,11 @@ const NewProjectPage = () => {
     pointerEvents: popUp.type ? 'auto' : 'none',
   });
 
+  const fadeIn = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+  });
+
   useEffect(() => {
     // Set a timer to clear the pop-up after 3000 milliseconds (3 seconds)
     const timer = setTimeout(() => {
@@ -100,76 +108,144 @@ const NewProjectPage = () => {
           >
             New Project
           </Text>
-          <div className="ml-[45px] bg-gray-50 flex flex-col items-center justify-end mt-8 p-[39px] sm:px-5 rounded-[30px] w-full">
+          <div style={{
+            marginLeft: '45px',
+            backgroundColor: '#EBD9B4',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            marginTop: '8px',
+            padding: '39px',
+            paddingLeft: '5px',
+            paddingRight: '5px',
+            borderRadius: '30px',
+            width: '100%',
+          }}
+          >
             <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
-              {/* Project Creation Date */}
-              <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-                <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                  Project Start Date
-                </Text>
-                <MyDatePicker selectedDate={formData.startDate} handleDateChange={handleStartDateChange} />
-              </div>
-
               {/* Project Name */}
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
+                <Text style={{
+                  marginTop: '0rem',
+                  color: '#1F2544',
+                  letterSpacing: '0.44px',
+                }}
+                size="txtPoppinsRegular16">
                   Project Name
                 </Text>
-                <div className="border-b bg-gray-50 border-indigo-800 text-base w-[76%]">
+                <div style={{
+                  borderBottom: '1px solid #1F2544', // Border color for indigo-800
+                  fontSize: '1rem', // Font size for text-base
+                  width: '70%', // Width as specified
+                }}>
                   <input
                     type="text"
                     name="projectName"
                     value={formData.projectName}
                     onChange={handleInputChange}
-                    className="text-base w-full bg-gray-50 border-none border-b-2 border-indigo-800 focus:outline-none"
+                    style={{
+                      fontSize: '1rem', // Equivalent to text-base
+                      width: '60%', // Equivalent to w-full
+                      backgroundColor: 'transparent', // Equivalent to bg-gray-50
+                      border: 'none', // Equivalent to border-none
+                      borderBottom: '0.5px #1F2544', // Border color for indigo-800
+                      outline: 'none', // Equivalent to focus:outline-none
+                    }}
                   />
                 </div>
               </div>
 
-              {/* Project Creation Date */}
-              <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-                <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
-                  Due Date
-                </Text>
-                <MyDatePicker selectedDate={formData.dueDate} handleDateChange={handleDueDateChange} />
-              </div>
+{/* Start Date and Due Date */}
+<div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
+  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <Text style={{
+      color: '#1F2544',
+      letterSpacing: '0.44px',
+    }}
+    size="txtPoppinsRegular16">
+      Start Date
+    </Text>
+    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
+    <animated.div style={fadeIn}>
+      <DatePicker id="start-date-picker" selected={formData.startDate} onChange={handleStartDateChange} className="hidden" />
+    </animated.div>
+    {formData.startDate && (
+      <Text style={{ marginLeft: '10px', color: '#1F2544' }}>
+        {formData.startDate.toLocaleDateString()}
+      </Text>
+    )}
+  </div>
+  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <Text style={{
+      color: '#1F2544',
+      letterSpacing: '0.44px',
+      marginLeft: '5px',
+    }}
+    size="txtPoppinsRegular16">
+      Due Date
+    </Text>
+    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
+    <animated.div style={fadeIn}>
+      <DatePicker id="due-date-picker" selected={formData.dueDate} onChange={handleDueDateChange} className="hidden" />
+    </animated.div>
+    {formData.dueDate && (
+      <Text style={{ marginLeft: '10px', color: '#1F2544', marginRight: '250px' }}>
+         {formData.dueDate.toLocaleDateString()}
+      </Text>
+    )}
+  </div>
+</div>
 
+
+              {/* Description */}
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-9 w-[97%] md:w-full">
-                <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">
+                <Text style={{
+                  color: '#1F2544',
+                  letterSpacing: '0.44px',
+                }} size="txtPoppinsRegular16">
                   Description
                 </Text>
-                <div className="border-b bg-gray-50 border-indigo-800 text-base w-[76%]">
+                <div style={{
+                  borderBottom: '1px solid #1F2544', // Border color for indigo-800
+                  fontSize: '1rem', // Font size for text-base
+                  width: '70%', // Width as specified
+                }}>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    className="text-base w-full bg-gray-50 border-none border-b-2 border-indigo-800 focus:outline-none"
+                    style={{
+                      fontSize: '1rem', // Equivalent to text-base
+                      width: '60%', // Equivalent to w-full
+                      backgroundColor: 'transparent', // Equivalent to bg-gray-50
+                      border: 'none', // Equivalent to border-none
+                      borderBottom: '0.5px #1F2544', // Border color for indigo-800
+                      outline: 'none', // Equivalent to focus:outline-none
+                    }}
                   />
                 </div>
               </div>
-               {/* Button to Invite Team Member */}
+
               {/* Button to Invite */}
-                <Button
-                  className="cursor-pointer leading-[normal] min-w-[84px] ml-[635px] mt-[63px] text-base text-center tracking-[0.44px]"
-                  shape="round"
-                  style = {{backgroundColor: "#860A35", color: "#ffffff"}}
-                  //onClick={() => navigate('/invite',{ state: projectData })}
-                  onClick={() => navigate('/invite', { state: formData })}
-                  
-                >
-                  Invite
-                </Button>
+              <Button
+                className="cursor-pointer leading-[normal] min-w-[84px] ml-[635px] mt-[63px] text-base text-center tracking-[0.44px]"
+                shape="round"
+                style={{ backgroundColor: "#860A35", color: "#ffffff" }}
+                onClick={() => navigate('/invite', { state: formData })}
+              >
+                Invite
+              </Button>
 
-                {/* Button to Create Project */}
-                <Button
-                  className="cursor-pointer leading-[normal] min-w-[84px] ml-[745px] mt-[-42px] text-base text-center tracking-[0.44px]"
-                  shape="round"
-                  color="indigo_800"
-                  onClick={handleCreateProject}
-                >
-                  Create
-                </Button>
-
+              {/* Button to Create Project */}
+              <Button
+                className="cursor-pointer leading-[normal] min-w-[84px] ml-[745px] mt-[-42px] text-base text-center tracking-[0.44px]"
+                shape="round"
+                color="indigo_800"
+                onClick={handleCreateProject}
+              >
+                Create
+              </Button>
             </div>
           </div>
         </div>
