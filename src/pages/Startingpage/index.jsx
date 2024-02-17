@@ -62,7 +62,23 @@ const StartingpagePage = () => {
             </div>
           </div>
           <div className="h-[1024px] sm:h-[1143px] relative w-[54%] md:w-full">
-            <div className="bg-gradient1  flex sm:flex-col flex-row sm:gap-5 h-full items-start justify-end m-auto p-12 md:px-10 sm:px-5 w-full">
+            <div style={{ 
+              backgroundImage: 'linear-gradient(to right, #F1EAFF, #FFFFFF)',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '5rem', // Adjust as needed
+              height: '100vh',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-end',
+              margin: 'auto',
+              padding: '3rem', // Adjust as needed
+              '@media (min-width: 768px)': {
+                paddingLeft: '2.5rem',
+                paddingRight: '2.5rem',
+              },
+              width: '100%',
+              height: '100%',
+}}>
               <Text
                 className="sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
                 size="txtPoppinsRegular16"
@@ -76,7 +92,7 @@ const StartingpagePage = () => {
                 Academy
               </Text>
               <Text
-                className={`common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px] hover-signin`}
+                className={`common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-white tracking-[0.44px] hover-signin`}
                 size="txtPoppinsRegular16"
                 onClick={() => navigate("/signin")}
               >
