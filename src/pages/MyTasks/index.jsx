@@ -136,7 +136,7 @@ const MyTasksPage = () => {
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       <Navigation />
 
-      <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
+      <div style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
         <Text
           className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px] cursor-pointer"
           size="txtPoppinsRegular16"
@@ -145,7 +145,22 @@ const MyTasksPage = () => {
           My Profile
         </Text>
         <Text
-          className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
+           style={{ 
+            marginLeft: '50px',
+            fontSize: '3xl', // Adjust this value as needed for different screen sizes
+            '@media (min-width: 640px)': {
+              fontSize: '3xl'
+            },
+            '@media (min-width: 768px)': {
+              fontSize: '3px'
+            },
+            fontSize: '34px',
+            textAlign: 'left',
+            color: '#1F2544',
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: '70px',
+            }}
           size="txtPoppinsBold34"
         >
           My Tasks
@@ -157,7 +172,7 @@ const MyTasksPage = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-start',
-              margin: '20px 50px',
+              margin: '20px 70px',
             }}
           >
             {/* Due Tasks */}
@@ -228,7 +243,7 @@ const MyTasksPage = () => {
                     background: 'white',
                     padding: 10,
                     width: 250,
-                    marginLeft: '20px',
+                    marginLeft: '70px',
                     marginBottom: '20px',
                   }}
                 >
@@ -287,7 +302,7 @@ const MyTasksPage = () => {
                     background: 'white',
                     padding: 10,
                     width: 250,
-                    marginLeft: '20px',
+                    marginLeft: '70px',
                     marginBottom: '20px',
                   }}
                 >

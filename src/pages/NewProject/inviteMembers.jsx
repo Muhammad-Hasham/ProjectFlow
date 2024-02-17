@@ -154,7 +154,7 @@ const InviteMembers = () => {
         {/* Sidebar */}
         <Navigation />
         {/* New Project Form */}
-        <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
+        <div style={{ width: '73%', padding: '20px', marginLeft: '320px' }}>
           <Text
             className="md:ml-[0] ml-[849px] text-base text-indigo-800 tracking-[0.44px]"
             size="txtPoppinsRegular16"
@@ -166,14 +166,30 @@ const InviteMembers = () => {
       
 
           <Text
-            className="ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800 flex items-center"
+            style={{ 
+              marginLeft: '50px',
+              fontSize: '3xl', // Adjust this value as needed for different screen sizes
+              '@media (min-width: 640px)': {
+                fontSize: '3xl'
+              },
+              '@media (min-width: 768px)': {
+                fontSize: '3px'
+              },
+              fontSize: '34px',
+              textAlign: 'left',
+              color: '#1F2544',
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '70px',
+             
+            }}
             size="txtPoppinsBold34"
           >
             Invite Members
           </Text>
           
 
-          <div className="ml-[45px] bg-gray-50 flex flex-col items-center justify-end mt-8 p-[39px] sm:px-5 rounded-[30px] w-full">
+          <div style ={{backgroundColor: '#EBD9B4'}}className="ml-[45px] flex flex-col items-center justify-end mt-8 p-[39px] sm:px-5 rounded-[30px] w-full">
             <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
                {/* '+' Button to Add Email Field */}
                <Button

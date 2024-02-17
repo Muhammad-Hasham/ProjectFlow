@@ -41,6 +41,8 @@ const NewProjectPage = () => {
       return;
     }
 
+    
+
     const projectData = {
       name: formData.projectName,
       end_date: formData.dueDate,
@@ -156,47 +158,46 @@ const NewProjectPage = () => {
                 </div>
               </div>
 
-{/* Start Date and Due Date */}
-<div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-    <Text style={{
-      color: '#1F2544',
-      letterSpacing: '0.44px',
-    }}
-    size="txtPoppinsRegular16">
-      Start Date
-    </Text>
-    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
-    <animated.div style={fadeIn}>
-      <DatePicker id="start-date-picker" selected={formData.startDate} onChange={handleStartDateChange} className="hidden" />
-    </animated.div>
-    {formData.startDate && (
-      <Text style={{ marginLeft: '10px', color: '#1F2544' }}>
-        {formData.startDate.toLocaleDateString()}
-      </Text>
-    )}
-  </div>
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-    <Text style={{
-      color: '#1F2544',
-      letterSpacing: '0.44px',
-      marginLeft: '5px',
-    }}
-    size="txtPoppinsRegular16">
-      Due Date
-    </Text>
-    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
-    <animated.div style={fadeIn}>
-      <DatePicker id="due-date-picker" selected={formData.dueDate} onChange={handleDueDateChange} className="hidden" />
-    </animated.div>
-    {formData.dueDate && (
-      <Text style={{ marginLeft: '10px', color: '#1F2544', marginRight: '250px' }}>
-         {formData.dueDate.toLocaleDateString()}
-      </Text>
-    )}
-  </div>
-</div>
-
+        {/* Start Date and Due Date */}
+        <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{
+              color: '#1F2544',
+              letterSpacing: '0.44px',
+            }}
+            size="txtPoppinsRegular16">
+              Start Date
+            </Text>
+            <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
+            <animated.div style={fadeIn}>
+              <DatePicker id="start-date-picker" selected={formData.startDate} onChange={handleStartDateChange} className="hidden" />
+            </animated.div>
+            {formData.startDate && (
+              <Text style={{ marginLeft: '10px', color: '#1F2544' }}>
+                {formData.startDate.toLocaleDateString()}
+              </Text>
+            )}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{
+              color: '#1F2544',
+              letterSpacing: '0.44px',
+              marginRight: '250px', // Adjusted for uniformity
+            }}
+            size="txtPoppinsRegular16">
+              Due Date
+            </Text>
+            <FontAwesomeIcon icon={faCalendarAlt} style={{ marginRight: '20px', cursor: 'pointer' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
+            <animated.div style={fadeIn}>
+              <DatePicker id="due-date-picker" selected={formData.dueDate} onChange={handleDueDateChange} className="hidden" />
+            </animated.div>
+            {formData.dueDate && (
+              <Text style={{ marginLeft: '10px', color: '#1F2544', marginRight: '250px' }}>
+                {formData.dueDate.toLocaleDateString()}
+              </Text>
+            )}
+          </div>
+        </div>
 
               {/* Description */}
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-9 w-[97%] md:w-full">
@@ -229,13 +230,14 @@ const NewProjectPage = () => {
 
               {/* Button to Invite */}
               <Button
-                className="cursor-pointer leading-[normal] min-w-[84px] ml-[635px] mt-[63px] text-base text-center tracking-[0.44px]"
+                className="cursor-pointer leading-[normal] min-w-[84px] ml-[635px] mt-[63px] text-base text-center tracking-[0.44px] shake-on-hover"
                 shape="round"
                 style={{ backgroundColor: "#860A35", color: "#ffffff" }}
                 onClick={() => navigate('/invite', { state: formData })}
               >
                 Invite
               </Button>
+
 
               {/* Button to Create Project */}
               <Button

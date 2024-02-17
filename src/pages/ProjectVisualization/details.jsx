@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Text, Img, Button } from 'components';
-import { PieChart } from 'react-minimal-pie-chart';
 import Navigation from 'pages/Sidebar';
-
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 
 const ProjectProgress = ({ progress, statisticsData, tasks }) => {
@@ -91,7 +87,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
       {/* Sidebar */}
       <Navigation />
 
-      <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
+      <div style={{ width: '73%', padding: '20px', marginLeft: '350px' }}>
         <Text
           className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px]"
           size="txtPoppinsRegular16"
@@ -103,7 +99,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
           className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
           size="txtPoppinsBold34"
         >
-         {projectname}
+         {projectname} Details
         </Text>
 
 

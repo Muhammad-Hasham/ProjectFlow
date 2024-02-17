@@ -182,10 +182,10 @@ const DashboardPage = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+    <div>
       <Navigation />
 
-      <div style={{ width: '73%', padding: '20px' }}>
+      <div style={{ width: '73%', padding: '20px', marginLeft: '350px' }}>
         <Text
           className="flex flex-row items-baseline justify-around md:ml-[0] ml-[800px] text-base text-indigo-800 tracking-[0.44px]"
           onClick={() => navigate('/myprofile')}
@@ -292,7 +292,7 @@ const DashboardPage = () => {
               {showCreateTasks ? 'Create' : 'My Tasks'}
             </Text>
             {!showCreateTasks && (
-              <div style={{ marginTop: '30px' }}>
+              <div style={{ marginTop: '30px'}}>
                 {tasks.map((task) => (
                   <div
                     key={task.id}

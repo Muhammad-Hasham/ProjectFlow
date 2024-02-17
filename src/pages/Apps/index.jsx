@@ -36,16 +36,33 @@ const AppsPage = () => {
         <Navigation/>
 
         {/* Main Content */}
-        <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
+        <div style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
           <Text
             className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px]"
             size="txtPoppinsRegular16"
             onClick={() => navigate('/myprofile')}
+            style={{ fontSize: '18px', cursor: 'pointer' }}
           >
             My Profile
           </Text>
           <Text
-            className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
+            style={{ 
+              marginLeft: '50px',
+              fontSize: '3xl', // Adjust this value as needed for different screen sizes
+              '@media (min-width: 640px)': {
+                fontSize: '3xl'
+              },
+              '@media (min-width: 768px)': {
+                fontSize: '3px'
+              },
+              fontSize: '34px',
+              textAlign: 'left',
+              color: '#1F2544',
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '70px',
+             
+            }}
             size="txtPoppinsBold34"
 
           >
@@ -57,7 +74,7 @@ const AppsPage = () => {
               <div className="flex flex-1 flex-col items-center justify-start w-full">
                 <div
                   className=" bg-cover bg-no-repeat flex flex-col h-[293px] items-center justify-end p-[31px] sm:px-5 w-full"
-                  style={{ backgroundImage: "url('images/img_group6.svg')" }}
+                  style={{ backgroundColor: '#EBD9B4', borderRadius: '30px',}}
                 >
                   <div className="flex flex-col justify-start mt-[130px] ml-[0px] w-[97%] md:w-full">
                     <div className="flex flex-row gap-[34px] items-center justify-start w-[86%] md:w-full">
@@ -65,20 +82,22 @@ const AppsPage = () => {
                         <div className=" flex flex-col items-center justify-start p-[7px] rounded-[15px] w-full">
                           <Img
                             className="h-[57px]  object-cover w-[57px] mt-[100px]"
+                            style = {{borderRadius: '30px'}}
                             src="images/zoom.png"
                             alt="imageThirteen"
                           />
                         </div>
                       </div>
                       <Text
-                        className="text-base text-indigo-800 tracking-[0.44px] mt-[100px]"
+                        className="text-base tracking-[0.44px] mt-[100px]"
                         size="txtPoppinsBold16"
+                        style = {{fontSize: '24px', color: '#1F2544',}}
                       >
-                        Application Name
+                        Zoom
                       </Text>
                     </div>
                     <Text
-                      className="md:ml-[0] mt-[52px] mx-4 text-base text-indigo-800 tracking-[0.44px] w-[90%] sm:w-full"
+                      className="md:ml-[0] mt-[30px] mx-4 text-base text-indigo-800 tracking-[0.44px] w-[90%] sm:w-full"
                       size="txtPoppinsRegular16"
                     >
                       Zoom is for calling and meetings smth smth. It will help in keeping everyone on track
@@ -86,14 +105,24 @@ const AppsPage = () => {
                     <Button
                       className="cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[218px] mt-[18px] text-base text-center tracking-[0.44px]"
                       shape="round"
-                      color="indigo_800_01"
+                      style = {{backgroundColor: '#1F2544', color: 'white', borderRadius: '30px'}}
                       onClick={handleAddButtonClick}
                     >
                       + Add
                     </Button>
                      {/* Loading Animation */}
                      {loading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                      <div style={{ 
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)' // Adjust opacity as needed
+                      }}>
                         <Img
                           className="h-[100px] w-[100px]"
                           src="images/loading.gif"

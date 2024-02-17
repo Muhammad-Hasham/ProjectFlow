@@ -77,11 +77,11 @@ const MyProjectsPage = () => {
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       {/* Sidebar */}
       <Navigation />
-      <div className="flex md:flex-1 flex-col md:gap-10 gap-[97px] justify-start md:mt-0 mt-[68px] w-3/4 md:w-full">
-        <Text
-          className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px]"
-          size="txtPoppinsRegular16"
-          onClick={() => navigate("/myprofile")}
+      <div style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
+      <Text
+          className="flex flex-row items-baseline justify-around md:ml-[0] ml-[800px] text-base text-indigo-800 tracking-[0.44px]"
+          onClick={() => navigate('/myprofile')}
+          style={{ fontSize: '18px', cursor: 'pointer' }}
         >
           My Profile
         </Text>
@@ -89,13 +89,37 @@ const MyProjectsPage = () => {
         <div className="flex flex-col gap-[51px] items-start justify-start w-full">
           <div className="flex sm:gap-10 gap-[639px] items-start justify-start md:ml-[0] ml-[3px] w-[92%] md:w-full">
             <Text
-              className="ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800 flex items-center"
+             style={{ 
+              marginLeft: '50px',
+              fontSize: '3xl', // Adjust this value as needed for different screen sizes
+              '@media (min-width: 640px)': {
+                fontSize: '3xl'
+              },
+              '@media (min-width: 768px)': {
+                fontSize: '3px'
+              },
+              fontSize: '34px',
+              textAlign: 'left',
+              color: '#1F2544',
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '70px',
+             
+            }}
               size="txtPoppinsBold34"
             >
               Projects
             </Text>
             <Button
-              className="common-pointer cursor-pointer leading-[normal] min-w-[109px] mt-2.5 text-base text-center tracking-[0.44px]"
+              style={{ 
+                cursor: 'pointer',
+                lineHeight: 'normal',
+                minWidth: '109px',
+                marginTop: '70px',
+                fontSize: 'base',
+                textAlign: 'center',
+                letterSpacing: '0.44px'
+              }}
               onClick={() => {
                 handleAddButtonClick();
                 navigate("/newproject");
