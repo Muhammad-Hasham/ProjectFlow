@@ -96,35 +96,36 @@ const NewProjectPage = () => {
         {/* Sidebar */}
         <Navigation />
         {/* New Project Form */}
-        <div className="flex flex-col justify-start md:mt-0 mt-[68px] w-[73%] md:w-full">
-          <Text
-            className="md:ml-[0] ml-[849px] text-base text-indigo-800 tracking-[0.44px]"
+        <div  style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
+          <Text 
+            className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px] cursor-pointer"
             size="txtPoppinsRegular16"
             onClick={() => navigate('/myprofile')}
           >
             My Profile
           </Text>
           <Text
-            className="ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800 flex items-center"
+             style={{ 
+              marginLeft: '50px',
+              fontSize: '3xl', // Adjust this value as needed for different screen sizes
+              '@media (min-width: 640px)': {
+                fontSize: '3xl'
+              },
+              '@media (min-width: 768px)': {
+                fontSize: '3px'
+              },
+              fontSize: '34px',
+              textAlign: 'left',
+              color: '#1F2544',
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '70px',
+              }}
             size="txtPoppinsBold34"
           >
             New Project
           </Text>
-          <div style={{
-            marginLeft: '45px',
-            backgroundColor: '#EBD9B4',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            marginTop: '8px',
-            padding: '39px',
-            paddingLeft: '5px',
-            paddingRight: '5px',
-            borderRadius: '30px',
-            width: '100%',
-          }}
-          >
+          <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%'}}>
             <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
               {/* Project Name */}
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">

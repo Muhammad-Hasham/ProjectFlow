@@ -1,7 +1,6 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NotFound from "pages/NotFound";
 const NewProject = React.lazy(() => import("pages/NewProject/index.jsx"));
 const MyTasks = React.lazy(() => import("pages/MyTasks"));
 const Dashboard = React.lazy(() => import("pages/Dashboard"));
@@ -25,7 +24,6 @@ const ProjectRoutes = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Startingpage />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signuprole" element={<Signuprole />} />
