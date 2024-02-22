@@ -78,7 +78,7 @@ const MyProjectsPage = () => {
       {/* Sidebar */}
       <Navigation />
       <div style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
-      <Text
+        <Text
           className="flex flex-row items-baseline justify-around md:ml-[0] ml-[800px] text-base text-indigo-800 tracking-[0.44px]"
           onClick={() => navigate('/myprofile')}
           style={{ fontSize: '18px', cursor: 'pointer' }}
@@ -89,23 +89,15 @@ const MyProjectsPage = () => {
         <div className="flex flex-col gap-[51px] items-start justify-start w-full">
           <div className="flex sm:gap-10 gap-[639px] items-start justify-start md:ml-[0] ml-[3px] w-[92%] md:w-full">
             <Text
-             style={{ 
-              marginLeft: '50px',
-              fontSize: '3xl', // Adjust this value as needed for different screen sizes
-              '@media (min-width: 640px)': {
-                fontSize: '3xl'
-              },
-              '@media (min-width: 768px)': {
-                fontSize: '3px'
-              },
-              fontSize: '34px',
-              textAlign: 'left',
-              color: '#1F2544',
-              display: 'flex',
-              alignItems: 'center',
-              marginTop: '70px',
-             
-            }}
+              style={{ 
+                marginLeft: '50px',
+                fontSize: '34px',
+                textAlign: 'left',
+                color: '#1F2544',
+                display: 'flex',
+                alignItems: 'center',
+                marginTop: '70px',
+              }}
               size="txtPoppinsBold34"
             >
               Projects
@@ -146,51 +138,59 @@ const MyProjectsPage = () => {
               <div
                 key={project.id}
                 style={{
-                  cursor: 'pointer', // Add pointer cursor
-                 
+                  cursor: 'pointer',
                   backgroundColor: '#EBD9B4',
                   display: 'flex',
                   flex: '1',
                   flexDirection: 'column',
-                  height: '252px',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
                   padding: '7px',
-                  paddingLeft: '5px', // Adjust according to your needs
-                  paddingRight: '5px', // Adjust according to your needs
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
                   width: '100%',
                   borderRadius: '30px',
                 }}
                 onClick={() => navigate(`/details/${project.id}`)}
               >
                 <div className="flex flex-col items-center justify-start mt-2.5 w-[71%] md:w-full">
-                  <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full">
-                  <Img
-                             style={{
-                              height: '70px', // Adjust the height as needed for mobile
-                              maxHeight: '100%', // Allow height to auto-adjust on larger screens
-                              objectFit: 'cover',
-                              width: '100%',
-                            }}
-                              src="images/work.png"
-                              alt="Project Image"
-                            />
+                  <div className="flex flex-col items-center justify-end p-[31px] sm:px-5 rounded-[15px] w-full" style={{ height: '120px' }}>
+                    <Img
+                      style={{
+                        height: 'auto',
+                        maxHeight: '100%',
+                        objectFit: 'contain',
+                        width: '100%',
+                      }}
+                      src="images/work.png"
+                      alt="Project Image"
+                    />
                   </div>
                   <Text
-                    
-                    style ={{color: '#1F2544',
-                    marginTop: '20px',
-                    marginBottom: '10px',
-                    letterSpacing: '0.44px',}}
+                    style={{
+                      color: '#1F2544',
+                      marginTop: '20px',
+                      marginBottom: '10px',
+                      letterSpacing: '0.44px',
+                      fontSize: '14px',
+                      textAlign: 'center',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      width: '100%',
+                    }}
                     size="txtPoppinsRegular16"
                   >
                     {project.title}
                   </Text>
                   <Text
-                    style ={{color: '#1F2544',
-                    marginTop: '10px',
-                    marginBottom: '15px',
-                    letterSpacing: '0.44px',}}
+                    style={{
+                      color: '#1F2544',
+                      marginTop: '10px',
+                      marginBottom: '15px',
+                      letterSpacing: '0.44px',
+                      fontSize: '14px',
+                    }}
                     size="txtPoppinsRegular16"
                   >
                     Due {project.dueDate ? project.dueDate.substring(0, 10) : ""}
