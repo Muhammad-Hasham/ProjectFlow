@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,} from "recharts";
 import { PieChart } from "react-minimal-pie-chart";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from "@mui/material";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { Text, Img, Button } from "components";
 import ProjectProgress from "./details";
@@ -95,31 +79,12 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
   return (
     <>
       {/* Background Overlay */}
-      <div
-        className="popup-overlay"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(5px)",
-          zIndex: 1,
-        }}
+      <div className="popup-overlay" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(5px)", zIndex: 1, }}
         onClick={onClose} // Close the popup if clicked outside the form
-      ></div>
-
+></div>
       {/* Popup */}
-      <animated.div
-        className="task-details-popup"
-        style={{
-          ...popupAnimation,
-          zIndex: 2,
-        }}
-      >
+      <animated.div className="task-details-popup" style={{ ...popupAnimation, zIndex: 2,}}>
         <h2>Edit Task: {editedTask.name}</h2>
-
         <div className="field">
           <label>Task Name:</label>
           <input
@@ -280,39 +245,42 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
           </div>
         </div>
       </div>
-      <TableContainer
-        component={Paper}
-        style={{
-          marginBottom: "10px",
-          background: "#f5f5f5",
-          fontFamily: "poppins",
-        }}
-      >
-        <Table style={{ minWidth: 650, background: "#f5f5f5" }}>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ color: "#323F73" }}>Task Name</TableCell>
-              <TableCell style={{ color: "#323F73" }}>Task Status</TableCell>
-              <TableCell style={{ color: "#323F73" }}>Due Date</TableCell>
-              <TableCell style={{ color: "#323F73" }}>Task Assignee</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tasks.map((task, index) => (
-              <TableRow
-                key={index}
-                onClick={() => handleTaskClick(task)}
-                style={{ cursor: "pointer" }}
-              >
-                <TableCell>{task.name}</TableCell>
-                <TableCell>{task.status}</TableCell>
-                <TableCell>{task.end_date.substring(0, 10)}</TableCell>
-                <TableCell>{task.assignee.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div style={{ width: "98%", margin: "0 auto", marginLeft: '-20px'}}> {/* Adjusted width and added margin */}
+  <TableContainer
+    component={Paper}
+    style={{
+      marginBottom: "10px",
+      background: "#f5f5f5",
+      fontFamily: "poppins",
+    }}
+  >
+    <Table style={{ minWidth: 500, background: "#f5f5f5" }}>
+      <TableHead>
+        <TableRow>
+          <TableCell style={{ color: "#323F73" }}>Task Name</TableCell>
+          <TableCell style={{ color: "#323F73" }}>Task Status</TableCell>
+          <TableCell style={{ color: "#323F73" }}>Due Date</TableCell>
+          <TableCell style={{ color: "#323F73" }}>Task Assignee</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {tasks.map((task, index) => (
+          <TableRow
+            key={index}
+            onClick={() => handleTaskClick(task)}
+            style={{ cursor: "pointer" }}
+          >
+            <TableCell>{task.name}</TableCell>
+            <TableCell>{task.status}</TableCell>
+            <TableCell>{task.end_date.substring(0, 10)}</TableCell>
+            <TableCell>{task.assignee.name}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+</div>
+
       {/* TaskDetailsPopup */}
       {selectedTask && (
         <TaskDetailsPopup
@@ -350,93 +318,114 @@ const ProjectStats = ({
           style={{
             display: "flex",
             justifyContent: "space-between",
-            marginBottom: "-20px",
+            marginBottom: "-60px",
           }}
         >
-          <div style={{ width: "40%" }}>
-            {/* Line chart for project statistics */}
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart
-                data={statisticsData}
-                margin={{ top: 5, right: 10, left: 10, bottom: 30 }}
-              >
-                <XAxis
-                  dataKey="name"
-                  label={{
-                    value: "",
-                    position: "insideBottom",
-                    offset: -10,
-                  }}
-                />
-                <YAxis
-                  label={{ value: "Tasks", angle: -90, position: "insideLeft" }}
-                />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="progress"
-                  stroke="#860A35"
-                  activeDot={{ r: 6 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="completedTasks"
-                  stroke="#48BB78"
-                  activeDot={{ r: 6 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="remainingTasks"
-                  stroke="#F6E05E"
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div
-            style={{ width: "60%" }}
-            onMouseEnter={() => setHoveredPie(true)}
-            onMouseLeave={() => setHoveredPie(false)}
-          >
-            {/* Animated Pie Chart */}
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart
-                animate
-                animationDuration={1000}
-                animationEasing="ease-out"
-                center={[pieChartSize / 2, pieChartSize / 2]}
-                data={pieChartData}
-                label={({ dataEntry }) => Math.round(dataEntry.value) + "%"}
-                labelPosition={50}
-                labelStyle={{
-                  fontSize: "10px",
-                  fontFamily: "sans-serif",
-                  fill: "#323F73",
-                  pointerEvents: "none",
-                }}
-                lengthAngle={360}
-                lineWidth={30}
-                onClick={() => console.log("Click on pie chart")}
-                onMouseEnter={() => console.log("Mouse enter")}
-                onMouseLeave={() => console.log("Mouse leave")}
-                paddingAngle={0}
-                radius={100}
-                startAngle={0}
-                viewBoxSize={[pieChartSize, pieChartSize]}
-              />
-            </ResponsiveContainer>
-            {hoveredPie && (
-              <div
-                style={{
-                  marginTop: "10px",
-                  color: "#323F73",
-                  fontWeight: "bold",
-                }}
-              >
-                {Math.round(progressAnimation.value)}%
-              </div>
+          <div style={{  marginTop: "-150px", marginRight: '20px', width: "50%", height: 300, backgroundColor: "#F7F1E5", borderRadius: 10, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}>
+  <ResponsiveContainer>
+    <LineChart
+      data={statisticsData}
+      margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
+    >
+      <XAxis
+        dataKey="name"
+        label={{
+          value: "Days",
+          position: "insideBottom",
+          offset: 0,
+        }}
+        tick={{ fontSize: 12 }}
+      />
+      <YAxis
+        label={{ value: "Tasks", angle: -90, position: "insideLeft" }}
+        tick={{ fontSize: 12 }}
+      />
+      <Tooltip
+        wrapperStyle={{ backgroundColor: "#ffffff", border: "1px solid #cccccc", borderRadius: "5px" }}
+        contentStyle={{ fontSize: "14px" }}
+      />
+      <Legend />
+      <Line
+        type="monotone"
+        dataKey="progress"
+        name="Progress"
+        stroke="#4C51BF"
+        strokeWidth={2}
+        dot={{ stroke: "#4C51BF", fill: "#ffffff", strokeWidth: 2, r: 5 }}
+        activeDot={{ r: 6 }}
+      />
+      <Line
+        type="monotone"
+        dataKey="completedTasks"
+        name="Completed Tasks"
+        stroke="#48BB78"
+        strokeWidth={2}
+        dot={{ stroke: "#48BB78", fill: "#ffffff", strokeWidth: 2, r: 5 }}
+        activeDot={{ r: 6 }}
+      />
+      <Line
+        type="monotone"
+        dataKey="remainingTasks"
+        name="Remaining Tasks"
+        stroke="#F6E05E"
+        strokeWidth={2}
+        dot={{ stroke: "#F6E05E", fill: "#ffffff", strokeWidth: 2, r: 5 }}
+        activeDot={{ r: 6 }}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
+<div
+  style={{
+    width: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F7F1E5",
+    borderRadius: 10,
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    padding: "20px",
+    marginTop: '-150px',
+    marginRight: '50px'
+  }}
+>
+{/* Animated Pie Chart */}
+<ResponsiveContainer width="50%" height={200}>
+    <PieChart
+      animate
+      animationDuration={1000}
+      animationEasing="ease-out"
+      center={[pieChartSize / 2, pieChartSize / 2]}
+      data={pieChartData}
+      label={({ dataEntry }) => Math.round(dataEntry.value) + "%"}
+      labelPosition={50}
+      labelStyle={{
+        fontSize: "10px",
+        fontFamily: "sans-serif",
+        fill: "#323F73",
+        pointerEvents: "none",
+      }}
+      lengthAngle={360}
+      lineWidth={30}
+      onClick={() => console.log("Click on pie chart")}
+      onMouseEnter={() => console.log("Mouse enter")}
+      onMouseLeave={() => console.log("Mouse leave")}
+      paddingAngle={0}
+      radius={100}
+      startAngle={0}
+      viewBoxSize={[pieChartSize, pieChartSize]}
+    />
+  </ResponsiveContainer>
+  {hoveredPie && (
+    <div
+      style={{
+        marginTop: "10px",
+        color: "#323F73",
+        fontWeight: "bold",
+      }}
+    >
+      {Math.round(progressAnimation.value)}%
+    </div>
             )}
           </div>
         </div>

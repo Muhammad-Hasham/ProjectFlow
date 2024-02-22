@@ -77,17 +77,17 @@ const MyTasksPage = () => {
 
   const markTaskAsComplete = (taskId) => {
     const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, status: 'Completed' } : task
+      task.id === taskId ? { ...task, status: 'completed' } : task
     );
     setTasks(updatedTasks);
   };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
-
+  
     const updatedTasks = Array.from(tasks);
     const [reorderedItem] = updatedTasks.splice(result.source.index, 1);
-
+  
     let newStatus;
     switch (result.destination.droppableId) {
       case 'dueTasks':
@@ -102,15 +102,15 @@ const MyTasksPage = () => {
       default:
         newStatus = 'todo';
     }
-
+  
     const updatedTaskWithStatus = { ...reorderedItem, status: newStatus };
     updatedTasks.splice(result.destination.index, 0, updatedTaskWithStatus);
-
+  
     setTasks(updatedTasks);
-
+  
     const taskId = reorderedItem.id;
     const token = localStorage.getItem('token');
-
+  
     axios
       .patch(
         `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
@@ -131,7 +131,7 @@ const MyTasksPage = () => {
         console.error(`Error updating task ${taskId} status:`, error);
       });
   };
-
+  
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       <Navigation />
@@ -208,9 +208,9 @@ const MyTasksPage = () => {
                               padding: 16,
                               margin: '0 0 8px 0',
                               minHeight: '50px',
-                              backgroundColor: '#FFC436',
+                              backgroundColor: '#C9D7DD',
                               color: '#323F73',
-                              border: '1px solid #e5e7eb',
+                              border: '1px solid #6895D2',
                               borderRadius: '8px',
                               ...provided.draggableProps.style,
                             }}
@@ -267,7 +267,7 @@ const MyTasksPage = () => {
                               padding: 16,
                               margin: '0 0 8px 0',
                               minHeight: '50px',
-                              backgroundColor: '#82CD47',
+                              backgroundColor: '#9BCF53',
                               color: '#323F73',
                               border: '1px solid #6c906c',
                               borderRadius: '8px',
@@ -326,7 +326,7 @@ const MyTasksPage = () => {
                               padding: 16,
                               margin: '0 0 8px 0',
                               minHeight: '50px',
-                              backgroundColor: '#E74646',
+                              backgroundColor: '#DF826C',
                               color: '#ffffff',
                               border: '1px solid #ff1a1a',
                               borderRadius: '8px',

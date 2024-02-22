@@ -99,7 +99,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
           className="mt-[95px] ml-[50px] sm:text-3xl md:text-[3px] text-[34px] text-left text-indigo-800"
           size="txtPoppinsBold34"
         >
-         {projectname} Details
+         {projectname}
         </Text>
 
 

@@ -208,9 +208,9 @@ const KanbanComponent = () => {
     <div>
       <ProjectProgress />
 
-      <div className="kanban-container">
+      <div style={{ marginTop: "-350px" }} className="kanban-container">
         {/* KanbanComponent content */}
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext  onDragEnd={onDragEnd}>
           <div className="kanban-columns">
             {/* Render existing categories */}
             {Object.keys(tasks)

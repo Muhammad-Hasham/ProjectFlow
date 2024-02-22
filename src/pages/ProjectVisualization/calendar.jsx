@@ -93,22 +93,33 @@ const CalendarComponent = ({
         tasks={tasks}
       />
       <div>
-        <div style={{ marginTop: '-250px', marginLeft: '350px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-          <h3 style={{ color: '#323F73' }}>Calendar View</h3>
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500, marginTop: '20px' }}
-            onSelectEvent={handleEventClick}
-            eventPropGetter={(event, start, end, isSelected) => {
-              const backgroundColor = isSelected ? '#4299E1' : '#2C5282';
-              const borderColor = isSelected ? '#4299E1' : '#2C5282';
-              return { style: { backgroundColor, borderColor, color: 'white' } };
-            }}
-          />
-        </div>
+      <div style={{ marginTop: '-320px', marginRight: "80px", marginLeft: '350px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
+  <h3 style={{ color: '#323F73', marginBottom: '20px', textAlign: 'center', fontSize: '24px' }}>Calendar View</h3>
+  <Calendar
+    localizer={localizer}
+    events={events}
+    startAccessor="start"
+    endAccessor="end"
+    style={{ height: 500 }}
+    onSelectEvent={handleEventClick}
+    eventPropGetter={(event, start, end, isSelected) => {
+      const backgroundColor = isSelected ? '#2E86C1' : '#F4D03F'; // Blue for selected, Yellow for unselected
+      const borderColor = isSelected ? '#2E86C1' : '#F4D03F';
+      return { style: { backgroundColor, borderColor, color: '#fff', borderRadius: '8px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' } };
+    }}
+    eventStyle={{ borderRadius: '8px', border: 'none' }}
+    dayPropGetter={(date) => {
+      return {
+        style: {
+          backgroundColor: date.getDay() === 0 || date.getDay() === 6 ? '#f2f2f2' : '#fff', // Light gray for weekends
+          borderRadius: '8px',
+        }
+      };
+    }}
+  />
+</div>
+
+
       </div>
     </div>
   );
