@@ -102,14 +102,31 @@ const GanttComponent = ({
         tasks={tasks}
       />
       <Chart
-      style={{marginTop: "-350px", marginLeft: "170px", marginRight: "auto"}}
+        className="gantt-chart"
         chartType="Gantt"
         width="85%"
         height="100%" 
-        
         data={data}
         options={options}
       />
+      <style>
+        {`
+          .gantt-chart {
+            margin-top: -350px;
+            margin-left: 350px;
+            margin-right: auto;
+          }
+
+          @media screen and (max-width: 768px) {
+            /* Adjust styles for smaller screens */
+            .gantt-chart {
+              /* Add styles here for smaller screens */
+              margin-top: -200px;
+              margin-left: 50px;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
