@@ -44,7 +44,7 @@ const rows = [
 const data = [columns, ...rows];
 
 const options = {
-  height: 200, // Reduced height to make the chart smaller
+  height: 1000, // Reduced height to make the chart smaller
   gantt: {
     defaultStartDateMillis: new Date(2015, 3, 28),
     criticalPathEnabled: true,
@@ -52,6 +52,8 @@ const options = {
       stroke: "#e64a19",
       strokeWidth: 4,
     },
+    innerGridTrack: { fill: "#fff3e0" },
+    innerGridDarkTrack: { fill: "#ffcc80" },
   },
 };
 
@@ -103,7 +105,7 @@ const GanttComponent = ({
       style={{marginTop: "-350px", marginLeft: "170px", marginRight: "auto"}}
         chartType="Gantt"
         width="85%"
-        height="10%" 
+        height="100%" 
         
         data={data}
         options={options}
