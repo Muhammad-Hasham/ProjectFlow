@@ -77,6 +77,11 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
     navigate(`/calendar/${projectId}`);
   };
 
+  const navigateToGantt = () => {
+    navigate(`/ganttchart/${projectId}`);
+  };
+
+
   const successPopupAnimation = useSpring({
     opacity: showSuccessPopup ? 1 : 0,
     transform: `scale(${showSuccessPopup ? 1 : 0.5})`,
@@ -142,10 +147,13 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
         </animated.div>
 
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', cursor: 'pointer' }}>
-          <h3 onClick={navigateToStatistics} style={{ margin: '0 20px', borderBottom: '1px solid #323F73' }}>Statistics</h3>
-          <h3 onClick={navigateToKanban} style={{ margin: '0 30%', borderBottom: '1px solid #323F73' }}>Kanban</h3>
-          <h3  onClick={navigateToCalendar} style={{ margin: '0 30px', borderBottom: '1px solid #323F73' }}>Calendar</h3>
+          <h3 onClick={navigateToStatistics} style={{ margin: '0 10px', padding: '10px 20px', borderBottom: '3px solid transparent', transition: 'border-bottom-color 0.3s', fontWeight: 'normal', color: '#323F73', cursor: 'pointer' }}>Statistics</h3>
+          <h3 onClick={navigateToKanban} style={{ margin: '0 70px', padding: '10px 20px', borderBottom: '3px solid transparent', transition: 'border-bottom-color 0.3s', fontWeight: 'normal', color: '#323F73', cursor: 'pointer' }}>Kanban View</h3>
+          <h3 onClick={navigateToCalendar} style={{ margin: '0 60px', padding: '10px 20px', borderBottom: '3px solid transparent', transition: 'border-bottom-color 0.3s', fontWeight: 'normal', color: '#323F73', cursor: 'pointer' }}>Calendar View</h3>
+          <h3 onClick={navigateToGantt} style={{ margin: '0 40px', padding: '10px 20px', borderBottom: '3px solid transparent', transition: 'border-bottom-color 0.3s', fontWeight: 'normal', color: '#323F73', cursor: 'pointer' }}>Gantt View</h3>
         </div>
+
+
 
       </div>
     </div>

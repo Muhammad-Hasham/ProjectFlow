@@ -17,7 +17,7 @@ const ProjectDetails = React.lazy(()=> import ("./pages/ProjectVisualization/sta
 const Kanban = React.lazy(() => import("./pages/ProjectVisualization/kanban.jsx"))
 const Calendar = React.lazy(() => import("./pages/ProjectVisualization/calendar.jsx"))
 const Invite = React.lazy(() => import("pages/NewProject/inviteMembers.jsx"))
-
+const GanttComponent = React.lazy(() => import("pages/ProjectVisualization/ganttchart.jsx"))
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -39,6 +39,7 @@ const ProjectRoutes = () => {
           <Route path="/kanban/:projectId" element={<Kanban />} />
           <Route path="/calendar/:projectId" element={<Calendar />} />
           <Route path="/invite" element={<Invite />} />
+          <Route path="/ganttchart/:projectId" element={<GanttComponent />} />
         </Routes>
       </Router>
     </React.Suspense>
