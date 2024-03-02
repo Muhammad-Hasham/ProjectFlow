@@ -19,6 +19,9 @@ const NewTaskPage = () => {
   const [taskname, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   const [assigne, setAssigne] = useState(0);
+  const [preDependency, setPreDependency] = useState("");
+  const [postDependency, setPostDependency] = useState("");
+  const [userStoryDescription, setuserStoryDescription] = useState("");
   const [projid, setprojid] = useState("");
   const [formData, setFormData] = useState({
     startDate: null,
@@ -26,13 +29,6 @@ const NewTaskPage = () => {
     priority: "", // State variable for priority
   });
 
-  const handleStartDateChange = (date) => {
-    setFormData({ ...formData, startDate: date });
-  };
-
-  const handleDueDateChange = (date) => {
-    setFormData({ ...formData, dueDate: date });
-  };
 
   const handlePriorityChange = (e) => { // Handle changes in priority selection
     setFormData({ ...formData, priority: e.target.value });
@@ -164,7 +160,7 @@ const NewTaskPage = () => {
           My Profile
         </Text>
         <Text
-           style={{ 
+          style={{ 
             marginLeft: '50px',
             fontSize: '3xl', // Adjust this value as needed for different screen sizes
             '@media (min-width: 640px)': {
@@ -184,22 +180,21 @@ const NewTaskPage = () => {
         >
           New Task
         </Text>
-        <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%'}}
-    >
-      <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
+        <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' }}>
+          <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
               <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Name</Text>
-              <div className=" text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
+              <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
                 <input type="text" name="projectName" value={taskname} onChange={(e) => setTaskName(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '1px solid #1F2544' }} />
               </div>
             </div>
-
+  
             {projectId === '123456' && (
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project ID</Text>
-                <div className="border-b bg-gray-50 border-indigo-800 text-base w-[76%]">
-                  <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '60%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }}>
-                    <option>Select a Project </option>
+                <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project</Text>
+                <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
+                  <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+                    <option>Select a Project</option>
                     {projects.map((member) => (
                       <option key={member.id} value={member.id}>{member.name}</option>
                     ))}
@@ -207,7 +202,14 @@ const NewTaskPage = () => {
                 </div>
               </div>
             )}
-
+  
+            <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
+              <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">User Story Description</Text>
+              <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
+                <textarea name="description" value={userStoryDescription} onChange={(e) => setuserStoryDescription(e.target.value)} style={{ fontSize: '1rem', width: '60%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
+              </div>
+            </div>
+  
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
               <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Assignee</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
@@ -221,7 +223,7 @@ const NewTaskPage = () => {
                 </select>
               </div>
             </div>
-
+  
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
               <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Priority</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
@@ -233,47 +235,70 @@ const NewTaskPage = () => {
                 </select>
               </div>
             </div>
+            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" style={{ display: 'flex', justifyContent: 'space-between' }}>
+  {/* Pre Dependency Dropdown */}
+  <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Pre Dependency:</Text>
+      <select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ marginLeft: '30px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+        <option value="">Select pre-dependency</option>
+        {/* Map through tasks to render options */}
+      </select>
+    </div>
+  </div>
+  {/* Post Dependency Dropdown */}
+  <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Post Dependency:</Text>
+      <select id="post-dependency" value={postDependency} onChange={(e) => setPostDependency(e.target.value)} style={{ marginLeft: '30px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+        <option value="">Select post-dependency</option>
+        {/* Map through tasks to render options */}
+      </select>
+    </div>
+  </div>
+</div>
+
+<div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[90%] md:w-full">
+  {/* Start Date */}
+  <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Start Date:</Text>
+      <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '15px', cursor: 'pointer', fontSize: '20px' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
+      <animated.div style={{ marginLeft: '100px', color: '#1F2544',fadeIn}}>
+        <DatePicker id="start-date-picker" selected={formData.startDate} onChange={date => setFormData({...formData, startDate: date})} />
+      </animated.div>
+    </div>
+    
+  </div>
+  {/* Due Date */}
+  <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Due Date:</Text>
+      <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '15px', cursor: 'pointer', fontSize: '20px' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
+      <animated.div style={{ marginLeft: '100px', color: '#1F2544',fadeIn}}>
+        <DatePicker   id="due-date-picker" selected={formData.dueDate} onChange={date => setFormData({...formData, dueDate: date})} />
+      </animated.div>
+    </div>
+  </div>
+</div>
 
             <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Start Date</Text>
-                <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '25px', cursor: 'pointer' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
-                <animated.div style={fadeIn}>
-                  <DatePicker id="start-date-picker" selected={formData.startDate} onChange={handleStartDateChange} />
-                </animated.div>
-                {formData.startDate && (
-                  <Text style={{ marginLeft: '10px', color: '#1F2544' }}>{formData.startDate.toLocaleDateString()}</Text>
-                )}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#1F2544', letterSpacing: '0.44px', marginRight: '250px' }} size="txtPoppinsRegular16">Due Date</Text>
-                <FontAwesomeIcon icon={faCalendarAlt} style={{ marginRight: '20px', cursor: 'pointer' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
-                <animated.div style={fadeIn}>
-                  <DatePicker id="due-date-picker" selected={formData.dueDate} onChange={handleDueDateChange} />
-                </animated.div>
-                {formData.dueDate && (
-                  <Text style={{ marginLeft: '10px', color: '#1F2544', marginRight: '250px' }}>{formData.dueDate.toLocaleDateString()}</Text>
-                )}
-              </div>
-            </div>
-
-            <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-              <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Description</Text>
-              <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%', }}>
+              <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Description</Text>
+              <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
                 <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '60%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
               </div>
             </div>
-           
+  
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <FontAwesomeIcon
                 icon={faMicrophone}
-                style={{  marginLeft: '600px', marginRight: '5px', marginTop: '50px', cursor: 'pointer', color: '#1F2544' }}
+                style={{ marginLeft: '600px', marginRight: '5px', marginTop: '50px', cursor: 'pointer', color: '#1F2544' }}
                 size="3x"
                 onClick={handleMicrophoneClick}
               />
               {isMicrophoneClicked && <AutomaticTasks />}
               <Button
-                style={{ cursor: 'pointer', lineHeight: 'normal', minWidth: '84px', marginLeft: '100px',  marginTop: '50px', fontSize: '1rem', textAlign: 'center', letterSpacing: '0.44px'}}
+                style={{ cursor: 'pointer', lineHeight: 'normal', minWidth: '84px', marginLeft: '100px', marginTop: '50px', fontSize: '1rem', textAlign: 'center', letterSpacing: '0.44px' }}
                 shape="round"
                 color="indigo_800"
                 onClick={handleCreateProject}
@@ -281,11 +306,12 @@ const NewTaskPage = () => {
                 Create
               </Button>
             </div>
-        </div>
           </div>
         </div>
       </div>
+    </div>
   );
+  
 };
 
 export default NewTaskPage;

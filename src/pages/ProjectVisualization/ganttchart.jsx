@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
 import ProjectProgress from './details';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 const columns = [
   { type: "string", label: "Task ID" },
@@ -71,6 +72,8 @@ const GanttComponent = ({
   const { projectId } = useParams();
   const [task, setTask] = useState([]);
 
+  const isLaptop = useMediaQuery({ minWidth: 1024 });
+
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -109,24 +112,16 @@ const GanttComponent = ({
         data={data}
         options={options}
       />
-      <style>
-        {`
-          .gantt-chart {
-            margin-top: -350px;
-            margin-left: 350px;
-            margin-right: auto;
-          }
-
-          @media screen and (max-width: 768px) {
-            /* Adjust styles for smaller screens */
+      {isLaptop && (
+        <style>
+          {`
             .gantt-chart {
-              /* Add styles here for smaller screens */
-              margin-top: -200px;
-              margin-left: 50px;
+              margin-top: -30%;
+              margin-left: 30%;
             }
-          }
-        `}
-      </style>
+          `}
+        </style>
+      )}
     </div>
   );
 };
