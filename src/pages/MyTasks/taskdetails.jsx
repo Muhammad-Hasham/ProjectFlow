@@ -50,6 +50,9 @@ const TaskDetailsPopup = ({ task, onClose }) => {
           <div style={{ marginBottom: '10px' }}>
             <Text style={{ fontSize: '16px' }}>Due Date: {task.end_date.substring(0, 10)}</Text>
           </div>
+          <div style={{ marginBottom: '10px' }}>
+            <Text style={{ fontSize: '16px' }}>Category: {task.userStoryDescription}</Text>
+          </div>
 
           <div style={{ marginBottom: '10px' }}>
             <Text style={{ fontSize: '16px' }}>Priority: {task.priority}</Text>

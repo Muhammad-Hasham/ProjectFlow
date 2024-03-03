@@ -257,6 +257,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
     <Table style={{ minWidth: 500, background: "#f5f5f5" }}>
       <TableHead>
         <TableRow>
+        <TableCell style={{ color: "#323F73" }}>User Story ID</TableCell>
           <TableCell style={{ color: "#323F73" }}>Task Name</TableCell>
           <TableCell style={{ color: "#323F73" }}>Task Status</TableCell>
           <TableCell style={{ color: "#323F73" }}>Due Date</TableCell>
@@ -270,6 +271,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
             onClick={() => handleTaskClick(task)}
             style={{ cursor: "pointer" }}
           >
+            <TableCell>{task.user_story_id}</TableCell>
             <TableCell>{task.name}</TableCell>
             <TableCell>{task.status}</TableCell>
             <TableCell>{task.end_date.substring(0, 10)}</TableCell>
