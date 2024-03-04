@@ -53,7 +53,7 @@ const AutomaticTasks = () => {
                 )}
                 {!isRecording && transcript && (
                     <button onClick={handleConfirmClick} style={{ backgroundColor: '#4CAF50', color: 'white', padding: '14px 20px', margin: '8px 0', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '16px' }}>
-                        Confirm
+                        Generate Task
                     </button>
                 )}
 
