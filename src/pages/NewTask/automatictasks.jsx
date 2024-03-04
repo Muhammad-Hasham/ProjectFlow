@@ -29,8 +29,35 @@ const AutomaticTasks = () => {
     };
 
     const handleConfirmClick = () => {
-        setTasks(prevTasks => [...prevTasks, transcript]);
-        resetTranscript();
+        fetch('http://localhost:8000/api/generate-tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_story: transcript,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Log the response data to the console
+                console.log('Response data:', data);
+    
+                const tasks = (data).tasks;
+
+                // Accessing name, priority, and description for each task
+                tasks.forEach(task => {
+                    console.log("Name:", task.name);
+                    console.log("Priority:", task.priority);
+                    console.log("Description:", task.description);
+                    console.log("-----------------------------");
+                });
+
+            })
+
+            .catch(error => {
+                console.error('Error:', error);
+            });
     };
 
     return (
