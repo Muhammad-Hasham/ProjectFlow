@@ -43,7 +43,7 @@ const AutomaticTasks = () => {
                 // Log the response data to the console
                 console.log('Response data:', data);
     
-                const tasks = (data).tasks;
+                const tasking = (data).tasks;
 
                 // Accessing name, priority, and description for each task
                 tasks.forEach(task => {
@@ -52,6 +52,10 @@ const AutomaticTasks = () => {
                     console.log("Description:", task.description);
                     console.log("-----------------------------");
                 });
+
+                // Set the tasks state to the tasks array
+                setTasks(tasking);
+                
 
             })
 
@@ -88,9 +92,13 @@ const AutomaticTasks = () => {
                 <div>
                     <h3>List of Tasks</h3>
                     <ul>
-                        {tasks.map((task, index) => (
-                            <li key={index}>{task}</li>
-                        ))}
+                        {tasks && tasks.map((tasks, index) => (
+                             <li key={index}>
+                                <strong>Name:</strong> {tasks.name} |
+                                <strong> Priority:</strong> {tasks.priority} |
+                                <strong> Description:</strong> {tasks.description}
+                             </li>
+                       ))}
                     </ul>
                 </div>
             </animated.div>
