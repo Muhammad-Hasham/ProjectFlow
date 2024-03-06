@@ -212,6 +212,7 @@ const MyTasksPage = () => {
                               color: '#323F73',
                               border: '1px solid #6895D2',
                               borderRadius: '8px',
+                              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                               ...provided.draggableProps.style,
                             }}
                           >
@@ -245,6 +246,7 @@ const MyTasksPage = () => {
                     width: 250,
                     marginLeft: '70px',
                     marginBottom: '20px',
+                    
                   }}
                 >
                   <Text style={{ marginBottom: '20px' }} className="text-base text-indigo-800" size="txtPoppinsBold16">
@@ -272,6 +274,7 @@ const MyTasksPage = () => {
                               border: '1px solid #6c906c',
                               borderRadius: '8px',
                               ...provided.draggableProps.style,
+                              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>
@@ -331,6 +334,7 @@ const MyTasksPage = () => {
                               border: '1px solid #ff1a1a',
                               borderRadius: '8px',
                               ...provided.draggableProps.style,
+                              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>

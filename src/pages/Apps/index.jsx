@@ -74,7 +74,7 @@ const AppsPage = () => {
               <div className="flex flex-1 flex-col items-center justify-start w-full">
                 <div
                   className=" bg-cover bg-no-repeat flex flex-col h-[293px] items-center justify-end p-[31px] sm:px-5 w-full"
-                  style={{ backgroundColor: '#EBD9B4', borderRadius: '30px',}}
+                  style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backgroundColor: '#EBD9B4', borderRadius: '30px',}}
                 >
                   <div className="flex flex-col justify-start mt-[130px] ml-[0px] w-[97%] md:w-full">
                     <div className="flex flex-row gap-[34px] items-center justify-start w-[86%] md:w-full">

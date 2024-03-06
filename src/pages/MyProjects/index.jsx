@@ -150,6 +150,7 @@ const MyProjectsPage = () => {
                   paddingRight: '5px',
                   width: '100%',
                   borderRadius: '30px',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
                 }}
                 onClick={() => navigate(`/details/${project.id}`)}
               >
