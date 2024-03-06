@@ -4,69 +4,7 @@ import ProjectProgress from './details';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
-const columns = [
-  { type: "string", label: "Task ID" },
-  { type: "string", label: "Task Name" },
-  { type: "string", label: "Resource" },
-  { type: "date", label: "Start Date" },
-  { type: "date", label: "End Date" },
-  { type: "number", label: "Duration" },
-  { type: "number", label: "Percent Complete" },
-  { type: "string", label: "Dependencies" },
-];
-
-const rows = [
-  [
-    "toTrain",
-    "Walk to train stop",
-    "walk",
-    null,
-    null,
-    5 * 60 * 1000,
-    100,
-    null,
-  ],
-  ["music", "Listen to music", "music", null, null, 70 * 60 * 1000, 100, null],
-  [
-    "wait",
-    "Wait for train",
-    "wait",
-    null,
-    null,
-    10 * 60 * 1000,
-    100,
-    "toTrain",
-  ],
-  ["train", "Train ride", "train", null, null, 45 * 60 * 1000, 75, "wait"],
-  ["toWork", "Walk to work", "walk", null, null, 10 * 60 * 1000, 0, "train"],
-  ["work", "Sit down at desk", null, null, null, 2 * 60 * 1000, 0, "toWork"],
-];
-
-const data = [columns, ...rows];
-
-const options = {
-  height: 1000, // Reduced height to make the chart smaller
-  gantt: {
-    defaultStartDateMillis: new Date(2015, 3, 28),
-    criticalPathEnabled: true,
-    criticalPathStyle: {
-      stroke: "#e64a19",
-      strokeWidth: 4,
-    },
-    innerGridTrack: { fill: "#fff3e0" },
-    innerGridDarkTrack: { fill: "#ffcc80" },
-  },
-};
-
-const GanttComponent = ({
-  loading,
-  successPopupAnimation,
-  statisticsData,
-  pieChartSize,
-  hovered,
-  pieChartData,
-  tasks,
-}) => {
+const GanttComponent = () => {
   const [selectedCategory, setSelectedCategory] = useState('Gantt Chart');
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -90,26 +28,83 @@ const GanttComponent = ({
     console.log(`Clicked on event: ${event.title}`);
   };
 
+  useEffect(() => {
+    // Fetch data from the API
+    const token = localStorage.getItem("token");
+
+    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Map API data to Gantt chart format
+        const tasks = data.data.project.tasks; // Array of tasks
+
+        const columns = [
+            { type: "string", label: "Task ID" },
+            { type: "string", label: "Task Name" },
+            { type: "string", label: "Description" },
+            { type: "date", label: "Start Date" },
+            { type: "date", label: "End Date" },
+            { type: "number", label: "Priority" },
+            { type: "number", label: "Status" },
+            { type: "string", label: "Pre Dependency" },
+            { type: "string", label: "Post Dependency" }
+        ];
+
+        const rows = tasks.map(task => [
+            task.id,
+            task.name,
+            task.description,
+            new Date(task.start_date),
+            new Date(task.end_date),
+            task.priority,
+            task.status,
+            task.pre_dependency,
+            task.post_dependency
+        ]);
+
+        const ganttData = [columns, ...rows];
+
+        setTask(ganttData);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}, [projectId]);
+
+
+  const options = {
+    height: 1000, // Reduced height to make the chart smaller
+    gantt: {
+      defaultStartDateMillis: new Date(2015, 3, 28),
+      criticalPathEnabled: true,
+      criticalPathStyle: {
+        stroke: "#e64a19",
+        strokeWidth: 4,
+      },
+      innerGridTrack: { fill: "#fff3e0" },
+      innerGridDarkTrack: { fill: "#ffcc80" },
+    },
+  };
+
   return (
     <div>
       <ProjectProgress
         handleCategoryChange={handleCategoryChange}
         handleNavigate={handleNavigate}
         handleDeletionProject={handleDeletionProject}
-        loading={loading}
-        successPopupAnimation={successPopupAnimation}
-        statisticsData={statisticsData}
-        pieChartSize={pieChartSize}
-        hovered={hovered}
-        pieChartData={pieChartData}
-        tasks={tasks}
+        tasks={task}
       />
       <Chart
         className="gantt-chart"
         chartType="Gantt"
         width="85%"
         height="100%" 
-        data={data}
+        data={task}
         options={options}
       />
       {isLaptop && (
