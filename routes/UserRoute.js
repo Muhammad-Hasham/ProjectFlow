@@ -22,7 +22,7 @@ router.get('/me',userController.getMe,userController.getUser);
 router.patch('/updateMe',userController.uploadUserPhoto,userController.resizeUserPhoto,userController.updateMe);
 
 // Admin control Routes
-router.use(authController.restrictTo('admin'));
+// router.use(authController.restrictTo('admin'));
 router
    .route('')
    .get(userController.getAllUsers)

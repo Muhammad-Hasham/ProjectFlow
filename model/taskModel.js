@@ -42,6 +42,16 @@ const taskSchema=new mongoose.Schema({
         type: mongoose.Schema.ObjectId,   
         ref: "User",
     },
+    pre_dependency:{
+        type: mongoose.Schema.ObjectId,    
+        ref: "Task",
+        default:null
+    },
+    post_dependency:{
+        type: mongoose.Schema.ObjectId,   
+        ref: "Task",
+        default:null
+    },
     project:{
         type: mongoose.Schema.ObjectId,
         ref:'Project',

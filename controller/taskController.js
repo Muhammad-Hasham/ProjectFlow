@@ -8,6 +8,8 @@ exports.CreateTask=catchAsync(async (req,res,next)=>{
         ...req.body,
         project_manager: req.user.id
     };
+
+    console.log(TaskData);
     
     const task=await Task.create(TaskData);
         res.status(201).json({
