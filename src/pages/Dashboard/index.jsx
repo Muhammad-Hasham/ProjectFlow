@@ -129,7 +129,7 @@ const DashboardPage = () => {
               </button>
               </div>
               {!showCreateProjects && (
-                <table style={{ width: '100%', marginTop: '10px', border: '1px solid #EBD9B4', borderRadius: '12px', overflow: 'hidden'  }}>
+                <table style={{ width: '100%', marginTop: '10px', border: '1px solid #EBD9B4', borderRadius: '12px', overflow: 'hidden' , boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                   <thead style={{ backgroundColor: '#EBD9B4' }}>
                     <tr>
                       <th style={{ padding: '8px' }}>#</th>
@@ -166,7 +166,7 @@ const DashboardPage = () => {
 </div>
 
         {!showCreateTasks && (
-          <table style={{ width: '100%', marginTop: '10px', border: '1px solid #EBD9B4', borderRadius: '12px', overflow: 'hidden'  }}>
+          <table style={{ width: '100%', marginTop: '10px', border: '1px solid #EBD9B4', borderRadius: '12px', overflow: 'hidden' , boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             <thead style={{ backgroundColor: '#EBD9B4' }}>
               <tr>
                 <th style={{ padding: '8px' }}>#</th>

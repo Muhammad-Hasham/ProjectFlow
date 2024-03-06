@@ -21,7 +21,6 @@ const NewTaskPage = () => {
   const [assigne, setAssigne] = useState(0);
   const [preDependency, setPreDependency] = useState("");
   const [postDependency, setPostDependency] = useState("");
-  const [userStoryDescription, setuserStoryDescription] = useState("");
   const [projid, setprojid] = useState("");
   const [formData, setFormData] = useState({
     startDate: null,
@@ -180,7 +179,7 @@ const NewTaskPage = () => {
         >
           New Task
         </Text>
-        <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' }}>
+        <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
           <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
               <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Name</Text>
@@ -203,12 +202,6 @@ const NewTaskPage = () => {
               </div>
             )}
   
-            <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-              <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">User Story Description</Text>
-              <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
-                <textarea name="description" value={userStoryDescription} onChange={(e) => setuserStoryDescription(e.target.value)} style={{ fontSize: '1rem', width: '60%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
-              </div>
-            </div>
   
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
               <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Assignee</Text>

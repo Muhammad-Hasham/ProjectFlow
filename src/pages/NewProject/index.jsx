@@ -125,7 +125,7 @@ const NewProjectPage = () => {
           >
             New Project
           </Text>
-          <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%'}}>
+          <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
             <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
               {/* Project Name */}
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">

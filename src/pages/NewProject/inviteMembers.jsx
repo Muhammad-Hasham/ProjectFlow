@@ -110,14 +110,14 @@ const InviteMembers = () => {
 
   const renderEmailFields = () => {
     return (
-      <div className="flex flex-col items-end justify-between mt-[34px] w-[97%] md:w-full">
+      <div  className="flex flex-col items-end justify-between mt-[34px] w-[97%] md:w-full">
         {formData.emailAddresses.map((email, index) => (
           <div key={index} className="flex flex-col ml-4 mt-4">
             {/* Email Label */}
             <Text style={{ fontSize: "16px", fontFamily: "Poppins", color: "#323F73" }}>
               Email Address
             </Text>
-            <div style={{ borderBottom: '1px solid #323F73', backgroundColor: '#F8FAFC', fontSize: '1rem', width: '76%' }}>
+            <div style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',borderBottom: '1px solid #323F73', backgroundColor: '#F8FAFC', fontSize: '1rem', width: '76%' }}>
               <input
                 type="text"
                 name={`emailAddress-${index}`}

@@ -34,6 +34,7 @@ const TaskDetailsPopup = ({ task, onClose }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         }}
       >
         <div
