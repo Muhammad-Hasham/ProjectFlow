@@ -65,7 +65,7 @@ const AutomaticTasks = () => {
         <div>
             {/* Microphone Modal */}
             {isMicrophoneClicked && (
-                <animated.div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '9999', backgroundColor: 'white', padding: '40px', borderRadius: '20px', minWidth: '400px', maxWidth: '600px', overflow: 'auto' }}>
+                <animated.div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '9999', backgroundColor: 'white', padding: '40px', borderRadius: '20px', minWidth: '400px', maxWidth: '600px', overflow: 'auto', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <button onClick={() => setMicrophoneClicked(false)} className="text-indigo-800 text-lg cursor-pointer absolute top-0 right-0">
                         <FontAwesomeIcon icon={faTimes} />
                     </button>
