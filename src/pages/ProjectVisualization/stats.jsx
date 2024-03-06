@@ -179,6 +179,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
           style={{
             color: "#323F73",
             marginBottom: "10px",
+            marginLeft: "30px",
             fontFamily: "poppins",
             fontSize: "30px",
           }}
@@ -249,7 +250,8 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
   <TableContainer
     component={Paper}
     style={{
-      marginBottom: "10px",
+      marginBottom: "20px",
+      marginLeft: "30px",
       background: "#f5f5f5",
       fontFamily: "poppins",
     }}
@@ -270,7 +272,6 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
             onClick={() => handleTaskClick(task)}
             style={{ cursor: "pointer" }}
           >
-            <TableCell>{task.user_story_id}</TableCell>
             <TableCell>{task.name}</TableCell>
             <TableCell>{task.status}</TableCell>
             <TableCell>{task.end_date.substring(0, 10)}</TableCell>
