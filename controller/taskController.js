@@ -2,23 +2,25 @@ const Task= require("../model/taskModel");
 const AppError=require("../utils/appError");
 const catchAsync=require("../utils/catchAsync");
 
-exports.CreateTask=catchAsync(async (req,res,next)=>{
+exports.CreateTask=catchAsync(async (req, res, next) => {
+    const tasksData = req.body.tasks;
+    const createdTasks = [];
 
-    const TaskData = {
-        ...req.body,
-        project_manager: req.user.id
-    };
-
-    console.log(TaskData);
-    
-    const task=await Task.create(TaskData);
-        res.status(201).json({
-            status:'success',
-            data:{
-                data:task
-            }
+    for (const taskData of tasksData) {
+        const task = await Task.create({
+            ...taskData,
+            project_manager: req.user.id
         });
-})
+        createdTasks.push(task);
+    }
+
+    res.status(201).json({
+        status: 'success',
+        data: {
+            tasks: createdTasks
+        }
+    });
+});
 
 exports.getAllTasks=async(req,res,next)=>{
 

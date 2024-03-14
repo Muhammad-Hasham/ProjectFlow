@@ -16,16 +16,20 @@ const taskSchema=new mongoose.Schema({
     },
     end_date:{
         type:Date,
+        default: () => {
+            const currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() + 3); // Adding 3 days
+            return currentDate;
+        }
         // required:[true,'Task Must have end Date']
     },
     last_updation_date:{
         type:Date
     },
     assignee:{
-       
         type: mongoose.Schema.ObjectId,   
         ref: "User",
-        required:true
+        default:null
     },
     priority:{
         type:String,
@@ -44,11 +48,6 @@ const taskSchema=new mongoose.Schema({
     },
     pre_dependency:{
         type: mongoose.Schema.ObjectId,    
-        ref: "Task",
-        default:null
-    },
-    post_dependency:{
-        type: mongoose.Schema.ObjectId,   
         ref: "Task",
         default:null
     },
