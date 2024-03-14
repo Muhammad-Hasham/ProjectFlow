@@ -8,7 +8,7 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def generate_tasks(user_story):
-    prompt = ''' You are an intelligent chatbot. Please provide development tasks for the following user story:"${user_story}". Generate only 5 or fewer tasks.Expected output format:"tasks": [{"name": "name of task 1", "description": "Description of Task 1","priority": "low",}, {"name": "name of task 2", "description": "Description of Task 2","priority": "High",  }, {"name": "name of task 3", "description": "Description of Task 3","priority": "Medium",},] '''
+    prompt = ''' You are an intelligent chatbot. Please provide development tasks for the following user story:"${user_story}". Generate only 5 or fewer tasks.Expected output format:"tasks": [{"name": "name of task 1", "description": "Description of Task 1","priority": "low",}, {"name": "name of task 2", "description": "Description of Task 2","priority": "high",  }, {"name": "name of task 3", "description": "Description of Task 3","priority": "medium",},] '''
 
     conversation = [{"role": "user", "content": prompt}]
     
