@@ -58,7 +58,7 @@ const Navigation = () => {
             ProjectFlow
           </Text>
           <MenuItem
-            style={{ ...iconStyles, marginTop: '80px', transform: hoveredItem === '/dashboard' ? 'scale(1.1)' : 'scale(1)'}}
+            style={{ ...iconStyles, marginTop: '80px', transform: hoveredItem === '/dashboard' ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.2s ease-in-out',}}
             onMouseEnter={() => handleMouseEnter('/dashboard')}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleMenuItemClick('/dashboard')}
@@ -67,7 +67,7 @@ const Navigation = () => {
             <div style={{ ...textStyles, marginRight: 'auto' }}>Dashboard</div>
           </MenuItem>
           <MenuItem
-            style={{...iconStyles, transform: hoveredItem === '/myprojects' ? 'scale(1.1)' : 'scale(1)' }}
+            style={{...iconStyles, transform: hoveredItem === '/myprojects' ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.2s ease-in-out', }}
             onMouseEnter={() => handleMouseEnter('/myprojects')}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleMenuItemClick('/myprojects')}
@@ -76,7 +76,7 @@ const Navigation = () => {
             <div style={{ ...textStyles, marginRight: 'auto' }}>Projects</div>
           </MenuItem>
           <MenuItem
-            style={{...iconStyles, transform: hoveredItem === '/mytasks' ? 'scale(1.1)' : 'scale(1)' }}
+            style={{...iconStyles, transform: hoveredItem === '/mytasks' ? 'scale(1.1)' : 'scale(1)' , transition: 'transform 0.2s ease-in-out',}}
             onMouseEnter={() => handleMouseEnter('/mytasks')}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleMenuItemClick('/mytasks')}
@@ -85,7 +85,7 @@ const Navigation = () => {
             <span style={{ ...textStyles, marginRight: 'auto' }}>My Tasks</span>
           </MenuItem>
           <MenuItem
-            style={{...iconStyles,transform: hoveredItem === '/apps' ? 'scale(1.1)' : 'scale(1)'  }}
+            style={{...iconStyles,transform: hoveredItem === '/apps' ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.2s ease-in-out',  }}
             onMouseEnter={() => handleMouseEnter('/apps')}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleMenuItemClick('/apps')}

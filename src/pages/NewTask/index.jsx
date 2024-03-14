@@ -207,7 +207,7 @@ const NewTaskPage = () => {
         <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' }}>
           <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Name</Text>
+              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
                 <input type="text" name="projectName" value={taskname} onChange={(e) => setTaskName(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '1px solid #1F2544' }} />
               </div>
@@ -215,7 +215,7 @@ const NewTaskPage = () => {
   
             {projectId === '123456' && (
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project</Text>
+                <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
                 <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
                   <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
                     <option>Select a Project</option>
@@ -228,7 +228,7 @@ const NewTaskPage = () => {
             )}
   
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Assignee</Text>
+              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Assignee</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
                 <select name="assignee" value={assign} onChange={handleInputChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
                   <option>Select a task assignee</option>
@@ -242,7 +242,7 @@ const NewTaskPage = () => {
             </div>
   
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Priority</Text>
+              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Priority</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
                 <select name="priority"  value={priority}
                 onChange={(e) => setPriority(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
@@ -255,18 +255,15 @@ const NewTaskPage = () => {
             </div>
             <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" >
   {/* Pre Dependency Dropdown */}
-  <div className="dropdown" >
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Pre Dependency:</Text>
+  
+      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Pre Dependency:</Text>
       <select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ width: '100%', marginLeft: '95px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
         <option value="">Select pre-dependency</option>
         {tasks.map((member) => (
                       <option key={member.id} value={member.id}>{member.name}</option>
                     ))}
       </select>
-    </div>
-  </div>
-  
+ 
 </div>
 
 <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[90%] md:w-full">
@@ -295,9 +292,9 @@ const NewTaskPage = () => {
 </div>
 
             <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-              <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Description</Text>
+              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Description</Text>
               <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
-                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '60%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
+                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
               </div>
             </div>
   

@@ -148,6 +148,22 @@ const InviteMembers = () => {
     return () => clearTimeout(timer);
   }, [popUp.type]);
 
+  const containerStyle = {
+    backgroundColor: '#EBD9B4',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    marginLeft: '15px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: '10px',
+    padding: '39px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    borderRadius: '30px',
+    width: '100%'
+  };
+
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
@@ -189,7 +205,7 @@ const InviteMembers = () => {
           </Text>
           
 
-          <div style ={{backgroundColor: '#EBD9B4'}}className="ml-[45px] flex flex-col items-center justify-end mt-8 p-[39px] sm:px-5 rounded-[30px] w-full">
+          <div style ={containerStyle}>
             <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
                {/* '+' Button to Add Email Field */}
                <Button
