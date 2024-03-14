@@ -253,12 +253,12 @@ const NewTaskPage = () => {
                 </select>
               </div>
             </div>
-            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" >
   {/* Pre Dependency Dropdown */}
-  <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+  <div className="dropdown" >
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Pre Dependency:</Text>
-      <select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ marginLeft: '95px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+      <select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ width: '100%', marginLeft: '95px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
         <option value="">Select pre-dependency</option>
         {tasks.map((member) => (
                       <option key={member.id} value={member.id}>{member.name}</option>
@@ -293,7 +293,6 @@ const NewTaskPage = () => {
     </div>
   </div>
 </div>
-
 
             <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
               <Text className="text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Task Description</Text>

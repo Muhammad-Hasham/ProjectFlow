@@ -261,6 +261,8 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
         <TableRow>
           <TableCell style={{ color: "#323F73" }}>Task Name</TableCell>
           <TableCell style={{ color: "#323F73" }}>Task Status</TableCell>
+          <TableCell style={{ color: "#323F73" }}>Priority</TableCell>
+          <TableCell style={{ color: "#323F73" }}>Start Date</TableCell>
           <TableCell style={{ color: "#323F73" }}>Due Date</TableCell>
           <TableCell style={{ color: "#323F73" }}>Task Assignee</TableCell>
         </TableRow>
@@ -274,6 +276,8 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
           >
             <TableCell>{task.name}</TableCell>
             <TableCell>{task.status}</TableCell>
+            <TableCell>{task.priority}</TableCell>
+            <TableCell>{task.start_date.substring(0, 10)}</TableCell>
             <TableCell>{task.end_date.substring(0, 10)}</TableCell>
             <TableCell>{task.assignee.name}</TableCell>
           </TableRow>
