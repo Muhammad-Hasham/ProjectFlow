@@ -8,7 +8,6 @@ import 'firebase/compat/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 
-
 function ChatInput({channelName, channelId, chatRef}) {
     const [input, setInput] = useState('');
     const [user] = useAuthState(auth);
