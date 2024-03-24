@@ -4,15 +4,17 @@ import { Button, Img, Text } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
 import Navigation from 'pages/Sidebar';
+import axios from 'axios';
 
 const AppsPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [creatingMeeting, setCreatingMeeting] = useState(false);
 
   const handleAddButtonClick = () => {
+    
     setLoading(true);
-
     // Simulate asynchronous operation (API call, etc.)
     setTimeout(() => {
       setLoading(false);
@@ -23,6 +25,32 @@ const AppsPage = () => {
         setShowSuccessPopup(false);
       }, 3000);
     }, 2000);
+  };
+
+  const zoomMeeting = () => {
+    setCreatingMeeting(true); // Set loading state to true
+  
+    const data = {
+      email: 'i200752@nu.edu.pk',
+    };
+  
+    axios
+      .post('http://localhost:3444/meeting', data)
+      .then((res) => {
+        console.log(res.data);
+        let URL = res.data.join_url.replace(
+          'https://us05web.zoom.us/j/',
+          'http://127.0.0.1:9999/?'
+        );
+        console.log(URL);
+        window.location.replace(URL);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setCreatingMeeting(false); // Set loading state back to false
+      });
   };
 
   const successPopupAnimation = useSpring({
@@ -103,12 +131,23 @@ const AppsPage = () => {
                       A popular video conferencing platform for virtual meetings and collaboration.
                     </Text>
                     <Button
-                      className="cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[218px] mt-[18px] text-base text-center tracking-[0.44px]"
+                      className="cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[218px] mt-[18px] text-base text-center tracking-[0.44px] relative" // Add relative positioning to the button
                       shape="round"
-                      style = {{backgroundColor: '#1F2544', color: 'white', borderRadius: '30px'}}
-                      onClick={handleAddButtonClick}
+                      style={{ backgroundColor: '#1F2544', color: 'white', borderRadius: '30px', position: 'relative' }} // Add relative positioning to the button
+                      onClick={zoomMeeting}
+                      disabled={creatingMeeting} // Disable the button while creating the meeting
                     >
-                      + Add
+                      {creatingMeeting ? (
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                          <Img
+                            className="h-[30px] w-[30px] animate-spin"
+                            src="images/loading.gif"
+                            alt="Loading"
+                          />
+                        </div>
+                      ) : (
+                        'Create Meeting'
+                      )}
                     </Button>
                      {/* Loading Animation */}
                      {loading && (
@@ -130,13 +169,14 @@ const AppsPage = () => {
                         />
                       </div>
                     )}
-                      {/* Success Popup */}
+                      {/* Success Popup
                       <animated.div style={successPopupAnimation} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-md">
                         Application added successfully!
-                      </animated.div>
+                      </animated.div> */}
                   </div>
                 </div>
               </div>
+              {/* End of application block */}
 
               <div className="flex flex-1 flex-col items-center justify-start w-full">
                 <div
@@ -197,10 +237,10 @@ const AppsPage = () => {
                         />
                       </div>
                     )}
-                      {/* Success Popup */}
+                      {/* Success Popup
                       <animated.div style={successPopupAnimation} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-md">
                         Application added successfully!
-                      </animated.div>
+                      </animated.div> */}
                   </div>
                 </div>
               </div>
