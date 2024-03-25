@@ -25,6 +25,7 @@ const AppsPage = () => {
         setShowSuccessPopup(false);
       }, 3000);
     }, 2000);
+    navigate('/googledocs')
   };
 
   const zoomMeeting = () => {
