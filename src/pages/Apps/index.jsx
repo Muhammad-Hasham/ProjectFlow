@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Sidebar } from 'react-pro-sidebar';
 import { Button, Img, Text } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';

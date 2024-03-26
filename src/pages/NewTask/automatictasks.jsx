@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Text } from "components";
 import axios from 'axios';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
-import { faMicrophone, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useSpring, animated } from "react-spring";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, Table, TableBody, TableCell, TableHead, TableRow, Typography, FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
+import { Mic, MicOff } from '@mui/icons-material';
 
 const AutomaticTasks = () => {
     const [isMicrophoneClicked, setMicrophoneClicked] = useState(true);
@@ -155,82 +153,81 @@ const AutomaticTasks = () => {
     }
 
     return (
-        <div>
-            {isMicrophoneClicked && (
-                <animated.div style={{ position: 'fixed', top: '30%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '9999', backgroundColor: 'white', padding: '40px', borderRadius: '20px', minWidth: '400px', maxWidth: '600px', overflow: 'auto' }}>
-                    <button onClick={() => setMicrophoneClicked(false)} className="text-indigo-800 text-lg cursor-pointer absolute top-0 right-0">
-                        <FontAwesomeIcon icon={faTimes} />
-                    </button>
-                    <div className="flex justify-center items-center mb-4">
-                        <FontAwesomeIcon icon={faMicrophone} className="text-indigo-800 text-4xl cursor-pointer mr-2" />
-                    </div>
-                    <button style={{ backgroundColor: '#1F2544', color: '#FFFFFF', fontSize: '1.25rem', padding: '0.5rem 1rem', borderRadius: '0.375rem', marginTop: '0.5rem', marginLeft: "70px" }} onClick={handleSpeakNowClick}>
-                        {isRecording ? 'Stop Recording' : 'Start Recording'}
-                    </button>
-                    {!isRecording && transcript && (
-                        <div className="text-indigo-800 mt-2" style={{ fontFamily: 'Poppins', fontSize: '14px' }}>
-                            Recorded Text: {transcript}
-                        </div>
-                    )}
-                    {!isRecording && transcript && (
-                        <button onClick={handleGenerateTaskClick} style={{ backgroundColor: '#1F2544', color: '#FFFFFF', fontSize: '1.25rem', padding: '0.5rem 1rem', borderRadius: '0.375rem', marginTop: '0.5rem', marginLeft: "60px" }}>
-                            {isLoading ? 'Loading...' : 'Generate Task'}
-                        </button>
-                    )}
+        <Dialog
+        open={isMicrophoneClicked}
+        onClose={() => setMicrophoneClicked(false)}
+        aria-labelledby="form-dialog-title"
+        fullWidth
+        maxWidth="sm"
+    >
+        <DialogTitle id="form-dialog-title">Automatic Task Generation</DialogTitle>
+        <DialogContent dividers>
+            <Box textAlign="center" py={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={isRecording ? <MicOff /> : <Mic />}
+                    onClick={handleSpeakNowClick}
+                >
+                    {isRecording ? 'Stop Recording' : 'Start Recording'}
+                </Button>
+            </Box>
 
-                    <div>
-                        <h3 style={{ textAlign: "center", fontSize: "16px", margin: "20px", fontFamily: 'Poppins', color: "indigo" }}>Here is the List of Tasks Generated</h3>
-                        <table style={{ borderCollapse: 'collapse', width: '100%', borderRadius: "4px", fontFamily: 'Poppins' }}>
-                            <thead>
-                                <tr style={{ backgroundColor: '#f2f2f2' }}>
-                                    <th style={{ padding: '8px', textAlign: 'left' }}>Name</th>
-                                    <th style={{ padding: '8px', textAlign: 'left' }}>Priority</th>
-                                    <th style={{ padding: '8px', textAlign: 'left' }}>Description</th>
-                                    <th style={{ padding: '8px', textAlign: 'left' }}>Select</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tasks && tasks.map((task, index) => (
-                                    <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
-                                        <td style={{ padding: '8px', textAlign: 'left' }}>{task.name}</td>
-                                        <td style={{ padding: '8px', textAlign: 'left' }}>{task.priority}</td>
-                                        <td style={{ padding: '8px', textAlign: 'left' }}>{task.description}</td>
-                                        <td style={{ padding: '8px', textAlign: 'left' }}>
-                                            <input
-                                                type="checkbox"
-                                                checked={task.isSelected}
-                                                onChange={() => handleTaskCheckboxChange(index)}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {projectId === '123456' && (
-                        <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                            <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project</Text>
-                            <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
-                                <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
-                                    <option>Select Project</option>
-                                    {projects.map((member) => (
-                                        <option key={member.id} value={member.id}>{member.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                    )}
-
-                    <button onClick={handleCancelClick} style={{ backgroundColor: '#B80000', color: '#FFFFFF', fontSize: '1.25rem', padding: '0.5rem 1rem', borderRadius: '20px', marginTop: '0.5rem', marginLeft: "100px" }}>
-                        Cancel
-                    </button>
-                    <button onClick={handleConfirmClick} style={{ backgroundColor: '#416D19', color: '#FFFFFF', fontSize: '1.25rem', padding: '0.5rem 1rem', borderRadius: '20px', marginTop: '0.5rem', marginLeft: "20px" }}>
-                        Confirm
-                    </button>
-                </animated.div>
+            {transcript && !isRecording && (
+                <Box textAlign="center" py={2}>
+                    <Typography variant="body1" gutterBottom>
+                        Recorded Text: {transcript}
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleGenerateTaskClick}
+                        disabled={isLoading}
+                        startIcon={isLoading && <CircularProgress size={24} />}
+                    >
+                        Generate Task
+                    </Button>
+                </Box>
             )}
-        </div>
+
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Priority</TableCell>
+                        <TableCell>Description</TableCell>
+                        <TableCell>Select</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {tasks.map((task, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{task.name}</TableCell>
+                            <TableCell>{task.priority}</TableCell>
+                            <TableCell>{task.description}</TableCell>
+                            <TableCell padding="checkbox">
+                                <Checkbox
+                                    checked={task.isSelected}
+                                    onChange={() => handleTaskCheckboxChange(index)}
+                                />
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+
+            {/* Additional UI elements for project selection and task confirmation */}
+
+            <Box display="flex" justifyContent="space-between" mt={2}>
+                <Button color="error" onClick={() => setMicrophoneClicked(false)}>
+                    Cancel
+                </Button>
+                <Button color="success" onClick={handleConfirmClick}>
+                    Confirm
+                </Button>
+            </Box>
+        </DialogContent>
+    </Dialog>
     );
 };
 

@@ -149,7 +149,7 @@ const InviteMembers = () => {
   }, [popUp.type]);
 
   const containerStyle = {
-    backgroundColor: '#EBD9B4',
+    backgroundColor: '#F7F1E5',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     marginLeft: '15px',
     display: 'flex',

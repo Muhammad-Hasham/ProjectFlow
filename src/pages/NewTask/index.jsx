@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMicrophone, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { Text, Button } from "components";
 import { useSpring, animated } from "react-spring";
-import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
-import DatePicker from 'react-datepicker';
+//import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
 import Navigation from "pages/Sidebar";
 import AutomaticTasks from "./automatictasks";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Box, TextField, MenuItem, FormControl, InputLabel, Select, Grid } from '@mui/material';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 const NewTaskPage = () => {
   const navigate = useNavigate();
@@ -20,27 +24,13 @@ const NewTaskPage = () => {
   const [description, setDescription] = useState("");
   const [assigne, setAssigne] = useState([]);
   const [preDependency, setPreDependency] = useState(null);
-  const [userStoryDescription, setuserStoryDescription] = useState("");
   const [projid, setprojid] = useState("");
   const [assign, setAssign] = useState(0);
   const [tasks,setTasks]=useState([]);
-
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
 
   const [priority, setPriority] = useState("");
-  // const [formData, setFormData] = useState({
-  //   name:"",
-  //   start_date: null,
-  //   end_date: null,
-  //   priority: "", // State variable for priority
-  // });
-
-
-  // // const handlePriorityChange = (e) => { // Handle changes in priority selection
-  // //   setFormData({ ...formData, priority: e.target.value });
-  // // };
-
   let formData = {
     name: taskname, // Set the initial values
     start_date: startdate,
@@ -204,97 +194,112 @@ const NewTaskPage = () => {
         >
           New Task
         </Text>
-        <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' }}>
-          <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
-            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
-              <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
-                <input type="text" name="projectName" value={taskname} onChange={(e) => setTaskName(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '1px solid #1F2544' }} />
-              </div>
+        <div style={{ marginLeft: '45px', backgroundColor: '#F7F1E5', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' , boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
+          <div className="flex flex-col items-start justify-start mt-[-15px] w-[95%] md:w-full">
+          <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between mt-[34px] w-[97%] md:w-full">
+            <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
+            <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
+              <TextField 
+                style={{ fontSize: '1rem', width: '100%', color: '#1F2544', backgroundColor: 'transparent', border: 'none'}}
+                value={taskname}
+                onChange={(e) => setTaskName(e.target.value)}
+                margin="normal"
+              />
             </div>
-  
-            {projectId === '123456' && (
-              <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
-                <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
-                  <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
-                    <option>Select a Project</option>
-                    {projects.map((member) => (
-                      <option key={member.id} value={member.id}>{member.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            )}
-  
-            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Assignee</Text>
-              <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
-                <select name="assignee" value={assign} onChange={handleInputChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
-                  <option>Select a task assignee</option>
-                  {assigne.map((member) => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-  
-            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Priority</Text>
-              <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
-                <select name="priority"  value={priority}
-                onChange={(e) => setPriority(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
-                  <option value="">Select priority</option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" >
-  {/* Pre Dependency Dropdown */}
-  
-      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Pre Dependency:</Text>
-      <select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ width: '100%', marginLeft: '95px', fontSize: '1rem', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+          </div>
+
+
+          <FormControl fullWidth margin="normal">
+  <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
+    <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
+    <div className="text-base w-[76%]" style={{ position: 'relative' }}>
+      <Select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent',  padding: '6px 3px', borderRadius: '50'}}>
+        <option>Select a Project</option>
+        {projects.map((member) => (
+          <option key={member.id} value={member.id}>{member.name}</option>
+        ))}
+      </Select>
+    </div>
+  </div>
+</FormControl>
+
+<FormControl fullWidth margin="normal">
+  <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
+    <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Assignee</Text>
+    <div className="text-base w-[76%]" style={{ position: 'relative' }}>
+      <Select name="assignee" value={assign} onChange={handleInputChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent'}}>
+        <option>Select a task assignee</option>
+        {assigne.map((member) => (
+          <option key={member.id} value={member.id}>{member.name}</option>
+        ))}
+      </Select>
+    </div>
+  </div>
+</FormControl>
+
+<FormControl fullWidth margin="normal">
+  <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
+    <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Priority</Text>
+    <div className="text-base w-[76%]" style={{ position: 'relative' }}>
+      <Select name="priority" value={priority} onChange={(e) => setPriority(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent'}}>
+        <option value="">Select priority</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </Select>
+    </div>
+  </div>
+</FormControl>
+
+<FormControl fullWidth margin="normal">
+  <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full" >
+    {/* Pre Dependency Dropdown */}
+    <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Pre Dependency:</Text>
+    <div style={{ width: '76%', position: 'relative' }}>
+      <Select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent' }}>
         <option value="">Select pre-dependency</option>
         {tasks.map((member) => (
-                      <option key={member.id} value={member.id}>{member.name}</option>
-                    ))}
-      </select>
- 
-</div>
+          <option key={member.id} value={member.id}>{member.name}</option>
+        ))}
+      </Select>
+    </div>
+  </div>
+</FormControl>
+
+
 
 <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[90%] md:w-full">
   {/* Start Date */}
   <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Start Date:</Text>
-      <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '15px', cursor: 'pointer', fontSize: '20px' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
-      <animated.div style={{ marginLeft: '100px', color: '#1F2544', fadeIn }}>
+      <animated.div style={{ marginLeft: '150px', color: '#1F2544', fadeIn }}>
         {/* Assuming DatePicker directly passes the selected date to onChange */}
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker id="start-date-picker" selected={startdate} onChange={(date) => setStartdate(date)} />
+        </LocalizationProvider>
       </animated.div>
     </div>
   </div>
   {/* Due Date */}
   <div className="dropdown" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Due Date:</Text>
-      <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '15px', cursor: 'pointer', fontSize: '20px' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
+      <Text style={{ color: '#1F2544', letterSpacing: '0.44px' , marginLeft: '50px'}} size="txtPoppinsRegular16">Due Date:</Text>
       <animated.div style={{ marginLeft: '100px', color: '#1F2544', fadeIn }}>
         {/* Assuming DatePicker directly passes the selected date to onChange */}
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker id="due-date-picker" selected={enddate} onChange={(date) => setEndDate(date)} />
+        </LocalizationProvider>
       </animated.div>
     </div>
   </div>
 </div>
 
+
             <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
               <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Description</Text>
-              <div style={{ borderBottom: '1px solid #1F2544', borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
-                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '0.5px #1F2544', outline: 'none' }} />
+              <div style={{ borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
+                <TextField name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '100%' }} />
               </div>
             </div>
   

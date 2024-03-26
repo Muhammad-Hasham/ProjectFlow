@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSpring, animated } from 'react-spring';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Text, Img, Button } from 'components';
+import { Text, Button } from 'components';
 import Navigation from 'pages/Sidebar';
 
 const ProjectProgress = ({ progress, statisticsData, tasks }) => {

@@ -5,6 +5,7 @@ import Navigation from 'pages/Sidebar';
 import { FaCheck } from 'react-icons/fa';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDetailsPopup from './taskdetails';
+import { useMediaQuery } from 'react-responsive';
 
 import axios from 'axios';
 
@@ -14,6 +15,13 @@ const MyTasksPage = () => {
   const [hoveredTask, setHoveredTask] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [popUp, setPopUp] = useState({ type: '', message: '' });
+
+  const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1224px)' });
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' });
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
+  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' });
+
 
   useEffect(() => {
     let token = localStorage.getItem('token');
@@ -136,11 +144,18 @@ const MyTasksPage = () => {
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       <Navigation />
 
-      <div style={{ width: '73%', padding: '20px', marginLeft: '300px' }}>
+      <div style={{ flex: 1, padding: '20px', marginLeft: isTabletOrMobile ? '0' : '300px' }}>
         <Text
           className="md:ml-[0] ml-[851px] text-base text-indigo-800 tracking-[0.44px] cursor-pointer"
           size="txtPoppinsRegular16"
           onClick={() => navigate('/myprofile')}
+          style={{
+            marginLeft: isTabletOrMobile ? '80%' : '80%',
+            fontSize: isDesktopOrLaptop ? '16px' : '12px', 
+            textAlign: 'left',
+            color: '#1F2544',
+            marginTop: '50px',
+          }}
         >
           My Profile
         </Text>

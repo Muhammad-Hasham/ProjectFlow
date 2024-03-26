@@ -123,7 +123,7 @@ const MyProjectsPage = () => {
             {(projects.length > 0 ? projects : dummyProjects).map((project) => (
               <div
                 key={project.id}
-                style={{ cursor: 'pointer', backgroundColor: '#EBD9B4', width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '7px', borderRadius: '30px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'transform 0.2s ease-in-out', transform: hovered === project.id ? 'scale(1.1)' : 'scale(1)' }}
+                style={{ cursor: 'pointer', backgroundColor: '#F7F1E5', width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '7px', borderRadius: '30px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'transform 0.2s ease-in-out', transform: hovered === project.id ? 'scale(1.1)' : 'scale(1)' }}
                 onClick={() => navigate(`/details/${project.id}`)}
                 onMouseEnter={() => handleMouseEnter(project.id)}
                 onMouseLeave={handleMouseLeave}

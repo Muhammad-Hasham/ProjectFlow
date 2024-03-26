@@ -3,10 +3,13 @@ import { Button, Text } from 'components';
 import { useNavigate } from 'react-router-dom';
 import Navigation from 'pages/Sidebar';
 import { useSpring, animated } from 'react-spring';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Box, TextField, MenuItem, FormControl, InputLabel, Select, Grid } from '@mui/material';
 
 const NewProjectPage = () => {
   const navigate = useNavigate();
@@ -125,79 +128,81 @@ const NewProjectPage = () => {
           >
             New Project
           </Text>
-          <div style={{ marginLeft: '45px', backgroundColor: '#EBD9B4', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
-            <div className="flex flex-col items-start justify-start mt-[19px] w-[95%] md:w-full">
+          <div style={{ marginLeft: '45px', backgroundColor: '#F7F1E5', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px',width: '100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
+            <div className="flex flex-col items-start justify-start mt-[-15px] w-[95%] md:w-full">
               {/* Project Name */}
-              <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-                <Text style={{
-                  marginTop: '0rem',
-                  color: '#1F2544',
-                  letterSpacing: '0.44px',
-                }}
-                size="txtPoppinsRegular16">
-                  Project Name
-                </Text>
-                <div style={{
-                  borderBottom: '1px solid #1F2544', // Border color for indigo-800
-                  fontSize: '1rem', // Font size for text-base
-                  width: '70%', // Width as specified
-                }}>
-                  <input
-                    type="text"
-                    name="projectName"
-                    value={formData.projectName}
-                    onChange={handleInputChange}
-                    style={{
-                      fontSize: '1rem', // Equivalent to text-base
-                      width: '60%', // Equivalent to w-full
-                      backgroundColor: 'transparent', // Equivalent to bg-gray-50
-                      border: 'none', // Equivalent to border-none
-                      borderBottom: '0.5px #1F2544', // Border color for indigo-800
-                      outline: 'none', // Equivalent to focus:outline-none
-                    }}
-                  />
-                </div>
-              </div>
+              <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between mt-[34px] w-[97%] md:w-full">
+    <Text style={{
+        color: '#1F2544',
+        letterSpacing: '0.44px',
+        marginBottom: '0.25rem', // Adjusted margin to align with TextField
+    }} size="txtPoppinsRegular16">
+        Project Name
+    </Text>
+    <div style={{
+        fontSize: '1rem',
+        width: '70%',
+    }}>
+        <TextField
+            type="text"
+            name="projectName"
+            value={formData.projectName}
+            onChange={handleInputChange}
+            style={{
+                fontSize: '1rem',
+                width: '100%',
+                backgroundColor: 'transparent',
+                border: 'none',
+                outline: 'none',
+            }}
+        />
+    </div>
+</div>
+
 
         {/* Start Date and Due Date */}
 <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '40px' }}>
     <Text style={{
-      color: '#1F2544',
-      letterSpacing: '0.44px',
+        color: '#1F2544',
+        letterSpacing: '0.44px',
     }}
     size="txtPoppinsRegular16">
-      Start Date
+        Start Date
     </Text>
-    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginLeft: '50px', cursor: 'pointer' }} onClick={() => document.getElementById('start-date-picker')?.click()} />
     <animated.div style={fadeIn}>
-      <DatePicker id="start-date-picker" selected={formData.startDate} onChange={handleStartDateChange} className="hidden" />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+                id="start-date-picker"
+                value={formData.startDate}
+                onChange={handleStartDateChange}
+                style={{ display: 'none' }} // Hide the DatePicker
+            />
+        </LocalizationProvider>
     </animated.div>
-    {formData.startDate && (
-      <Text style={{ marginLeft: '10px', color: '#1F2544' }}>
-        {formData.startDate.toLocaleDateString()}
-      </Text>
-    )}
-  </div>
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+</div>
+
+<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '40px' }}>
     <Text style={{
-      color: '#1F2544',
-      letterSpacing: '0.44px',
-      marginRight: 'auto', // Adjusted to push due date to the right
+        color: '#1F2544',
+        letterSpacing: '0.44px',
+        marginRight: 'auto', // Adjusted to push due date to the right
     }}
     size="txtPoppinsRegular16">
-      Due Date
+        Due Date
     </Text>
-    <FontAwesomeIcon icon={faCalendarAlt} style={{ marginRight: '200px', marginLeft: '50px', cursor: 'pointer' }} onClick={() => document.getElementById('due-date-picker')?.click()} />
     <animated.div style={fadeIn}>
-      <DatePicker id="due-date-picker" selected={formData.dueDate} onChange={handleDueDateChange} className="hidden" />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+                id="due-date-picker"
+                value={formData.dueDate}
+                onChange={handleDueDateChange}
+                style={{ display: 'none' }} // Hide the DatePicker
+            />
+        </LocalizationProvider>
     </animated.div>
-    {formData.dueDate && (
-      <Text style={{ marginLeft: '10px', color: '#1F2544' }}>
-        {formData.dueDate.toLocaleDateString()}
-      </Text>
-    )}
-  </div>
+</div>
+
 </div>
 
 
@@ -210,11 +215,11 @@ const NewProjectPage = () => {
                   Description
                 </Text>
                 <div style={{
-                  borderBottom: '1px solid #1F2544', // Border color for indigo-800
+                  
                   fontSize: '1rem', // Font size for text-base
                   width: '70%', // Width as specified
                 }}>
-                  <textarea
+                  <TextField
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}

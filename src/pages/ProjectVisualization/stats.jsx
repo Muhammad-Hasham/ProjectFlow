@@ -4,9 +4,10 @@ import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,} fr
 import { PieChart } from "react-minimal-pie-chart";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from "@mui/material";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { Text, Img, Button } from "components";
+import { Img, Button } from "components";
 import ProjectProgress from "./details";
 import "./TaskDetailsPopup.css";
+import _ from 'lodash';
 
 const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
   const [editedTask, setEditedTask] = useState({ ...task });
@@ -328,7 +329,7 @@ const ProjectStats = ({
           }}
         >
           <div style={{  marginTop: "-150px", marginRight: '20px', width: "50%", height: 300, backgroundColor: "#F7F1E5", borderRadius: 10, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}>
-  <ResponsiveContainer>
+  <ResponsiveContainer width="99%" height={300}>
     <LineChart
       data={statisticsData}
       margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
