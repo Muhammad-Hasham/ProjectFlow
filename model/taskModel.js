@@ -1,3 +1,4 @@
+const { createLog } = require('../controller/LogController');
 const mongoose=require('mongoose');
 
 const taskSchema=new mongoose.Schema({
@@ -80,5 +81,25 @@ taskSchema.pre(/^find/,function(next){
     next();
 })
 
+// Inside Task Schema
+// Pre hook for findOneAndUpdate to store original document
+taskSchema.pre('findOneAndUpdate', async function (next) {
+    // Fetch and store the original document
+    this._original = await this.model.findOne(this.getQuery());
+    next();
+});
+
+// Post hook to create log after update or delete
+taskSchema.post(['findOneAndUpdate', 'findOneAndDelete'], async function (doc) {
+    if (doc) {
+        await createLog({
+            prevData: this._original,
+            newData: doc,
+            updatedBy: doc.project_manager,
+            taskId: doc._id,
+            typeofRequest: doc.isNew ? 'create' : 'update'
+        });
+    }
+});
 const Task= mongoose.model('Task',taskSchema);
 module.exports=Task;
