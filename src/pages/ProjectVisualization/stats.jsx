@@ -9,9 +9,23 @@ import ProjectProgress from "./details";
 import "./TaskDetailsPopup.css";
 import _ from 'lodash';
 
+const ErrorBoundary = ({ children }) => {
+  const [hasError, setHasError] = useState(false);
+
+  const handleOnError = (error, errorInfo) => {
+    // You can log the error here
+    console.error('Error caught by ErrorBoundary:', error, errorInfo);
+    // Set state to indicate that an error has occurred
+    setHasError(true);
+  };
+
+  return hasError ? <div>Something went wrong.</div> : children;
+};
+
 const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
   const [editedTask, setEditedTask] = useState({ ...task });
 
+  let userrole=localStorage.getItem("role")
   console.log(teamMembers)
   const handleInputChange = (e) => {
     const { name, value,end_date} = e.target;
@@ -79,11 +93,13 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
 
   return (
     <>
+    
       {/* Background Overlay */}
       <div className="popup-overlay" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(5px)", zIndex: 1, }}
         onClick={onClose} // Close the popup if clicked outside the form
 ></div>
       {/* Popup */}
+      {userrole==="Project Manager"  && (
       <animated.div className="task-details-popup" style={{ ...popupAnimation, zIndex: 2,}}>
         <h2>Edit Task: {editedTask.name}</h2>
         <div className="field">
@@ -121,26 +137,34 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
             ))}
           </select>
         </div>
-
+        {userrole==="Project Manager"  && (
         <Button
           style={{ backgroundColor: " #48BB78", color: "#ffffff" }}
           onClick={handleSaveChanges}
         >
           Save Changes
         </Button>
+        )}
+
+{userrole==="Project Manager"  && (
         <Button
           style={{ backgroundColor: " #BE3144", color: "#ffffff" }}
           onClick={handleDelete}
         >
           Delete Task
         </Button>
+)}
+
+{userrole==="Project Manager"  && (
         <Button
           style={{ backgroundColor: " #323F73", color: "#ffffff" }}
           onClick={onClose}
         >
           Close
         </Button>
+)}
       </animated.div>
+      )}
     </>
   );
 };
@@ -165,8 +189,12 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
     handlePopupClose(); // Close the popup after deletion
   };
 
+  let userrole=localStorage.getItem("role")
+
   return (
+    
     <div>
+      {userrole!=="Client" &&(
       <div
         style={{
           display: "flex",
@@ -199,6 +227,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
             }}
           >
             {/* '+' Button for Creating Tasks */}
+            {userrole==="Project Manager"  && (
             <Link to={`/newtask/${projectId}`}>
               <Button
                 style={{
@@ -229,9 +258,11 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
               >
                 +
               </Button>
+           
             </Link>
-
+               )}
             {/* Button to Invite */}
+            {userrole==="Project Manager"  && (
             <Button
               className="cursor-pointer leading-[normal] min-w-[84px] text-base text-center tracking-[0.44px]"
               shape="round"
@@ -244,9 +275,11 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
             >
               Invite
             </Button>
+            )}
           </div>
         </div>
       </div>
+      )}
       <div style={{ width: "98%", margin: "0 auto", marginLeft: '-20px'}}> {/* Adjusted width and added margin */}
   <TableContainer
     component={Paper}
@@ -289,7 +322,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
 </div>
 
       {/* TaskDetailsPopup */}
-      {selectedTask && (
+      {selectedTask && userrole==="Project Manager" && (
         <TaskDetailsPopup
           task={selectedTask}
           onClose={handlePopupClose}
@@ -297,7 +330,9 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
           teamMembers={teamMembers}
         />
       )}
+     
     </div>
+ 
   );
 };
 
@@ -329,7 +364,8 @@ const ProjectStats = ({
           }}
         >
           <div style={{  marginTop: "-150px", marginRight: '20px', width: "50%", height: 300, backgroundColor: "#F7F1E5", borderRadius: 10, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}>
-  <ResponsiveContainer width="99%" height={300}>
+          
+        <ResponsiveContainer width="99%" height={300}>
     <LineChart
       data={statisticsData}
       margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
