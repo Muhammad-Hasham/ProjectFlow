@@ -253,15 +253,19 @@ const InviteMembers = () => {
                 Invite
               </Button>
 
-              {/* Button to Create Project */}
-              <Button
-                className="cursor-pointer leading-[normal] min-w-[84px] ml-[745px] mt-[-42px] text-base text-center tracking-[0.44px]"
-                shape="round"
-                color="indigo_800"
-                onClick={handleCreateProject}
-              >
-                Create
-              </Button>
+             
+{ProjectData && ProjectData.name !== null && (
+  <Button
+    className="cursor-pointer leading-[normal] min-w-[84px] ml-[745px] mt-[-42px] text-base text-center tracking-[0.44px]"
+    shape="round"
+    color="indigo_800"
+    onClick={handleCreateProject}
+  >
+    Create
+  </Button>
+)}
+
+
             </div>
           </div>
         </div>
