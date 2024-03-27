@@ -31,7 +31,7 @@ const SignuprolePage = () => {
       localStorage.setItem("email",data.data.user.email)
       localStorage.setItem("role",data.data.user.role)
       alert("Signup Successfully")
-        navigate("/dashboard"); // Navigate to the dashboard or appropriate page.
+        navigate("/signin"); // Navigate to the dashboard or appropriate page.
       })
       .catch((error) => {
         console.error("Signup failed", error);
