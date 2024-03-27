@@ -17,6 +17,7 @@ const KanbanComponent = () => {
     completed: [],
   });
   const { todo, inProgress, completed } = tasks;
+  let userrole=localStorage.getItem("role");
 
   useEffect(() => {
     // Fetch project details from the API based on the 'projectId' parameter
@@ -220,9 +221,12 @@ const KanbanComponent = () => {
                   <div className="column-header">
                     <h3>{columnId === 'inProgress' ? 'IN PROGRESS' : columnId.toUpperCase()}</h3>
                     <div className="column-buttons">
+                    {userrole==="Project Manager"  && (
                       <Button shape="round" onClick={() => handleDeleteCategory(columnId)} className="delete-button">
                         -
                       </Button>
+                    )}
+                    {userrole==="Project Manager"  && (
                       <Button
                         shape="round"
                         color="indigo_800_01"
@@ -230,6 +234,7 @@ const KanbanComponent = () => {
                       >
                         +
                       </Button>
+                    )}
                     </div>
                   </div>
                   <Droppable droppableId={columnId} key={columnId}>
@@ -279,12 +284,16 @@ const KanbanComponent = () => {
                 <div className="column-header">
                   <h3>{newCategory.toUpperCase()}</h3>
                   <div className="column-buttons">
+                  {userrole==="Project Manager"  && (
                     <Button shape="round" onClick={() => handleDeleteCategory(newCategory)} className="delete-button">
                       -
                     </Button>
+                  )}
+                    {userrole==="Project Manager"  && (
                     <Button shape="round" color="indigo_800_01" onClick={() => handleAddTaskToCategory(newCategory)}>
                       +
                     </Button>
+                    )}
                   </div>
                 </div>
                 <Droppable droppableId={newCategory} key={newCategory}>
@@ -367,9 +376,11 @@ const KanbanComponent = () => {
 
         {/* Button to add a new category */}
         <div className="add-category-button">
+        {userrole==="Project Manager"  && (
           <Button style={{ position: 'absolute', top: 400, right: 80, margin: '8px' }} shape="round" color="indigo_800_01" onClick={() => setShowAddCategoryPopup(true)}>
             +
           </Button>
+        )}
         </div>
       </div>
     </div>
