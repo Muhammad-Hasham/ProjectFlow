@@ -245,10 +245,13 @@ exports.sendInviteEmail = catchAsync(async (req, res, next) => {
           <h1>Welcome to Project Flow!</h1>
           <p>
             You are invited to join Project Flow, an AI-based Project Management tool. 
-            Click the link below to accept the invitation and start managing your projects efficiently.
+            Click the buttons below to accept or reject the invitation.
           </p>
-          <a href="your_invitation_link" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">
-            Accept Invitation
+          <a href="http://localhost:3001/signin" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; display: inline-block; margin-right: 10px;">
+            Accept
+          </a>
+          <a href="#" style="background-color: #f44336; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">
+            Reject
           </a>
         </div>
       `,
