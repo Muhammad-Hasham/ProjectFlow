@@ -146,7 +146,7 @@ const DashboardPage = () => {
                       <tr key={project.id}>
                         <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{index + 1}</td>
                         <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{project.name}</td>
-                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{project.dueDate}</td>
+                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{project.dueDate.substring(0, 10)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -187,7 +187,7 @@ const DashboardPage = () => {
                 <tr key={task.id}>
                   <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{index + 1}</td>
                   <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{task.name}</td>
-                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{task.dueDate}</td>
+                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{task.end_date.substring(0, 10)}</td>
                 </tr>
               ))}
             </tbody>
