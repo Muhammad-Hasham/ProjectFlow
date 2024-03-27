@@ -1,16 +1,14 @@
 import './App.css';
-import React, {useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginButton from './login';
-import LogoutButton from './logout';
 import { gapi } from 'gapi-script';
-
 
 const client_Id = process.env.REACT_APP_CLIENT_ID;
 const api_key = process.env.REACT_APP_API_KEY;
 const Scopes = 'https://www.googleapis.com/auth/drive.file';
 
-
 function App() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     async function start() {
@@ -20,11 +18,20 @@ function App() {
           clientId: client_Id,
           scope: Scopes
         });
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
       } catch (error) {
         console.error('Error initializing gapi:', error);
       }
     }
-  
+
+    function updateSigninStatus(isSignedIn) {
+      setIsSignedIn(isSignedIn);
+      if (isSignedIn) {
+        createFile();
+      }
+    }
+
     gapi.load('client:auth2', start);
   }, []);
 
@@ -33,21 +40,18 @@ function App() {
 
     fetch('https://docs.googleapis.com/v1/documents', {
       method: "POST",
-      headers: new Headers({ 'Authorization': 'Bearer ' + accessToken}),
-    }).then ((res) =>{
+      headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
+    }).then((res) => {
       return res.json();
-    }).then (function(val){
+    }).then(function(val) {
       console.log(val);
-      console.log(val.documentId);
       window.open('https://docs.google.com/document/d/' + val.documentId + '/edit', "_blank");
-    })
+    });
   }
 
   return (
     <div className="App">
-      <LoginButton />
-      <LogoutButton />
-      <button onClick={() => createFile()}>Create new Google Document</button>
+      {!isSignedIn ? <LoginButton /> : <p>Redirecting to Google Docs...</p>}
     </div>
   );
 }

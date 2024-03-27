@@ -140,9 +140,9 @@ const DashboardPage = () => {
                   <tbody>
                     {projects.map((project, index) => (
                       <tr key={project.id}>
-                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{index + 1}</td>
-                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{project.name}</td>
-                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{project.dueDate}</td>
+                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{index + 1}</td>
+                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{project.name}</td>
+                        <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{project.dueDate}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -177,9 +177,9 @@ const DashboardPage = () => {
             <tbody>
               {tasks.map((task, index) => (
                 <tr key={task.id}>
-                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{index + 1}</td>
-                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{task.name}</td>
-                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#FAF2D3' }}>{task.dueDate}</td>
+                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{index + 1}</td>
+                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{task.name}</td>
+                  <td style={{ padding: '8px', border: '1px solid #EBD9B4', backgroundColor: '#F7F1E5' }}>{task.dueDate}</td>
                 </tr>
               ))}
             </tbody>
