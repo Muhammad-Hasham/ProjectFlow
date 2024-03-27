@@ -15,6 +15,8 @@ const Navigation = () => {
     navigate(route);
   };
 
+  let userrole=localStorage.getItem("role")
+
   const iconStyles = {
     color: '#FFF7F1',
     cursor: 'pointer',
@@ -75,15 +77,20 @@ const Navigation = () => {
             <AssignmentIcon style={{ marginRight: '20px'}} />
             <div style={{ ...textStyles, marginRight: 'auto' }}>Projects</div>
           </MenuItem>
+          {userrole!=="Client" &&(
           <MenuItem
             style={{...iconStyles, transform: hoveredItem === '/mytasks' ? 'scale(1.1)' : 'scale(1)' , transition: 'transform 0.2s ease-in-out',}}
             onMouseEnter={() => handleMouseEnter('/mytasks')}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleMenuItemClick('/mytasks')}
           >
+            
             <ListAltIcon style={{ marginRight: '20px'}} />
+           
             <span style={{ ...textStyles, marginRight: 'auto' }}>My Tasks</span>
+           
           </MenuItem>
+           )}
           <MenuItem
             style={{...iconStyles,transform: hoveredItem === '/apps' ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.2s ease-in-out',  }}
             onMouseEnter={() => handleMouseEnter('/apps')}
