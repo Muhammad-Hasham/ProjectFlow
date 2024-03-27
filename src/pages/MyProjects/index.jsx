@@ -98,6 +98,7 @@ const MyProjectsPage = () => {
             >
               Projects
             </Text>
+            {userrole==="Project Manager"  && (
             <Button
               style={{ cursor: 'pointer', minWidth: '109px', marginTop: '70px', fontSize: '16px', letterSpacing: '0.44px', transition: 'transform 0.2s ease-in-out', transform: hovered === '/newproject' ? 'scale(1.1)' : 'scale(1)' }}
               onClick={() => {
@@ -109,6 +110,7 @@ const MyProjectsPage = () => {
             >
               Create
             </Button>
+            )}
             {loading && (
               <div style={{ position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                 <Img
