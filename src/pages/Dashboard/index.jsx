@@ -13,6 +13,7 @@ const DashboardPage = () => {
   const [showCreateTasks, setShowCreateTasks] = useState(false);
   const [popUp, setPopUp] = useState({ type: "", message: "" });
 
+  let userrole=localStorage.getItem("role");
   let name = localStorage.getItem("username");
 
   useEffect(() => {
@@ -56,11 +57,12 @@ const DashboardPage = () => {
     const role = localStorage.getItem("role");
     let fetchProjectsUrl = "";
 
-    if (role === "Team Member") {
+    if (role === "Team Member" || role === "Client") {
       fetchProjectsUrl = "http://127.0.0.1:3000/api/v1/projects";
     } else if (role === "Project Manager") {
       fetchProjectsUrl = `http://127.0.0.1:3000/api/v1/users/${id}/projects`;
     }
+   
 
     axios
       .get(fetchProjectsUrl, {
@@ -121,12 +123,14 @@ const DashboardPage = () => {
               <Text style={{ fontSize: '22px', color: '#1F2544', marginRight: '10px' }} size="txtPoppinsBold22">
                 My Projects
               </Text>
+             {userrole==="Project Manager"  && (
               <button
                 style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontSize: '22px', color: '#1F2544' }}
                 onClick={handleCreateProjectClick}
               >
                 +
               </button>
+              )}
               </div>
               {!showCreateProjects && (
                 <table style={{ width: '100%', marginTop: '10px', border: '1px solid #EBD9B4', borderRadius: '12px', overflow: 'hidden' , boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
@@ -152,17 +156,21 @@ const DashboardPage = () => {
           </div>
 
           <div style={{ flex: '1', marginLeft: '10px' }}>
+
+  {userrole !=="Client" &&(          
   <div>
   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
   <Text style={{ fontSize: '22px', color: '#1F2544', marginRight: '10px' }} size="txtPoppinsBold22">
     My Tasks
   </Text>
+  {userrole==="Project Manager"  && (
   <button
     style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontSize: '22px', color: '#1F2544' }}
     onClick={handleCreateTaskClick}
   >
     +
   </button>
+  )}
 </div>
 
         {!showCreateTasks && (
@@ -186,6 +194,7 @@ const DashboardPage = () => {
           </table>
         )}
       </div>
+  )}
     </div>
 
         </div>
