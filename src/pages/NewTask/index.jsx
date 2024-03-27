@@ -48,31 +48,31 @@ const NewTaskPage = () => {
 
   const fadeIn = useSpring({ opacity: 1, from: { opacity: 0 } });
 
-  // Fetch project details from the API based on projectId
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+ // Fetch project details from the API based on projectId
+ useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+  fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Project not found");
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Project not found");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setAssigne(data.data.project.Members);
-        setTasks(data.data.project.tasks);
-        console.log(data.data.project.tasks)
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  }, [projectId]);
+    .then((data) => {
+      setAssigne(data.data.project.Members);
+      setTasks(data.data.project.tasks);
+      console.log(data.data.project.tasks);
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+    });
+}, [projectId]);
 
   const handleInputChange = (e) => {
     const selectedAssigneeId = e.target.value;
@@ -103,12 +103,15 @@ const NewTaskPage = () => {
   const [projects, setProjects] = useState([]);
   const [proj, setProj] = useState("");
 
+  
+  // Fetch projects data when component mounts
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const id = localStorage.getItem("userid");
 
     fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -128,37 +131,33 @@ const NewTaskPage = () => {
   }, []);
 
   const HandleProjChange = (e) => {
-    const selectedAssigneeId = e.target.value;
+    const selectedProjectId = e.target.value;
+    setProj(selectedProjectId); // Update selected project state
 
-    setprojid(selectedAssigneeId)
-
-    setProj((prevProj) => {
-      const token = localStorage.getItem("token");
-
-      fetch(`http://127.0.0.1:3000/api/v1/projects/${selectedAssigneeId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+    // Fetch project details when a project is selected
+    const token = localStorage.getItem("token");
+    fetch(`http://127.0.0.1:3000/api/v1/projects/${selectedProjectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Project not found");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Project not found");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setAssigne(data.data.project.Members);
-          setTasks(data.data.project.tasks);
-        console.log(data.data.project.tasks)
-        })
-        .catch((error) => {
-          console.error("Error fetching project details:", error);
-        });
-
-      return selectedAssigneeId;
-    });
+      .then((data) => {
+        setAssigne(data.data.project.Members);
+        setTasks(data.data.project.tasks);
+        console.log(data.data.project.tasks);
+      })
+      .catch((error) => {
+        console.error("Error fetching project details:", error);
+      });
   };
+
 
 
 
@@ -213,10 +212,15 @@ const NewTaskPage = () => {
   <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
     <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
     <div className="text-base w-[76%]" style={{ position: 'relative' }}>
-      <Select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent',  padding: '6px 3px', borderRadius: '50'}}>
-        <option>Select a Project</option>
-        {projects.map((member) => (
-          <option key={member.id} value={member.id}>{member.name}</option>
+    <Select style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent',  padding: '6px 3px', borderRadius: '50'}}
+        name="project"
+        value={proj}
+        onChange={HandleProjChange}
+        displayEmpty
+      >
+        <MenuItem value="" disabled>Select a Project</MenuItem>
+        {projects.map((project) => (
+          <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>
         ))}
       </Select>
     </div>
@@ -228,9 +232,10 @@ const NewTaskPage = () => {
     <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Assignee</Text>
     <div className="text-base w-[76%]" style={{ position: 'relative' }}>
       <Select name="assignee" value={assign} onChange={handleInputChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent'}}>
-        <option>Select a task assignee</option>
+      <MenuItem value="" disabled>Select a Task Assignee</MenuItem>
+      
         {assigne.map((member) => (
-          <option key={member.id} value={member.id}>{member.name}</option>
+          <MenuItem key={member.id} value={member.id}>{member.name}</MenuItem>
         ))}
       </Select>
     </div>
@@ -242,10 +247,10 @@ const NewTaskPage = () => {
     <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Priority</Text>
     <div className="text-base w-[76%]" style={{ position: 'relative' }}>
       <Select name="priority" value={priority} onChange={(e) => setPriority(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent'}}>
-        <option value="">Select priority</option>
-        <option value="high">High</option>
-        <option value="medium">Medium</option>
-        <option value="low">Low</option>
+        <MenuItem value="">Select priority</MenuItem>
+        <MenuItem value="high">High</MenuItem>
+        <MenuItem value="medium">Medium</MenuItem>
+        <MenuItem value="low">Low</MenuItem>
       </Select>
     </div>
   </div>
@@ -257,9 +262,9 @@ const NewTaskPage = () => {
     <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Pre Dependency:</Text>
     <div style={{ width: '76%', position: 'relative' }}>
       <Select id="pre-dependency" value={preDependency} onChange={(e) => setPreDependency(e.target.value)} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent' }}>
-        <option value="">Select pre-dependency</option>
+        <MenuItem value="">Select pre-dependency</MenuItem>
         {tasks.map((member) => (
-          <option key={member.id} value={member.id}>{member.name}</option>
+          <MenuItem key={member.id} value={member.id}>{member.name}</MenuItem>
         ))}
       </Select>
     </div>

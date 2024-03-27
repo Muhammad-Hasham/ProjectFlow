@@ -19,6 +19,7 @@ const Calendar = React.lazy(() => import("./pages/ProjectVisualization/calendar.
 const Invite = React.lazy(() => import("pages/NewProject/inviteMembers.jsx"))
 const GanttComponent = React.lazy(() => import("pages/ProjectVisualization/ganttchart.jsx"))
 const Googledocs = React.lazy(() => import("pages/GoogleDocs/App.js"))
+const Logs = React.lazy(() => import("pages/Logs/index.jsx"))
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -42,6 +43,7 @@ const ProjectRoutes = () => {
           <Route path="/invite" element={<Invite />} />
           <Route path="/ganttchart/:projectId" element={<GanttComponent />} />
           <Route path="/googledocs" element={<Googledocs />} />
+          <Route path="/logs" element={<Logs />} />
 
         </Routes>
       </Router>
