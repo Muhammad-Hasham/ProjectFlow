@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, Table, TableBody, TableCell, TableHead, TableRow, Typography, FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import { Mic, MicOff } from '@mui/icons-material';
+import {Text} from 'components';
 
 const AutomaticTasks = () => {
     const [isMicrophoneClicked, setMicrophoneClicked] = useState(true);
@@ -215,6 +216,21 @@ const AutomaticTasks = () => {
                     ))}
                 </TableBody>
             </Table>
+
+            {projectId === '123456' && (
+                        <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
+                            <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project</Text>
+                            <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
+                                <select name="project" value={proj} onChange={HandleProjChange} style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent', border: 'none', outline: 'none', borderBottom: '0.5px solid #1F2544' }}>
+                                    <option>Select Project</option>
+                                    {projects.map((member) => (
+                                        <option key={member.id} value={member.id}>{member.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    )}
+
 
             {/* Additional UI elements for project selection and task confirmation */}
 
