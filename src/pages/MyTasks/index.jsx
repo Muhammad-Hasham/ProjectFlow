@@ -6,7 +6,6 @@ import { FaCheck } from 'react-icons/fa';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDetailsPopup from './taskdetails';
 import { useMediaQuery } from 'react-responsive';
-
 import axios from 'axios';
 
 const MyTasksPage = () => {
@@ -15,14 +14,11 @@ const MyTasksPage = () => {
   const [hoveredTask, setHoveredTask] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [popUp, setPopUp] = useState({ type: '', message: '' });
-
   const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 1224px)' });
   const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' });
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
   const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' });
-
-
   useEffect(() => {
     let token = localStorage.getItem('token');
     const id = localStorage.getItem('userid');
