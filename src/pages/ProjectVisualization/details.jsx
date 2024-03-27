@@ -9,7 +9,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const location = useLocation();
-
+  let userrole=localStorage.getItem("role")
   useEffect(() => {
     const token = localStorage.getItem("token");
     fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
@@ -72,6 +72,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
           {projectname}
         </Text>
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: '50px' }}>
+        {userrole==="Project Manager"  && (
           <Button
             className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
             style={{ width: '100px', marginLeft: '50px' }}
@@ -79,8 +80,11 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
             shape="round"
             color="indigo_800_01"
           >
-            Update
+            Settings
           </Button>
+        )}
+
+{/* {userrole==="Project Manager"  && (
           <Button
             className="common-pointer cursor-pointer leading-[normal] min-w-[10px] mt-2.5 text-base text-center tracking-[0.44px]"
             style={{ width: '100px', marginLeft: '50px', backgroundColor: '#BE3144', color: '#ffffff' }}
@@ -89,6 +93,8 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
           >
             Delete
           </Button>
+
+)} */}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', cursor: 'pointer' }}>
           <h3
