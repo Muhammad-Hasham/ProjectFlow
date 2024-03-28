@@ -30,7 +30,14 @@ const SigninPage = () => {
       localStorage.setItem("photo",response.data.data.user.photo)
       localStorage.setItem("role",response.data.data.user.role)
       alert("LoggedIn Successfully")
+      if(response.data.data.user.role==="admin")
+      {
+        navigate("/logs");
+      }
+      else
+      {
       navigate("/dashboard");
+      }
       
     } catch (error) {
       console.error("Login failed", error);
