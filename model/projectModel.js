@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'A user must have name'],
+        required: [true, 'A user must have a name'],
     },
     description: {
         type: String,
-        required: [true, 'Please Provide Project Description']
+        required: [true, 'Please provide a project description']
     },
     start_date: {
         type: Date,
@@ -16,7 +16,7 @@ const projectSchema = new mongoose.Schema({
     },
     end_date: {
         type: Date,
-        required: [true, 'Project Must have end Date']
+        required: [true, 'Project must have an end date']
     },
     project_manager: {
         type: mongoose.Schema.ObjectId,
@@ -55,15 +55,13 @@ projectSchema.virtual('tasks', {
     localField: '_id'
 });
 
-projectSchema.pre(/^find/,function(next){
+projectSchema.pre(/^find/, function (next) {
     this.populate({
-        path: 'Members', // name of field we want to populate
-        select: '-__v -passwordChangedAt'  // fields we dont want in output/response. 
+        path: 'Members',
+        select: '-__v -passwordChangedAt'
     })
     next();
-})
-
-
+});
 
 // Pre hook for findOneAndUpdate to store original document
 projectSchema.pre('findOneAndUpdate', async function (next) {
@@ -84,6 +82,46 @@ projectSchema.post(['findOneAndUpdate', 'findOneAndDelete'], async function (doc
         });
     }
 });
+
+// Post hook to create log after a new document is created
+projectSchema.post('save', async function (doc) {
+    await createLog({
+        prevData: {}, // No previous data for new document
+        newData: doc,
+        updatedBy: doc.project_manager,
+        projectId: doc._id,
+        typeofRequest: 'create'
+    });
+});
+
+projectSchema.pre('deleteOne', async function (next) {
+    try {
+        // Store the document to be deleted
+        this._docToDelete = await this.model.findOne(this.getQuery());
+        next();
+    } catch (error) {
+        console.error("Error in findOneAndDelete hook:", error);
+        next(error); // Forward the error to the next middleware
+    }
+});
+
+projectSchema.post('deleteOne', async function (doc) {
+    try {
+        if (this._docToDelete) {
+            await createLog({
+                prevData: this._docToDelete,
+                newData: {}, // No new data after deletion
+                updatedBy: this._docToDelete.project_manager,
+                projectId: this._docToDelete._id,
+                typeofRequest: 'delete'
+            });
+        }
+    } catch (error) {
+        console.error("Error creating delete log:", error);
+    }
+});
+
+
 
 const Project = mongoose.model('Project', projectSchema);
 module.exports = Project;
