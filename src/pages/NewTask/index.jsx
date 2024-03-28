@@ -4,7 +4,6 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { Text, Button } from "components";
 import { useSpring, animated } from "react-spring";
-//import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
 import Navigation from "pages/Sidebar";
@@ -24,86 +23,41 @@ const NewTaskPage = () => {
   const [description, setDescription] = useState("");
   const [assigne, setAssigne] = useState([]);
   const [preDependency, setPreDependency] = useState(null);
-  const [projid, setprojid] = useState("");
   const [assign, setAssign] = useState(0);
   const [tasks,setTasks]=useState([]);
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
-
   const [priority, setPriority] = useState("");
-  let formData = {
-    name: taskname, // Set the initial values
-    start_date: startdate,
-    end_date: enddate,
-    description: description, // Add lastUpdationDate field
-    priority: priority,
-    assignee: assign,
-    pre_dependency:preDependency,
-    project:projid?projid:projectId.toString()
-  };
+  const [projects, setProjects] = useState([]);
+  const [proj, setProj] = useState("");
 
-  const handleMicrophoneClick = () => {
-    setMicrophoneClicked(true);
-  };
+  // Fetch project details from the API based on projectId
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  const fadeIn = useSpring({ opacity: 1, from: { opacity: 0 } });
-
- // Fetch project details from the API based on projectId
- useEffect(() => {
-  const token = localStorage.getItem("token");
-
-  fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Project not found");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setAssigne(data.data.project.Members);
-      setTasks(data.data.project.tasks);
-      console.log(data.data.project.tasks);
-    })
-    .catch((error) => {
-      console.error("Error: ", error);
-    });
-}, [projectId]);
-
-  const handleInputChange = (e) => {
-    const selectedAssigneeId = e.target.value;
-    setAssign(selectedAssigneeId);
-  };
-
-  const handleCreateProject = () => {
-    let token = localStorage.getItem("token");
-
-    axios
-      .post("http://127.0.0.1:3000/api/v1/tasks", JSON.stringify(formData), {
+    if (projectId) {
+      fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
-        setPopUp({ type: "success", message: "Project Created Successfully!" });
-        navigate("/mytasks");
-      })
-      .catch((error) => {
-        setPopUp({ type: "error" });
-        console.error("Project creation failed", error);
-      });
-  };
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Project not found");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setAssigne(data.data.project.Members);
+          setTasks(data.data.project.tasks);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    }
+  }, [projectId]);
 
-  let token = localStorage.getItem("token");
-  const [projects, setProjects] = useState([]);
-  const [proj, setProj] = useState("");
-
-  
   // Fetch projects data when component mounts
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -151,15 +105,58 @@ const NewTaskPage = () => {
       .then((data) => {
         setAssigne(data.data.project.Members);
         setTasks(data.data.project.tasks);
-        console.log(data.data.project.tasks);
       })
       .catch((error) => {
         console.error("Error fetching project details:", error);
       });
   };
 
+  const handleInputChange = (e) => {
+    const selectedAssigneeId = e.target.value;
+    setAssign(selectedAssigneeId);
+  };
 
+  const handleCreateProject = () => {
+    let token = localStorage.getItem("token");
+  
+    const formData = {
+      tasks: [ // Wrap the task object in an array
+        {
+          name: taskname,
+          start_date: startdate,
+          end_date: enddate,
+          description: description,
+          priority: priority,
+          assignee: assign,
+          pre_dependency: preDependency,
+          project: proj ? proj : projectId
+        }
+      ]
+    };
+    
+  
+    axios
+      .post("http://127.0.0.1:3000/api/v1/tasks", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setPopUp({ type: "success", message: "Project Created Successfully!" });
+        navigate("/mytasks");
+      })
+      .catch((error) => {
+        setPopUp({ type: "error" });
+        console.error("Project creation failed", error);
+      });
+  };
 
+  const handleMicrophoneClick = () => {
+    setMicrophoneClicked(true);
+  };
+
+  const fadeIn = useSpring({ opacity: 1, from: { opacity: 0 } });
 
   return (
     <div style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
@@ -195,37 +192,39 @@ const NewTaskPage = () => {
         </Text>
         <div style={{ marginLeft: '45px', backgroundColor: '#F7F1E5', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px', padding: '39px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '30px', width: '100%' , boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
           <div className="flex flex-col items-start justify-start mt-[-15px] w-[95%] md:w-full">
-          <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between mt-[34px] w-[97%] md:w-full">
-            <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
-            <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
-              <TextField 
-                style={{ fontSize: '1rem', width: '100%', color: '#1F2544', backgroundColor: 'transparent', border: 'none'}}
-                value={taskname}
-                onChange={(e) => setTaskName(e.target.value)}
-                margin="normal"
-              />
+            <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between mt-[34px] w-[97%] md:w-full">
+              <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
+              <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
+                <TextField 
+                  style={{ fontSize: '1rem', width: '100%', color: '#1F2544', backgroundColor: 'transparent', border: 'none'}}
+                  value={taskname}
+                  onChange={(e) => setTaskName(e.target.value)}
+                  margin="normal"
+                />
+              </div>
             </div>
-          </div>
 
-
-          <FormControl fullWidth margin="normal">
-  <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
-    <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
-    <div className="text-base w-[76%]" style={{ position: 'relative' }}>
-    <Select style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent',  padding: '6px 3px', borderRadius: '50'}}
-        name="project"
-        value={proj}
-        onChange={HandleProjChange}
-        displayEmpty
-      >
-        <MenuItem value="" disabled>Select a Project</MenuItem>
-        {projects.map((project) => (
-          <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>
-        ))}
-      </Select>
-    </div>
-  </div>
-</FormControl>
+            {!projectId && (
+              <FormControl fullWidth margin="normal">
+                <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
+                  <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Select Project</Text>
+                  <div className="text-base w-[76%]" style={{ position: 'relative' }}>
+                    <Select style={{ fontSize: '1rem', width: '100%', backgroundColor: 'transparent',  padding: '6px 3px', borderRadius: '50'}}
+                        name="project"
+                        value={proj}
+                        onChange={HandleProjChange}
+                        displayEmpty
+                      >
+                        <MenuItem value="" disabled>Select a Project</MenuItem>
+                        {projects.map((project) => (
+                          <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>
+                        ))}
+                      </Select>
+                    </div>
+                </div>
+              </FormControl>
+            )}
+          
 
 <FormControl fullWidth margin="normal">
   <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
