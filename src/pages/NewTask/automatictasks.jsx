@@ -81,27 +81,42 @@ const AutomaticTasks = () => {
     };
 
     const handleGenerateTaskClick = () => {
+        const generateTasks = () => {
+            fetch('http://localhost:8000/api/generate-tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_story: transcript,
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data === null) {
+                        // Retry if data is null
+                        generateTasks();
+                    } else {
+                        const tasking = data.tasks.map(task => ({ ...task, isSelected: false }));
+                        setTasks(tasking);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to generate tasks. Please try again later.');
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        };
+    
         setLoading(true);
-        fetch('http://localhost:8000/api/generate-tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user_story: transcript,
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                const tasking = data.tasks.map(task => ({ ...task, isSelected: false }));
-                setTasks(tasking);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        generateTasks();
     };
 
     const handleTaskCheckboxChange = (index) => {
