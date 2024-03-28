@@ -2,8 +2,13 @@ const Task= require("../model/taskModel");
 const AppError=require("../utils/appError");
 const catchAsync=require("../utils/catchAsync");
 
-exports.CreateTask=catchAsync(async (req, res, next) => {
+exports.CreateTask = catchAsync(async (req, res, next) => {
     const tasksData = req.body.tasks;
+
+    if (!Array.isArray(tasksData)) {
+        return next(new AppError('tasksData must be an array', 400));
+    }
+
     const createdTasks = [];
 
     for (const taskData of tasksData) {
@@ -21,6 +26,7 @@ exports.CreateTask=catchAsync(async (req, res, next) => {
         }
     });
 });
+
 
 exports.getAllTasks=async(req,res,next)=>{
 
