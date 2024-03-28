@@ -14,10 +14,11 @@ const fetchUserIdsByEmails = async (emailArray) => {
       ...req.body,
       project_manager: req.user.id,
     };
-  
+
+ 
     const project = await Project.create(projectData);
     let msg = "Project Created Successfully";
-  
+    
     if (req.body.member) {
       try {
         // Fetch user IDs based on the provided email addresses
@@ -128,9 +129,11 @@ exports.DeleteProject = catchAsync(async (req, res, next) => {
     // Check if project has a remove function, otherwise use deleteOne method
     if (typeof project.remove === 'function') {
       // Now delete the project itself using remove() method
+      
       await project.remove();
     } else {
       // Use deleteOne method to delete the project
+      
       await Project.deleteOne({ _id: project._id });
     }
 
