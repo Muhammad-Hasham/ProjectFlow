@@ -313,7 +313,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
             <TableCell>{task.priority}</TableCell>
             <TableCell>{task.start_date.substring(0, 10)}</TableCell>
             <TableCell>{task.end_date.substring(0, 10)}</TableCell>
-            <TableCell>{task.assignee.name}</TableCell>
+            <TableCell>{task.assignee? task.assignee.name:"null"}</TableCell>
           </TableRow>
         ))}
       </TableBody>
