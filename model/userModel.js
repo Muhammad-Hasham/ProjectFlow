@@ -104,7 +104,7 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 });
 
 // Post hook to create log after update or delete
-userSchema.post(['findOneAndUpdate', 'findOneAndDelete'], async function (doc) {
+userSchema.post('findOneAndUpdate', async function (doc) {
     if (doc) {
         await createLog({
             prevData: this._original,
@@ -113,6 +113,48 @@ userSchema.post(['findOneAndUpdate', 'findOneAndDelete'], async function (doc) {
             userId: doc._id,
             typeofRequest: doc.isNew ? 'create' : 'update'
         });
+    }
+});
+
+
+// Post hook to create log after a new document is created
+userSchema.post('save', async function(doc) {
+    await createLog({
+        prevData: {}, // No previous data for new document
+        newData: doc,
+        updatedBy: doc.project_manager,
+        taskId: doc._id,
+        typeofRequest: 'create'
+    });
+});
+
+
+// Pre hook to store document before deletion
+userSchema.pre('findOneAndDelete', async function(next) {
+    try {
+        // Store the document to be deleted
+        this._docToDelete = await this.model.findOne(this.getQuery());
+        next();
+    } catch (error) {
+        console.error("Error in deleteOne hook:", error);
+        next(error); // Forward the error to the next middleware
+    }
+});
+
+// Post hook to create log after a document is deleted
+userSchema.post('findOneAndDelete', async function(doc) {
+    try {
+        if (this._docToDelete) {
+            await createLog({
+                prevData: this._docToDelete,
+                newData: {}, // No new data after deletion
+                updatedBy: this._docToDelete.project_manager,
+                userId: this._docToDelete._id,
+                typeofRequest: 'delete'
+            });
+        }
+    } catch (error) {
+        console.error("Error creating delete log:", error);
     }
 });
 
