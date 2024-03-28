@@ -45,7 +45,10 @@ function App() {
       return res.json();
     }).then(function(val) {
       console.log(val);
-      window.open('https://docs.google.com/document/d/' + val.documentId + '/edit', "_blank");
+      const googleDocsUrl = 'https://docs.google.com/document/d/' + val.documentId + '/edit';
+      window.open(googleDocsUrl, "_blank");
+
+      window.location.href = 'http://localhost:3001/apps';
     });
   }
 

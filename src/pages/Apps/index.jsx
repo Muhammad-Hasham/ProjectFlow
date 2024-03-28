@@ -215,7 +215,7 @@ const AppsPage = () => {
                       style = {{backgroundColor: '#1F2544', color: 'white', borderRadius: '30px'}}
                       onClick={handleAddButtonClick}
                     >
-                      + Add
+                      Create a new doc
                     </Button>
                      {/* Loading Animation */}
                      {loading && (
