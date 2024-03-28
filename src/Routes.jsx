@@ -32,6 +32,7 @@ const ProjectRoutes = () => {
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/myprojects" element={<MyProjects />} />
           <Route path="/newtask/:projectId" element={<NewTask />} />
+          <Route path="/newtask" element={<NewTask />} />
           <Route path="/apps" element={<Apps />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/mytasks" element={<MyTasks />} />
