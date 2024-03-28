@@ -90,8 +90,8 @@ const DashboardPage = () => {
   };
 
   const handleCreateTaskClick = () => {
-    const projectId = 123456; // Replace 'dummy' with the actual project ID or fetch it from your state
-    navigate(`/newtask/${projectId}`);
+    // Replace 'dummy' with the actual project ID or fetch it from your state
+    navigate("/newtask");
   };
 
   return (
