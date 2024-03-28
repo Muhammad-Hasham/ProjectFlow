@@ -4,6 +4,24 @@ import { Button, Line, Text } from "components";
 import '../../styles/my.css';
 import { useState } from "react";
 
+const containerStyle = {
+  position: 'absolute',
+  backgroundColor: '#D1D5DB', // Equivalent to bg-gray-50
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: '100vh', // Equivalent to h-max
+  insetY: '0', // Equivalent to inset-y-[0]
+  alignItems: 'center', // Equivalent to items-center
+  justifyContent: 'flex-end', // Equivalent to justify-end
+  left: '0', // Left position
+  margin: 'auto',
+  maxWidth: '85%', // Equivalent to w-[85%]
+  padding: '38px', // Equivalent to p-[38px]
+  paddingLeft: '5px', // Equivalent to sm:px-5
+  paddingRight: '5px', // Equivalent to sm:px-5
+  borderRadius: '30px', // Equivalent to rounded-[30px]
+};
+
 const SignupPage = () => {
   const navigate = useNavigate();
 
@@ -34,7 +52,23 @@ const SignupPage = () => {
         ProjectFlow
       </Text>
       <div className="h-[1024px] sm:h-[1143px] relative w-[90%] md:w-full">
-        <div className="absolute bg-gradient1 flex sm:flex-col flex-row sm:gap-5 h-full inset-y-[0] items-start justify-end my-auto p-12 md:px-10 sm:px-5 right-[0] w-3/5">
+        <div style={{
+    width: '58%',
+    position: 'absolute',
+    background: 'linear-gradient(to right, #F1EAFF, #FFFFFF)', // Equivalent to bg-gradient1
+    display: 'flex',
+    flexDirection: 'row', // Default direction
+    gap: '5px', // Equivalent to sm:gap-5
+    height: '100%', // Equivalent to h-full
+    insetY: '0', // This should be removed
+    alignItems: 'start', // Equivalent to items-start
+    justifyContent: 'flex-end', // Equivalent to justify-end
+    marginY: 'auto', // This should be removed
+    padding: '12px', // Equivalent to p-12
+    paddingLeft: '5px', // Equivalent to md:px-5
+    paddingRight: '5px', // Equivalent to md:px-5
+    right: '0', // Right position
+  }}>
           <Text
             className="sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
             size="txtPoppinsRegular16"
@@ -63,7 +97,7 @@ const SignupPage = () => {
             Signup
           </Button>
         </div>
-        <div className="absolute bg-gray-50 flex flex-col h-max inset-y-[0] items-center justify-end left-[0] my-auto p-[38px] sm:px-5 rounded-[30px] w-[85%]">
+        <div style = {{backgroundColor: '#F7F1E5', }} className="absolute flex flex-col h-max inset-y-[0] items-center justify-end left-[0] my-auto p-[38px] sm:px-5 rounded-[30px] w-[85%]">
           <div className="flex flex-col md:gap-10 gap-[84px] items-center justify-start mt-[54px] w-4/5 md:w-full">
             <a href="javascript:" className="text-center text-indigo-800 text-xl">
               <Text size="txtPoppinsBold20">Sign Up</Text>
@@ -154,6 +188,7 @@ const SignupPage = () => {
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   );

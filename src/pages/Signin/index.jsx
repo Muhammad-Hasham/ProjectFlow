@@ -49,9 +49,25 @@ const SigninPage = () => {
     <>
 
       <div className="bg-white-A700 font-poppins h-[1024px] mx-auto md:pl-10 sm:pl-5 pl-[94px] relative w-full">
-          <div className="absolute bg-gradient1 flex sm:flex-col flex-row sm:gap-5 h-full inset-y-[0] items-start justify-end my-auto p-12 md:px-5 right-[0]"
-          style={{ width: '58%' }}
-          >
+      <div
+  style={{
+    width: '58%',
+    position: 'absolute',
+    background: 'linear-gradient(to right, #F1EAFF, #FFFFFF)', // Equivalent to bg-gradient1
+    display: 'flex',
+    flexDirection: 'row', // Default direction
+    gap: '5px', // Equivalent to sm:gap-5
+    height: '100%', // Equivalent to h-full
+    insetY: '0', // This should be removed
+    alignItems: 'start', // Equivalent to items-start
+    justifyContent: 'flex-end', // Equivalent to justify-end
+    marginY: 'auto', // This should be removed
+    padding: '12px', // Equivalent to p-12
+    paddingLeft: '5px', // Equivalent to md:px-5
+    paddingRight: '5px', // Equivalent to md:px-5
+    right: '0', // Right position
+  }}
+>
             <Text
               className="sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
               size="txtPoppinsRegular16"
@@ -72,14 +88,33 @@ const SigninPage = () => {
             >
               Signup
             </Button>
-            <div className="absolute bg-gray-50 flex flex-col h-max inset-[0] items-start justify-center m-auto max-w-[1012px] p-[42px] md:px-5 rounded-[33px]" style={{ width: '90%', boxShadow: '0 0px 8px rgba(0, 0, 0, 0.2)' ,top: '-90px' }}>
+            <div style={{
+  position: 'absolute',
+  backgroundColor: '#F7F1E5', // Equivalent to bg-gray-50
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: '80vh',
+  inset: '0',
+  alignItems: 'start', // Equivalent to items-start
+  justifyContent: 'center',
+  margin: 'auto',
+  maxWidth: '1012px', // Equivalent to max-w-[1012px]
+  padding: '42px', // Equivalent to p-[42px]
+  paddingLeft: '5px', // Equivalent to md:px-5
+  paddingRight: '5px', // Equivalent to md:px-5
+  borderRadius: '33px', // Equivalent to rounded-[33px]
+  width: '90%', // Percentage width
+  boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)', // Box shadow
+  top: '-90px'
+}}>
               <div className="flex flex-col md:gap-10 gap-[61px] justify-start md:ml-[0] ml-[104px] mt-[30px] w-[71%] md:w-full">
-                <a
-                  href="javascript:"
-                  className="md:ml-[0] ml-[281px] text-center text-indigo-800 text-xl"
-                >
-                  <Text size="txtPoppinsBold20">Sign In</Text>
-                </a>
+              <a
+                href="javascript:"
+                className="md:ml-[0] ml-[240px] text-left text-indigo-800 text-2xl" // Increased font size and aligned text to the left
+              >
+                <Text size="txtPoppinsBold20">Sign In</Text>
+              </a>
+
                 <div className="flex flex-col items-start justify-start w-full">
                   <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between w-full">
                     <Text
@@ -112,7 +147,7 @@ const SigninPage = () => {
                     />
                   </div>
                   <Button
-                    className="common-pointer cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[300px] mt-[70px] text-base text-center tracking-[0.44px]"
+                    className="common-pointer cursor-pointer leading-[normal] min-w-[109px] md:ml-[0] ml-[250px] mt-[70px] text-base text-center tracking-[0.44px]"
                     onClick={handleSignIn} // Handle the login when the button is clicked
                     shape="round"
                     color="indigo_800"
@@ -131,10 +166,10 @@ const SigninPage = () => {
           style={{ width: '450px', height: '400px', cursor:"pointer"}}
         />
         <img
-          src="/images/PM2.png"
+          src="https://img.freepik.com/free-vector/enter-otp-concept-illustration_114360-7967.jpg?t=st=1711620441~exp=1711624041~hmac=3b83528311f0e80091946ffe4dfcf37147f8dcda89d6c500ff643fd605982168&w=740"
           alt="PM"
           className="absolute left-[20%] transform -translate-x-1/2 top-[47%] -translate-y-1/2"
-          style={{ width: '450px', height: '400px', cursor:"pointer"}}
+          style={{ width: '450px', height: '450px', cursor:"pointer"}}
         />
 
       </div>

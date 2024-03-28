@@ -41,8 +41,50 @@ const SignuprolePage = () => {
   return (
     <>
       <div className="bg-white-A700 font-poppins h-[1024px] mx-auto md:pl-10 sm:pl-5 pl-[94px] relative w-full">
-        <div className="absolute bg-gradient1 flex sm:flex-col flex-row sm:gap-5 h-full inset-y-[0] items-start justify-end my-auto p-12 md:px-5 right-[0] w-1/2">
-          {/* Your top navigation elements... */}
+        <div style={{
+    width: '58%',
+    position: 'absolute',
+    background: 'linear-gradient(to right, #F1EAFF, #FFFFFF)', // Equivalent to bg-gradient1
+    display: 'flex',
+    flexDirection: 'row', // Default direction
+    gap: '5px', // Equivalent to sm:gap-5
+    height: '100%', // Equivalent to h-full
+    insetY: '0', // This should be removed
+    alignItems: 'start', // Equivalent to items-start
+    justifyContent: 'flex-end', // Equivalent to justify-end
+    marginY: 'auto', // This should be removed
+    padding: '12px', // Equivalent to p-12
+    paddingLeft: '5px', // Equivalent to md:px-5
+    paddingRight: '5px', // Equivalent to md:px-5
+    right: '0', // Right position
+  }}>
+    <Text
+            className="sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
+            size="txtPoppinsRegular16"
+          >
+            Pricing
+          </Text>
+          <Text
+            className="sm:ml-[0] ml-[93px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px]"
+            size="txtPoppinsRegular16"
+          >
+            Academy
+          </Text>
+          <Text
+                className={`common-pointer sm:ml-[0] ml-[79px] sm:mt-0 mt-[27px] text-base text-indigo-800 tracking-[0.44px] hover-signin`}
+                size="txtPoppinsRegular16"
+                onClick={() => navigate("/signin")}
+              >
+              Signin
+            </Text>
+          <Button
+            className="cursor-pointer leading-[normal] mb-[867px] min-w-[109px] sm:ml-[0] ml-[92px] sm:mt-0 mt-[13px] text-base text-center tracking-[0.44px]"
+            shape="round"
+            color="indigo_800"
+            onClick={handleSignup}
+          >
+            Signup
+          </Button>
         </div>
         <Text
           className="absolute left-[9%] text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl top-[7%]"
@@ -51,7 +93,7 @@ const SignuprolePage = () => {
         >
           ProjectFlow
         </Text>
-        <div className="absolute bg-gray-50 flex flex-col h-max inset-[0] items-center justify-center m-auto max-w-[1023px] p-10 md:px-5 rounded-[30px] w-full">
+        <div style = {{backgroundColor: '#F7F1E5', }} className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto max-w-[1023px] p-10 md:px-5 rounded-[30px] w-full">
           <div className="flex flex-col justify-start mb-1.5 w-[33%] md:w-full">
             <a href="javascript:" className="ml-28 md:ml-[0] text-center text-indigo-800 text-xl">
               <Text size="txtPoppinsBold20">Sign Up</Text>
