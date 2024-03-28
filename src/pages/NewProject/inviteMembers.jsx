@@ -22,7 +22,7 @@ const InviteMembers = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
 
  
-  
+  let projectId=localStorage.getItem("proId")
 
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -41,10 +41,17 @@ const InviteMembers = () => {
   const handleInvite = async () => {
     try {
       const token = localStorage.getItem('token');
-      const emailData = {
+      let emailData = {
         emails: formData.emailAddresses,
       };
-  
+      
+      if (projectId) {
+        // Update the emailData object with projectId
+        emailData.projectId = projectId;
+      }
+      
+      // Now you can use the emailData object as needed
+      
       const response = await fetch('http://127.0.0.1:3000/api/v1/projects/sendinvite', {
         method: 'POST',
         headers: {
@@ -58,6 +65,11 @@ const InviteMembers = () => {
       
       if (response.ok) {
         console.log('Invite emails sent successfully:', data);
+
+        if(projectId)
+        {
+          navigate(`/details/${projectId}`)
+        }
         setPopUp({ type: 'inviteSuccess' });
         setShowInviteModal(false);
       } else {
