@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-
+  localStorage.removeItem("proId")
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [showCreateProjects, setShowCreateProjects] = useState(false);
