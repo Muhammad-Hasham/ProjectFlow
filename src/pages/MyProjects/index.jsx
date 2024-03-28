@@ -5,6 +5,7 @@ import Navigation from "pages/Sidebar";
 
 const MyProjectsPage = () => {
   const navigate = useNavigate();
+  localStorage.removeItem("proId")
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hovered, setHovered] = useState(null);
