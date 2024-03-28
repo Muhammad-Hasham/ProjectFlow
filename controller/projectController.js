@@ -247,7 +247,7 @@ const path = require('path');
 
 exports.sendInviteEmail = catchAsync(async (req, res, next) => {
   try {
-    const { emails } = req.body;
+    const { emails, projectId } = req.body;
     console.log('Received request body:', emails);
 
     if (!emails || !Array.isArray(emails)) {
@@ -298,6 +298,15 @@ exports.sendInviteEmail = catchAsync(async (req, res, next) => {
 
     // Send the email
     await transporter.sendMail(mailOptions);
+
+    // Check if projectId is provided
+    if (projectId) {
+      // Fetch user IDs based on the provided email addresses
+      const memberIds = await fetchUserIdsByEmails(emails);
+
+      // Update the Members array in the project with user IDs
+      await Project.findByIdAndUpdate(projectId, { $addToSet: { Members: { $each: memberIds } } });
+    }
 
     return res.status(200).json({ success: true, message: 'Invite emails sent successfully' });
   } catch (error) {
