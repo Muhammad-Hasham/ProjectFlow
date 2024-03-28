@@ -120,7 +120,7 @@ const AutomaticTasks = () => {
                 name: task.name,
                 description: task.description,
                 priority: task.priority,
-                project: projid ? projid : projectId.toString(),
+                project: projid ? projid : projectId,
                 assignee:assign[Math.floor(Math.random() * assign.length)],
             })),
         };
@@ -217,7 +217,7 @@ const AutomaticTasks = () => {
                 </TableBody>
             </Table>
 
-            {projectId === '123456' && (
+            {!projectId && (
                         <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mt-[34px] w-[97%] md:w-full">
                             <Text className="md:mt-0 mt-0.5 text-base text-indigo-800 tracking-[0.44px]" size="txtPoppinsRegular16">Select Project</Text>
                             <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent' }}>
