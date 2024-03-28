@@ -22,19 +22,19 @@ const ErrorBoundary = ({ children }) => {
   return hasError ? <div>Something went wrong.</div> : children;
 };
 
-const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
+const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers,tasks  }) => {
   const [editedTask, setEditedTask] = useState({ ...task });
-
+  console.log(tasks)
   let userrole=localStorage.getItem("role")
   console.log(teamMembers)
   const handleInputChange = (e) => {
-    const { name, value,end_date} = e.target;
+    const { name, value } = e.target;
     setEditedTask((prevTask) => ({
       ...prevTask,
       [name]: value,
-      [end_date]:value
     }));
   };
+  
 
   const handleSaveChanges = async () => {
  
@@ -137,6 +137,24 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers  }) => {
             ))}
           </select>
         </div>
+
+        <div className="field">
+  <label>Pre Dependency:</label>
+  <select
+    name="pre_dependency"
+    value={editedTask.pre_dependency} // Assuming pre_dependency is a property in editedTask
+    onChange={handleInputChange} // Call handleInputChange when the value changes
+  >
+    {/* Assuming that tasks contains the list of tasks */}
+    <option value="">None</option> {/* Add an option for no pre-dependency */}
+    {tasks.map((task) => (
+      <option key={task.id} value={task.id}>
+        {task.name}
+      </option>
+    ))}
+  </select>
+</div>
+
         {userrole==="Project Manager"  && (
         <Button
           style={{ backgroundColor: " #48BB78", color: "#ffffff" }}
@@ -328,6 +346,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
           onClose={handlePopupClose}
           onDelete={handleDeleteTask}
           teamMembers={teamMembers}
+          tasks={tasks}
         />
       )}
      
@@ -490,6 +509,9 @@ const ProjectVisualization = () => {
   const [tasks, setTasks] = useState([]);
   const { projectId } = useParams();
   const [teamMembers, setTeamMembers] = useState([]);
+
+
+  localStorage.setItem("proId",projectId)
   useEffect(() => {
     // Fetch project details from the API based on the 'projectId' parameter
     const token = localStorage.getItem("token");
