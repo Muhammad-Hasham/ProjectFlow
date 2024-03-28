@@ -1,4 +1,5 @@
 const Project= require("../model/projectModel");
+const Task = require('../model/taskModel');
 const AppError=require("../utils/appError");
 const catchAsync=require("../utils/catchAsync");
 const User=require("../model/userModel")
@@ -110,16 +111,44 @@ exports.UpdateProject=catchAsync(async (req,res,next)=>{
 })
 
 
-exports.DeleteProject=catchAsync(async (req,res,next)=>{
-    const project=await Project.findByIdAndDelete(req.params.id);
-        if(!project){
-            return next(new AppError('No project Found with that ID',404))
-        }
-        res.status(204).json({  
-            status:'success',
-            data:null
-        })
-})
+exports.DeleteProject = catchAsync(async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id);
+
+    if (!project) {
+        return next(new AppError('No project found with that ID', 404));
+    }
+
+    // Find all tasks associated with the project
+    const tasks = await Task.find({ project: project._id });
+
+    // Delete all tasks associated with the project
+    await Task.deleteMany({ project: project._id });
+
+    // Check if project has a remove function, otherwise use deleteOne method
+    if (typeof project.remove === 'function') {
+      // Now delete the project itself using remove() method
+      await project.remove();
+    } else {
+      // Use deleteOne method to delete the project
+      await Project.deleteOne({ _id: project._id });
+    }
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    });
+  } catch (err) {
+    // Log the error with additional context
+    console.error('Error deleting project and associated tasks:', err);
+
+    // Forward the error to the error handling middleware
+    return next(new AppError('Error deleting project and associated tasks', 500));
+  }
+});
+
+
+
 
 exports.pieStats=catchAsync(async (req,res,next)=>{
   const project = await Project.findById(req.params.id).populate('tasks');
