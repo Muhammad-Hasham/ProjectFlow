@@ -114,7 +114,7 @@ const AutomaticTasks = () => {
 
     const handleConfirmClick = () => {
         const selectedTasks = tasks.filter(task => task.isSelected);
-
+    
         const requestData = {
             tasks: selectedTasks.map(task => ({
                 name: task.name,
@@ -135,9 +135,15 @@ const AutomaticTasks = () => {
         })
             .then(response => {
                 if (response.status === 201) {
-                    alert('Tasks have been confirmed and saved');
-                    setTasks([]);
-                    setMicrophoneClicked(true);
+                    setLoading(true);
+                    setTimeout(() => {
+                        setLoading(false);
+                        // If tasks are saved successfully, call sendSavedTasksToSlack function
+                        sendSavedTasksToSlack(selectedTasks);
+                        setTasks([]);
+                        setMicrophoneClicked(true);
+                        alert('Tasks saved successfully!');
+                    }, 2000);
                 } else {
                     throw new Error('Failed to save tasks');
                 }
@@ -145,6 +151,29 @@ const AutomaticTasks = () => {
             .catch(error => {
                 console.error('Error saving tasks:', error);
                 alert('Failed to save tasks. Please try again later.');
+            });
+    };
+
+    const sendSavedTasksToSlack = (selectedTasks) => {
+        let token = localStorage.getItem("token");
+        axios
+            .post("http://localhost:5000/sendTasksToSlack", { tasks: selectedTasks }, { // Call the Slack server endpoint
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log('Tasks sent to Slack successfully:', response.data);
+                    alert('sent to Slack successfully');
+                } else {
+                    throw new Error('Failed to send tasks to Slack');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending tasks to Slack:', error);
+                alert('Failed to send tasks to Slack. Please try again later.');
             });
     };
 
