@@ -129,16 +129,27 @@ const AutomaticTasks = () => {
 
     const handleConfirmClick = () => {
         const selectedTasks = tasks.filter(task => task.isSelected);
+        const projectName = projects.find(project => project.id === projid)?.name || ""; // Extract project name based on projid
         const requestData = {
             tasks: selectedTasks.map(task => ({
                 name: task.name,
                 description: task.description,
                 priority: task.priority,
                 project: projid ? projid : projectId, // Use the selected projectId if available, otherwise use the projectId from the URL
+                projectname: projectName, // Add project name to the task object
                 assignee: assign[Math.floor(Math.random() * assign.length)],
+
             })),
         };
-        console.log(requestData)
+    
+        // Convert requestData to array form
+        const requestDataArray = requestData.tasks.map(task => ({
+            ...task,
+            assigneeName:"ok"
+        }));
+    
+        console.log(requestDataArray); // Check if the array is formed correctly
+    
         let token = localStorage.getItem("token");
         axios
             .post("http://127.0.0.1:3000/api/v1/tasks", requestData, {
@@ -153,7 +164,7 @@ const AutomaticTasks = () => {
                     setTimeout(() => {
                         setLoading(false);
                         // If tasks are saved successfully, call sendSavedTasksToSlack function
-                        sendSavedTasksToSlack(selectedTasks, projid ? projid : projectId); // Pass the projectId along with the tasks
+                        sendSavedTasksToSlack(requestDataArray); // Pass the array form of requestData
                         setTasks([]);
                         setMicrophoneClicked(true);
                         alert('Tasks saved successfully!');
@@ -167,6 +178,9 @@ const AutomaticTasks = () => {
                 alert('Failed to save tasks. Please try again later.');
             });
     };
+    
+    
+    
     
 
     const sendSavedTasksToSlack = (selectedTasks, projectId) => {
