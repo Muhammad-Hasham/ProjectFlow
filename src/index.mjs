@@ -11,12 +11,13 @@ const app = new Slack.App({
 
 // Function to generate block kit and send to Slack
 export async function sendTasksToSlack(tasks) {
+    console.log(tasks);
     const taskBlocks = tasks.map(task => ({
         type: 'section',
         fields: [
             {
                 type: 'mrkdwn',
-                text: `*Task Name:* ${task.name}\n*Description:* ${task.description}\n*Priority:* ${task.priority}\n*Project:* ${task.project}\n*Assignee:* ${task.assignee}`
+                text: `*Task Name:* ${task.name}\n*Description:* ${task.description}\n*Priority:* ${task.priority}\n*Project:* ${task.projectname}\n*Assignee:* ${task.assignee.name}`
             }
         ]
     }));
