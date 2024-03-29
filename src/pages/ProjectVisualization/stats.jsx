@@ -212,7 +212,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
   return (
     
     <div>
-      {userrole!=="Client" &&(
+      {userrole !="Client" && (
       <div
         style={{
           display: "flex",
@@ -299,6 +299,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
       </div>
       )}
       <div style={{ width: "98%", margin: "0 auto", marginLeft: '-20px'}}> {/* Adjusted width and added margin */}
+      {userrole !="Client" && (
   <TableContainer
     component={Paper}
     style={{
@@ -337,6 +338,7 @@ const TaskTable = ({ tasks, projectId, teamMembers }) => {
       </TableBody>
     </Table>
   </TableContainer>
+   )}
 </div>
 
       {/* TaskDetailsPopup */}
