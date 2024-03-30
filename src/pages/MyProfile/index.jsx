@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../styles/my.css';
 import { Sidebar } from "react-pro-sidebar";
+import Navigation from "pages/Sidebar";
 
 import { Button, Img, Text } from "components";
 
@@ -144,51 +145,10 @@ const MyProfilePage = () => {
     <>
       <div className="bg-white-A700 flex flex-col font-poppins items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between mx-auto md:px-5 w-full">
-          <div className="h-[1024px] relative w-[22%] md:w-full" style={{ width: '23%', position: 'relative', backgroundColor: '#EDEFF5' }}>
-            <Sidebar className="!sticky !w-[299px] border border-black-900 border-solid flex h-screen md:hidden justify-start m-auto overflow-auto top-[0]"></Sidebar>
-            <div className="absolute flex flex-col inset-x-[0] justify-start mx-auto top-[6%] w-[45%]">
-              <Text
-                className="text-[22px] text-center text-indigo-800 sm:text-lg md:text-xl"
-                size="txtPoppinsBold22"
-                onClick={() => navigate("/dashboard")}
-              >
-                ProjectFlow
-              </Text>
-              <Text
-                className="ml-7 md:ml-[0] mt-[102px] cursor-pointer text-base text-indigo-800 tracking-[0.44px]"
-                size="txtPoppinsRegular16"
-                onClick={() => navigate("/dashboard")}
-              >
-                Dashboard
-              </Text>
-              <div className="flex flex-col gap-[46px] items-start justify-start md:ml-[0] ml-[35px] mt-[47px]">
-                <Text
-                  className="md:ml-[0] ml-[3px] cursor-pointer text-base text-indigo-800 tracking-[0.44px]"
-                  size="txtPoppinsRegular16"
-                  onClick={() => navigate("/myprojects")}
-                >
-                  Projects
-                </Text>
-                <Text
-                  className="text-base text-indigo-800 cursor-pointer tracking-[0.44px]"
-                  size="txtPoppinsRegular16"
-                  onClick={() => navigate("/mytasks")}
-                >
-                  My Tasks
-                </Text>
-                <Text
-                  className="md:ml-[0] ml-[9px] text-base cursor-pointer text-indigo-800 tracking-[0.44px]"
-                  size="txtPoppinsRegular16"
-                  onClick={() => navigate("/apps")}
-                >
-                  Apps
-                </Text>
-              </div>
-            </div>
-          </div>
+          <Navigation/>
           <div className="flex md:flex-1 flex-col md:gap-10 gap-[105px] justify-start md:mt-0 mt-[68px] w-[70%] md:w-full">
             <Text
-              className="common-pointer md:ml-[0] ml-[844px] text-base text-indigo-800 w-[5.5%] tracking-[0.44px] hover-logout"
+              className="common-pointer md:ml-[0] ml-[1024px] text-base text-indigo-800 w-[5.5%] tracking-[0.44px] hover-logout"
               size="txtPoppinsRegular16"
               // onClick={() => navigate("/myprofile")}
               onClick={handleLogout}
@@ -197,12 +157,12 @@ const MyProfilePage = () => {
             </Text>
             <div className="flex flex-col gap-4 items-start justify-start w-full mt-[-120px]">
               <Text
-                className="sm:text-3xl md:text-[32px] text-[34px] w-[25%] text-center text-indigo-800 ml-60"
+                className="sm:text-3xl  ml-[500px] md:text-[32px] text-[34px] w-[25%] text-center text-indigo-800 ml-60"
                 size="txtPoppinsBold34"
               >
                 My Profile
               </Text>
-              <div className="bg-gray-50 flex flex-col items-center justify-start p-[22px] sm:px-5 rounded-[30px] w-87 shadow-md">
+              <div className="bg-gray-50 ml-[500px] flex flex-col items-center justify-start p-[22px] sm:px-5 rounded-[30px] w-87 shadow-md">
                 <div className="flex flex-col justify-start mb-1.5 w-[90%] md:w-full">
                   <div className="flex md:flex-col flex-row md:gap-5 items-end justify-start w-[99%] md:w-full">
                     <Text
