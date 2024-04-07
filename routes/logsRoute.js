@@ -11,4 +11,12 @@ router
     logsController.getAllLogs
   );
 
+router
+  .route("/names")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    logsController.getUserNamesFromLogs
+  )
+
 module.exports = router;
