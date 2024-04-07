@@ -1,38 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Divider, Button } from '@mui/material';
+import { Box, Paper, Typography, Divider, Button, TextField, MenuItem, Collapse } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-// Define a theme with spacing and colors
 const theme = createTheme({
   spacing: 2,
   palette: {
     primary: {
-      main: '#1976d2', // Adjust color as needed
+      main: '#1976d2',
     },
     secondary: {
-      main: '#f50057', // Adjust color as needed
+      main: '#f50057',
     },
   },
 });
 
 const LogsTable = () => {
   const [logs, setLogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [userIdFilter, setUserIdFilter] = useState('');
+  const [typeofRequestFilter, setTypeofRequestFilter] = useState('');
+  const [expandedLogId, setExpandedLogId] = useState('');
+  const [allUsers, setAllUsers] = useState([]); // State to hold all users data
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLogs = async () => {
       try {
         let token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:3000/api/v1/logs', {
+        const response = await axios.get(`http://127.0.0.1:3000/api/v1/logs?page=${currentPage}&userId=${userIdFilter}&typeofRequest=${typeofRequestFilter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
         if (response.data && response.data.data && Array.isArray(response.data.data.logs)) {
-          setLogs(response.data.data.logs); // Set the logs state if logs array is nested under data object
+          setLogs(response.data.data.logs);
+          setTotalPages(response.data.totalPages);
         } else {
           console.error('Invalid response data:', response.data);
         }
@@ -42,6 +50,30 @@ const LogsTable = () => {
     };
 
     fetchLogs();
+  }, [currentPage, userIdFilter, typeofRequestFilter]);
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        let token = localStorage.getItem('token');
+        const response = await axios.get('http://127.0.0.1:3000/api/v1/logs/names', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (response.data && Array.isArray(response.data.users)) {
+          setAllUsers(response.data.users);
+        } else {
+          console.error('Invalid response data:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchAllUsers();
   }, []);
 
   const handleLogout = async () => {
@@ -68,6 +100,30 @@ const LogsTable = () => {
     }
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'userId') {
+      setUserIdFilter(value);
+    } else if (name === 'typeofRequest') {
+      setTypeofRequestFilter(value);
+    }
+    // Apply filtering when the filter changes
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
+
+  const toggleExpand = (logId) => {
+    setExpandedLogId(expandedLogId === logId ? '' : logId);
+  };
+
+  const getUserIdFromUsername = (username) => {
+    const user = allUsers.find(user => user.name === username);
+    return user ? user.id : '';
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box p={4}>
@@ -78,76 +134,108 @@ const LogsTable = () => {
           <Button color="primary" variant="outlined" onClick={handleLogout}>Logout</Button>
         </Box>
         <Divider />
+        {/* Filters */}
+        <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+          <TextField
+            name="userId"
+            select
+            label="User ID"
+            value={userIdFilter}
+            onChange={handleFilterChange}
+            variant="outlined"
+            sx={{ minWidth: 150 }} // Adjust width as needed
+          >
+            <MenuItem value="">All</MenuItem>
+            {allUsers.map(user => (
+              <MenuItem key={user.id} value={getUserIdFromUsername(user.name)}>
+              {user.name}
+            </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            name="typeofRequest"
+            select
+            label="Type of Request"
+            value={typeofRequestFilter}
+            onChange={handleFilterChange}
+            variant="outlined"
+            sx={{ minWidth: 150 }} // Adjust width as needed
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="create">Create</MenuItem>
+            <MenuItem value="update">Update</MenuItem>
+            <MenuItem value="delete">Delete</MenuItem>
+          </TextField>
+        </Box>
+        {/* Logs */}
         {logs.map((log, index) => (
           <Paper key={log._id} elevation={3} style={{ backgroundColor: index % 2 === 0 ? '#f3f3f3' : '#e0e0e0', padding: '16px', margin: '16px 0', borderRadius: '8px' }}>
-            {log.prevData && (
-              <Box maxWidth="100%" overflow="auto">
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Previous Data</Typography>
-                <Typography variant="body1" gutterBottom>{JSON.stringify(log.prevData)}</Typography>
-              </Box>
-            )}
-            {log.newData && (
-              <Box maxWidth="100%" overflow="auto">
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>New Data</Typography>
-                <Typography variant="body1" gutterBottom>{JSON.stringify(log.newData)}</Typography>
-              </Box>
-            )}
-            {log.updatedBy && (
-              <>
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Updated By</Typography>
-                <Typography variant="body1" gutterBottom>{log.updatedBy}</Typography>
-              </>
-            )}
-            {log.taskId && (
-              <>
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Task ID</Typography>
-                <Typography variant="body1" gutterBottom>{log.taskId}</Typography>
-              </>
-            )}
-            {log.projectId && (
-              <>
-                 <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Project ID</Typography>
-                 <Typography variant="body1" gutterBottom>{log.projectId}</Typography>
-              </>
-            )}
-            {log.userId && (
-              <>
-                  <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>User ID</Typography>
-                  <Typography variant="body1" gutterBottom>{log.userId}</Typography>
-              </>
-            )}
-            {log.typeofRequest==="create" && (
-              <>
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Created At</Typography>
-            <Typography variant="body1" gutterBottom>{new Date(log.createdAt).toLocaleString()}</Typography>
-              </>
-            )}
-            {log.typeofRequest==="update" && (
-              <>
-                <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Updated At</Typography>
-                <Typography variant="body1" gutterBottom>{new Date(log.updatedAt).toLocaleString()}</Typography>
-              </>
-            )}
-            <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', fontSize: '1.2rem', color: theme.palette.primary.main }}>Type of Request</Typography>
-            <Typography
-              variant="body1"
-              gutterBottom
-              style={{
-                color:
-                  log.typeofRequest === 'create'
-                    ? 'green'
-                    : log.typeofRequest === 'delete'
-                    ? 'red'
-                    : log.typeofRequest === 'update'
-                    ? 'orange'
-                    : 'inherit', // Fallback to default color
-              }}
-            >
-              {log.typeofRequest}
-          </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant="subtitle1" style={{ fontWeight: 'bold', color: theme.palette.primary.main }}>{log.typeofRequest}</Typography>
+              {expandedLogId === log._id ? (
+                <Button onClick={() => toggleExpand(log._id)} color="primary" endIcon={<ExpandLessIcon />}>Collapse</Button>
+              ) : (
+                <Button onClick={() => toggleExpand(log._id)} color="primary" endIcon={<ExpandMoreIcon />}>Expand</Button>
+              )}
+            </Box>
+            <Collapse in={expandedLogId === log._id} timeout="auto" unmountOnExit>
+              {/* Log Details */}
+              <Box maxHeight={200} overflow="auto">
+              <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', color: theme.palette.primary.main }}>Log Details:</Typography>
 
+              {log.prevData && (
+                <Typography variant="body1" gutterBottom><strong>Previous Data:</strong> {log.prevData ? JSON.stringify(log.prevData) : '-'}</Typography>
+              )}
+
+              {log.newData && (
+                <Typography variant="body1" gutterBottom><strong>New Data:</strong> {log.newData ? JSON.stringify(log.newData) : '-'}</Typography>
+              )}
+
+              {log.updatedBy && (
+                <Typography variant="body1" gutterBottom><strong>Updated By:</strong> {log.updatedBy ? log.updatedBy : '-'}</Typography>
+              )}
+
+              {log.taskId && (
+                <Typography variant="body1" gutterBottom><strong>Task ID:</strong> {log.taskId ? log.taskId : '-'}</Typography>
+              )}
+
+              {log.projectId && (
+                <Typography variant="body1" gutterBottom><strong>Project ID:</strong> {log.projectId ? log.projectId : '-'}</Typography>
+              )}
+
+              {log.typeofRequest === "create" && (
+                <Typography variant="body1" gutterBottom><strong>Created At:</strong> {log.createdAt ? new Date(log.createdAt).toLocaleString() : '-'}</Typography>
+              )}
+
+              {log.typeofRequest === "update" && (
+                <Typography variant="body1" gutterBottom><strong>Updated At:</strong> {log.updatedAt ? new Date(log.updatedAt).toLocaleString() : '-'}</Typography>
+              )}
+              </Box>
+            </Collapse>
           </Paper>
         ))}
+        {/* Pagination */}
+        <Box mt={4} display="flex" justifyContent="center" alignItems="center">
+        <Button
+          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+          variant="outlined"
+          color="primary"
+        >
+          Previous
+        </Button>
+        <Typography variant="body1" sx={{ mx: 2 }}>
+          Page {currentPage} out of {totalPages}
+        </Typography>
+        <Button
+          onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage === totalPages}
+          variant="outlined"
+          color="primary"
+        >
+          Next
+        </Button>
+      </Box>
       </Box>
     </ThemeProvider>
   );
