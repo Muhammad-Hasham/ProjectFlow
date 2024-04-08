@@ -48,6 +48,7 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers,tasks  }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(editedTask),
+        updated_By:localStorage.getItem("userid")
       });
 
       if (!response.ok) {
