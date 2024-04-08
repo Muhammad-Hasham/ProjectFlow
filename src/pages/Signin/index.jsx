@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Text } from "components";
 
 const SigninPage = () => {
+  localStorage.clear();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -89,32 +90,31 @@ const SigninPage = () => {
               Signup
             </Button>
             <div style={{
-  position: 'absolute',
-  backgroundColor: '#F7F1E5', // Equivalent to bg-gray-50
-  display: 'flex',
-  flexDirection: 'column',
-  maxHeight: '80vh',
-  inset: '0',
-  alignItems: 'start', // Equivalent to items-start
-  justifyContent: 'center',
-  margin: 'auto',
-  maxWidth: '1012px', // Equivalent to max-w-[1012px]
-  padding: '42px', // Equivalent to p-[42px]
-  paddingLeft: '5px', // Equivalent to md:px-5
-  paddingRight: '5px', // Equivalent to md:px-5
-  borderRadius: '33px', // Equivalent to rounded-[33px]
-  width: '90%', // Percentage width
-  boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)', // Box shadow
-  top: '-90px'
-}}>
+              position: 'absolute',
+              backgroundColor: '#F7F1E5', // Equivalent to bg-gray-50
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: '80vh',
+              inset: '0',
+              alignItems: 'start', // Equivalent to items-start
+              justifyContent: 'center',
+              margin: 'auto',
+              maxWidth: '1012px', // Equivalent to max-w-[1012px]
+              padding: '42px', // Equivalent to p-[42px]
+              paddingLeft: '5px', // Equivalent to md:px-5
+              paddingRight: '5px', // Equivalent to md:px-5
+              borderRadius: '33px', // Equivalent to rounded-[33px]
+              width: '90%', // Percentage width
+              boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)', // Box shadow
+              top: '-90px'
+            }}>
               <div className="flex flex-col md:gap-10 gap-[61px] justify-start md:ml-[0] ml-[104px] mt-[30px] w-[71%] md:w-full">
-              <a
-                href="javascript:"
-                className="md:ml-[0] ml-[240px] text-left text-indigo-800 text-2xl" // Increased font size and aligned text to the left
-              >
-                <Text size="txtPoppinsBold20">Sign In</Text>
-              </a>
-
+                <a
+                  href="javascript:"
+                  className="md:ml-[0] ml-[281px] text-center text-indigo-800 text-xl"
+                >
+                  <Text size="txtPoppinsBold20">Sign In</Text>
+                </a>
                 <div className="flex flex-col items-start justify-start w-full">
                   <div className="flex sm:flex-col flex-row sm:gap-10 items-center justify-between w-full">
                     <Text
