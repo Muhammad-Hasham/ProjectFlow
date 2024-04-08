@@ -92,6 +92,9 @@ const MyTasksPage = () => {
     const updatedTasks = Array.from(tasks);
     const [reorderedItem] = updatedTasks.splice(result.source.index, 1);
   
+    const taskId = reorderedItem.id;
+    const token = localStorage.getItem('token');
+  
     let newStatus;
     switch (result.destination.droppableId) {
       case 'dueTasks':
@@ -107,19 +110,12 @@ const MyTasksPage = () => {
         newStatus = 'todo';
     }
   
-    const updatedTaskWithStatus = { ...reorderedItem, status: newStatus };
-    updatedTasks.splice(result.destination.index, 0, updatedTaskWithStatus);
-  
-    setTasks(updatedTasks);
-  
-    const taskId = reorderedItem.id;
-    const token = localStorage.getItem('token');
-  
     axios
       .patch(
         `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
         {
           status: newStatus,
+          updated_By:localStorage.getItem("userid")
         },
         {
           headers: {
@@ -130,6 +126,10 @@ const MyTasksPage = () => {
       )
       .then((response) => {
         console.log(`Task ${taskId} status updated successfully:`, response.data);
+  
+        const updatedTaskWithStatus = { ...reorderedItem, status: newStatus };
+        updatedTasks.splice(result.destination.index, 0, updatedTaskWithStatus);
+        setTasks(updatedTasks);
       })
       .catch((error) => {
         console.error(`Error updating task ${taskId} status:`, error);
@@ -289,7 +289,7 @@ const MyTasksPage = () => {
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>
-                            <Text style={{ color: '#6B7280' }}>Due Date: {task.end_date}</Text>
+                            <Text style={{ color: '#6B7280' }}>Due Date: {task.end_date.substring(0, 10)}</Text>
                             <Text style={{ color: `#${getPriorityColor(task.priority)}` }}>Priority: {task.priority}</Text>
                             <FaCheck size={20} color={`#${getPriorityColor(task.priority)}`} />
                             {hoveredTask && hoveredTask.id === task.id && (
@@ -349,7 +349,7 @@ const MyTasksPage = () => {
                             }}
                           >
                             <Text style={{ color: '#323F73', fontFamily: 'Poppins', fontWeight: 'bold' }}>{task.name}</Text>
-                            <Text style={{ color: '#6B7280' }}>Due Date: {task.dueDate}</Text>
+                            <Text style={{ color: '#6B7280' }}>Due Date: {task.end_date.substring(0, 10)}</Text>
                             <Text style={{ color: `#${getPriorityColor(task.priority)}` }}>Priority: {task.priority}</Text>
                             <FaCheck size={20} color={`#323F73`} onClick={() => markTaskAsComplete(task.id)} />
                             {hoveredTask && hoveredTask.id === task.id && (
