@@ -70,14 +70,15 @@ exports.getTask=catchAsync(async(req,res,next)=>{
 })
 
 exports.UpdateTask=catchAsync(async (req,res,next)=>{
+
     const task=await Task.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
-        runValidators: true 
-    });
-
+        runValidators: true,
+    }) 
     if(!task){
         return next(new AppError('No task Found with that ID',404))
     }
+
     res.status(200).json({
         status:'success',
         data:{
