@@ -12,11 +12,20 @@ router
   );
 
 router
+      .route('/')
+      .delete(
+        authController.protect,
+        authController.restrictTo("admin"),
+        logsController.deleteAllLogs
+      );
+
+router
   .route("/names")
   .get(
     authController.protect,
     authController.restrictTo("admin"),
     logsController.getUserNamesFromLogs
   )
+
 
 module.exports = router;
