@@ -105,11 +105,12 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 
 // Post hook to create log after update or delete
 userSchema.post('findOneAndUpdate', async function (doc) {
+    console.log(doc)
     if (doc) {
         await createLog({
             prevData: this._original,
             newData: doc,
-            updatedBy: doc.project_manager,
+            updatedBy: doc.id,
             userId: doc._id,
             typeofRequest: doc.isNew ? 'create' : 'update'
         });
@@ -119,11 +120,11 @@ userSchema.post('findOneAndUpdate', async function (doc) {
 
 // Post hook to create log after a new document is created
 userSchema.post('save', async function(doc) {
+    console.log(doc);
     await createLog({
         prevData: {}, // No previous data for new document
         newData: doc,
-        updatedBy: doc.project_manager,
-        taskId: doc._id,
+        updatedBy: doc.id,
         typeofRequest: 'create'
     });
 });
@@ -148,7 +149,7 @@ userSchema.post('findOneAndDelete', async function(doc) {
             await createLog({
                 prevData: this._docToDelete,
                 newData: {}, // No new data after deletion
-                updatedBy: this._docToDelete.project_manager,
+                updatedBy: this._docToDelete.id,
                 userId: this._docToDelete._id,
                 typeofRequest: 'delete'
             });
