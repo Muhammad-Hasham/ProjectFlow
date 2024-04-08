@@ -37,10 +37,7 @@ const MyProfilePage = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('email');
-      localStorage.removeItem('photo');
+      localStorage.clear();
       setPopUp({ type: "success" });
       navigate("/signin");
     })
