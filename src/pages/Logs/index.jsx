@@ -15,6 +15,12 @@ const theme = createTheme({
     secondary: {
       main: '#f50057',
     },
+    success: {
+      main: '#4caf50',
+    },
+    error: {
+      main: '#f44336',
+    },
   },
 });
 
@@ -171,7 +177,8 @@ const LogsTable = () => {
         {logs.map((log, index) => (
           <Paper key={log._id} elevation={3} style={{ backgroundColor: index % 2 === 0 ? '#f3f3f3' : '#e0e0e0', padding: '16px', margin: '16px 0', borderRadius: '8px' }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="subtitle1" style={{ fontWeight: 'bold', color: theme.palette.primary.main }}>{log.typeofRequest}</Typography>
+              {/* Apply color based on log type */}
+              <Typography variant="subtitle1" style={{ fontWeight: 'bold', color: log.typeofRequest === 'delete' ? theme.palette.error.main : (log.typeofRequest === 'update' ? theme.palette.primary.main : theme.palette.success.main) }}>{log.typeofRequest}</Typography>
               {expandedLogId === log._id ? (
                 <Button onClick={() => toggleExpand(log._id)} color="primary" endIcon={<ExpandLessIcon />}>Collapse</Button>
               ) : (
