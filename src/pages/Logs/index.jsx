@@ -139,7 +139,7 @@ const LogsTable = () => {
           <TextField
             name="userId"
             select
-            label="User ID"
+            label="User"
             value={userIdFilter}
             onChange={handleFilterChange}
             variant="outlined"
