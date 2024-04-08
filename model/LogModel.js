@@ -15,10 +15,6 @@ const logSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "Project",
     },
-    userId: {
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-    },
     createdAt: {
         type: Date,
         default: Date.now,
