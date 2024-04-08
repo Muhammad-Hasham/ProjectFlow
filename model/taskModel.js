@@ -48,6 +48,11 @@ const taskSchema = new mongoose.Schema({
         ref: "Task",
         default: null
     },
+    updated_By: {
+        type: mongoose.Schema.ObjectId,    
+        ref: "User",
+        default:null,
+    },
     project: {
         type: mongoose.Schema.ObjectId,
         ref: 'Project',
@@ -72,6 +77,7 @@ taskSchema.pre(/^find/, function(next) {
     next();
 });
 
+
 // Pre hook for findOneAndUpdate to store original document
 taskSchema.pre('findOneAndUpdate', async function(next) {
     this._original = await this.model.findOne(this.getQuery());
@@ -84,7 +90,7 @@ taskSchema.post('findOneAndUpdate', async function(doc) {
         await createLog({
             prevData: this._original,
             newData: doc,
-            updatedBy: doc.project_manager,
+            updatedBy: doc.updated_By,
             taskId: doc._id,
             typeofRequest: 'update'
         });
