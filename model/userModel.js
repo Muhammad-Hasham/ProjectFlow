@@ -105,7 +105,6 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 
 // Post hook to create log after update or delete
 userSchema.post('findOneAndUpdate', async function (doc) {
-    console.log(doc)
     if (doc) {
         await createLog({
             prevData: this._original,
