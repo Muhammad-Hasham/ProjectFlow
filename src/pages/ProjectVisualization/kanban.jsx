@@ -100,6 +100,7 @@ const KanbanComponent = () => {
         `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
         {
           status: newStatus,
+          updated_By:localStorage.getItem("userid"),
         },
         {
           headers: {
