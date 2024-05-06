@@ -129,42 +129,32 @@ const AutomaticTasks = () => {
 
     const handleConfirmClick = () => {
         const selectedTasks = tasks.filter(task => task.isSelected);
-        const projectName = projects.find(project => project.id === projid)?.name || ""; // Extract project name based on projid
+    
         const requestData = {
             tasks: selectedTasks.map(task => ({
                 name: task.name,
                 description: task.description,
                 priority: task.priority,
-                project: projid ? projid : projectId, // Use the selected projectId if available, otherwise use the projectId from the URL
-                projectname: projectName, // Add project name to the task object
-                assignee: assign[Math.floor(Math.random() * assign.length)],
-
+                project: projid ? projid : projectId,
+                assignee:assign[Math.floor(Math.random() * assign.length)],
             })),
         };
-    
-        // Convert requestData to array form
-        const requestDataArray = requestData.tasks.map(task => ({
-            ...task,
-            assigneeName:"ok"
-        }));
-    
-        console.log(requestDataArray); // Check if the array is formed correctly
-    
+        console.log(requestData)
         let token = localStorage.getItem("token");
         axios
             .post("http://127.0.0.1:3000/api/v1/tasks", requestData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
             .then(response => {
                 if (response.status === 201) {
                     setLoading(true);
                     setTimeout(() => {
                         setLoading(false);
                         // If tasks are saved successfully, call sendSavedTasksToSlack function
-                        sendSavedTasksToSlack(requestDataArray); // Pass the array form of requestData
+                        sendSavedTasksToSlack(selectedTasks);
                         setTasks([]);
                         setMicrophoneClicked(true);
                         alert('Tasks saved successfully!');
@@ -178,18 +168,11 @@ const AutomaticTasks = () => {
                 alert('Failed to save tasks. Please try again later.');
             });
     };
-    
-    
-    
-    
 
-    const sendSavedTasksToSlack = (selectedTasks, projectId) => {
+    const sendSavedTasksToSlack = (selectedTasks) => {
         let token = localStorage.getItem("token");
         axios
-            .post("http://localhost:5000/sendTasksToSlack", { 
-                tasks: selectedTasks,
-                projectId: projectId 
-            }, { 
+            .post("http://localhost:5000/sendTasksToSlack", { tasks: selectedTasks }, { // Call the Slack server endpoint
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
@@ -198,7 +181,7 @@ const AutomaticTasks = () => {
             .then(response => {
                 if (response.status === 200) {
                     console.log('Tasks sent to Slack successfully:', response.data);
-                    alert('Sent to Slack successfully');
+                    alert('sent to Slack successfully');
                 } else {
                     throw new Error('Failed to send tasks to Slack');
                 }
@@ -208,7 +191,6 @@ const AutomaticTasks = () => {
                 alert('Failed to send tasks to Slack. Please try again later.');
             });
     };
-    
 
     const handleCancelClick = () => {
         setTasks([]);
