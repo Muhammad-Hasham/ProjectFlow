@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Line, Text } from "components";
+import { Button, Line, Text } from "../../components";
 import '../../styles/my.css';
 import { useState } from "react";
 
@@ -114,6 +114,7 @@ const SignupPage = () => {
                 </div>
                 <div className="w-[70%] sm:w-[100%] mb-[10px] sm:mb-0">
                   <input
+                  data-testid="name"
                     type="text"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
                     value={name}
@@ -133,6 +134,7 @@ const SignupPage = () => {
                 </div>
                 <div className="w-[70%] sm:w-[100%] mb-[10px] sm:mb-0">
                   <input
+                  data-testid="email"
                     type="email"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
                     value={email}
@@ -152,6 +154,7 @@ const SignupPage = () => {
                 </div>
                 <div className="w-[70%] sm:w-[100%] mb-[10px] sm:mb-0">
                   <input
+                  data-testid="password"
                     type="password"
                     className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
                     value={password}
@@ -170,6 +173,7 @@ const SignupPage = () => {
               </div>
               <div className="w-[70%] sm:w-[100%] mb-[10px] sm:mb-0">
                 <input
+                data-testid="confirm-password"
                   type="password"
                   className="rounded-md mt-[5px] text-base text-indigo-800 tracking-[0.44px] w-full p-[5px]"
                   value={confirmpassword}

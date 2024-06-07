@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text } from 'components';
+import { Button, Text } from '../../components';
 import { useNavigate } from 'react-router-dom';
-import Navigation from 'pages/Sidebar';
+import Navigation from '../../pages/Sidebar';
 import { useSpring, animated } from 'react-spring';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box, TextField, MenuItem, FormControl, InputLabel, Select, Grid } from '@mui/material';
+import {TextField } from '@mui/material';
 
 const NewProjectPage = () => {
   const navigate = useNavigate();
@@ -145,6 +143,7 @@ const NewProjectPage = () => {
     }}>
         <TextField
             type="text"
+            inputProps={{ "data-testid": "name" }}
             name="projectName"
             value={formData.projectName}
             onChange={handleInputChange}
@@ -221,6 +220,7 @@ const NewProjectPage = () => {
                 }}>
                   <TextField
                     name="description"
+                    inputProps={{ "data-testid": "description" }}
                     value={formData.description}
                     onChange={handleInputChange}
                     style={{
@@ -262,19 +262,19 @@ const NewProjectPage = () => {
 
       <animated.div
         style={{
-          ...popUpAnimation,
           position: 'fixed',
           top: '50%',
           left: '50%',
-          transform: popUpAnimation.opacity.interpolate((opacity) => `translate(-50%, -50%) scale(${opacity})`),
+          transform: popUpAnimation.transform,
+          opacity: popUpAnimation.opacity,
           background: popUp.type === 'success' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)',
           padding: '20px',
           borderRadius: '10px',
         }}
       >
-        <p>
-          {popUp.type === 'success' ? 'Project Created Successfully!' : 'Project Creation Failed. Please try again.'}
-        </p>
+        {popUp.type === 'success'
+          ? 'Project Created Successfully!'
+          : 'Project Creation Failed. Please try again.'}
       </animated.div>
     </>
   );

@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { Text, Button } from "components";
+import { Text, Button } from "../../components";
 import { useSpring, animated } from "react-spring";
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
-import Navigation from "pages/Sidebar";
+import Navigation from "../../pages/Sidebar";
 import AutomaticTasks from "./automatictasks";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box, TextField, MenuItem, FormControl, InputLabel, Select, Grid } from '@mui/material';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-
+import {TextField, MenuItem, FormControl, Select} from '@mui/material';
 const NewTaskPage = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -196,6 +194,7 @@ const NewTaskPage = () => {
               <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Name</Text>
               <div className="text-base w-[76%]" style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
                 <TextField 
+                inputProps={{ "data-testid": "task-name" }}
                   style={{ fontSize: '1rem', width: '100%', color: '#1F2544', backgroundColor: 'transparent', border: 'none'}}
                   value={taskname}
                   onChange={(e) => setTaskName(e.target.value)}
@@ -280,7 +279,7 @@ const NewTaskPage = () => {
       <animated.div style={{ marginLeft: '150px', color: '#1F2544', fadeIn }}>
         {/* Assuming DatePicker directly passes the selected date to onChange */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker id="start-date-picker" selected={startdate} onChange={(date) => setStartdate(date)} />
+        <DatePicker inputProps={{ "data-testid": "start-date-picker" }} id="start-date-picker" selected={startdate} onChange={(date) => setStartdate(date)} />
         </LocalizationProvider>
       </animated.div>
     </div>
@@ -292,7 +291,7 @@ const NewTaskPage = () => {
       <animated.div style={{ marginLeft: '100px', color: '#1F2544', fadeIn }}>
         {/* Assuming DatePicker directly passes the selected date to onChange */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker id="due-date-picker" selected={enddate} onChange={(date) => setEndDate(date)} />
+        <DatePicker inputProps={{ "data-testid": "due-date-picker" }} id="due-date-picker" selected={enddate} onChange={(date) => setEndDate(date)} />
         </LocalizationProvider>
       </animated.div>
     </div>
@@ -303,7 +302,7 @@ const NewTaskPage = () => {
             <div className="flex md:flex-col flex-row gap-[22px] items-start justify-between w-[97%] md:w-full mt-[34px]">
               <Text style={{ color: '#1F2544', letterSpacing: '0.44px' }} size="txtPoppinsRegular16">Task Description</Text>
               <div style={{ borderColor: '#1F2544', fontSize: '1rem', width: '76%' }}>
-                <TextField name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '100%' }} />
+                <TextField inputProps={{ "data-testid": "description" }} name="description" value={description} onChange={(e) => setDescription(e.target.value)} style={{ fontSize: '1rem', width: '100%' }} />
               </div>
             </div>
   
@@ -316,6 +315,7 @@ const NewTaskPage = () => {
               />
               {isMicrophoneClicked && <AutomaticTasks />}
               <Button
+              data-testid="create-button"
                 style={{ cursor: 'pointer', lineHeight: 'normal', minWidth: '84px', marginLeft: '100px', marginTop: '50px', fontSize: '1rem', textAlign: 'center', letterSpacing: '0.44px' }}
                 shape="round"
                 color="indigo_800"

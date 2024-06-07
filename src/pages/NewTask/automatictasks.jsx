@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, Table, TableBody, TableCell, TableHead, TableRow, Typography, FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import { Mic, MicOff } from '@mui/icons-material';
-import {Text} from 'components';
+import {Text} from '../../components';
 
 const AutomaticTasks = () => {
     const [isMicrophoneClicked, setMicrophoneClicked] = useState(true);

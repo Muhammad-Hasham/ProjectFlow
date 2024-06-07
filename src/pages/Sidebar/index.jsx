@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
-import { Text } from 'components';
+import { Text } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentIcon from '@mui/icons-material/Assignment';

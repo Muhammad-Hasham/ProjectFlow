@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios"; // Import axios
 import { useNavigate } from "react-router-dom";
-import { Button, Text } from "components";
+import { Button, Text } from '../../components';
+
 
 const SigninPage = () => {
   localStorage.clear();
@@ -124,6 +125,7 @@ const SigninPage = () => {
                       Email Address
                     </Text>
                     <input
+                    data-testid="email"
                       type="email"
                       name="email"
                       value={formData.email}
@@ -139,6 +141,7 @@ const SigninPage = () => {
                       Password
                     </Text>
                     <input
+                    data-testid="password"
                       type="password"
                       name="password"
                       value={formData.password}
