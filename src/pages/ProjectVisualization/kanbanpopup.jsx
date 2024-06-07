@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, Button } from 'components';
+import { Text, Button } from '../../components';
 import { useSpring, animated } from 'react-spring';
 
 const KanbanPopup = ({ assigne, onClose, onAddTask }) => {

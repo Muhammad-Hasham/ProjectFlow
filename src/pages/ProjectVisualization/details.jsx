@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Text, Button } from 'components';
-import Navigation from 'pages/Sidebar';
+import { Text, Button } from '../../components';
+import Navigation from '../../pages/Sidebar';
 
 const ProjectProgress = ({ progress, statisticsData, tasks }) => {
   const [projectname, setProjectname] = useState("");

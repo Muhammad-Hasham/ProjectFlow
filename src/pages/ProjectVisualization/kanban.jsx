@@ -1,12 +1,13 @@
 // Import necessary modules and styles
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Button } from 'components'; // Assuming Button is imported from 'components'
+import { Button } from '../../components'; // Assuming Button is imported from 'components'
 import { useNavigate, useParams } from 'react-router-dom';
 import ProjectProgress from './details';
 import KanbanPopup from './kanbanpopup';
 import './KanbanComponent.css'; // Import your CSS file with responsive styles
 import axios from 'axios';
+
 const KanbanComponent = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -229,6 +230,7 @@ const KanbanComponent = () => {
                     )}
                     {userrole==="Project Manager"  && (
                       <Button
+                      data-testid="add"
                         shape="round"
                         color="indigo_800_01"
                         onClick={() => handleAddTaskToCategory(columnId)}
@@ -378,7 +380,7 @@ const KanbanComponent = () => {
         {/* Button to add a new category */}
         <div className="add-category-button">
         {userrole==="Project Manager"  && (
-          <Button style={{ position: 'absolute', top: 400, right: 80, margin: '8px' }} shape="round" color="indigo_800_01" onClick={() => setShowAddCategoryPopup(true)}>
+          <Button data-testid="add" style={{ position: 'absolute', top: 400, right: 80, margin: '8px' }} shape="round" color="indigo_800_01" onClick={() => setShowAddCategoryPopup(true)}>
             +
           </Button>
         )}
