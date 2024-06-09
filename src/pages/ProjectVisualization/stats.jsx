@@ -9,18 +9,6 @@ import ProjectProgress from "./details";
 import "./TaskDetailsPopup.css";
 import _ from 'lodash';
 
-const ErrorBoundary = ({ children }) => {
-  const [hasError, setHasError] = useState(false);
-
-  const handleOnError = (error, errorInfo) => {
-    // You can log the error here
-    console.error('Error caught by ErrorBoundary:', error, errorInfo);
-    // Set state to indicate that an error has occurred
-    setHasError(true);
-  };
-
-  return hasError ? <div>Something went wrong.</div> : children;
-};
 
 const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers,tasks  }) => {
   const [editedTask, setEditedTask] = useState({ ...task });
@@ -41,7 +29,7 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers,tasks  }) => {
     try {
       const token = localStorage.getItem("token");
       // Assuming you have an update API endpoint like 'UpdateApi'
-      const response = await fetch(`http://127.0.0.1:3000/api/v1/tasks/${editedTask.id}`, {
+      const response = await fetch(`https://projectflow-cgjn.onrender.com/api/v1/tasks/${editedTask.id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -67,7 +55,7 @@ const TaskDetailsPopup = ({ task, onClose, onDelete, teamMembers,tasks  }) => {
     try {
       const token = localStorage.getItem("token");
       // Assuming you have a delete API endpoint like 'DeleteApi'
-      const response = await fetch(`http://127.0.0.1:3000/api/v1/tasks/${editedTask.id}`, {
+      const response = await fetch(`https://projectflow-cgjn.onrender.com/api/v1/tasks/${editedTask.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -520,7 +508,7 @@ const ProjectVisualization = () => {
     const token = localStorage.getItem("token");
 
     // Fetch the project details using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -549,7 +537,7 @@ const ProjectVisualization = () => {
     const token = localStorage.getItem("token");
 
     // Fetch the pie chart data using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}/pieStats`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}/pieStats`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -589,7 +577,7 @@ const ProjectVisualization = () => {
     const token = localStorage.getItem("token");
 
     // Fetch the pie chart data using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}/lineStats`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}/lineStats`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

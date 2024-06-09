@@ -34,7 +34,7 @@ const NewTaskPage = () => {
     const token = localStorage.getItem("token");
 
     if (projectId) {
-      fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+      fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const NewTaskPage = () => {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("userid");
 
-    fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/users/${id}/projects`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const NewTaskPage = () => {
 
     // Fetch project details when a project is selected
     const token = localStorage.getItem("token");
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${selectedProjectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${selectedProjectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -134,7 +134,7 @@ const NewTaskPage = () => {
     
   
     axios
-      .post("http://127.0.0.1:3000/api/v1/tasks", formData, {
+      .post("https://projectflow-cgjn.onrender.com/api/v1/tasks", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

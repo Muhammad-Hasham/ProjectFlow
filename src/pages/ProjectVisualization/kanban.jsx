@@ -25,7 +25,7 @@ const KanbanComponent = () => {
     const token = localStorage.getItem("token");
 
     // Fetch the project details using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const KanbanComponent = () => {
 
     axios
       .patch(
-        `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
+        `https://projectflow-cgjn.onrender.com/api/v1/tasks/${taskId}`,
         {
           status: newStatus,
           updated_By:localStorage.getItem("userid"),
@@ -164,7 +164,7 @@ const KanbanComponent = () => {
     
   
     axios
-      .post("http://127.0.0.1:3000/api/v1/tasks", JSON.stringify(formData), {
+      .post("https://projectflow-cgjn.onrender.com/api/v1/tasks", JSON.stringify(formData), {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -268,6 +268,7 @@ const KanbanComponent = () => {
                                   borderRadius: '8px',
                                   ...provided.draggableProps.style,
                                 }}
+                                
                               >
                                 {task.name}
                               </div>

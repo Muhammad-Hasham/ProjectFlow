@@ -24,10 +24,10 @@ const MyProjectsPage = () => {
     
     const fetchProjects = async () => {
       try {
-        let endpoint = `http://127.0.0.1:3000/api/v1/projects`;
+        let endpoint = `https://projectflow-cgjn.onrender.com/api/v1/projects`;
 
         if (role === 'Project Manager') {
-          endpoint = `http://127.0.0.1:3000/api/v1/users/${id}/projects`;
+          endpoint = `https://projectflow-cgjn.onrender.com/api/v1/users/${id}/projects`;
         }
 
         const response = await fetch(endpoint, {

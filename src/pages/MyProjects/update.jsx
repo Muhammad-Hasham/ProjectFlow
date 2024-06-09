@@ -16,7 +16,7 @@ const ProjectDetailsPage = () => {
     const token = localStorage.getItem("token");
 
     // Fetch the project details using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const ProjectDetailsPage = () => {
   const handleDeleteProject = () => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       const token = localStorage.getItem("token");
-      fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+      fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const ProjectDetailsPage = () => {
       description: description,
     };
 
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -52,7 +52,7 @@ const NewProjectPage = () => {
 
     let token = localStorage.getItem('token');
 
-    fetch('http://127.0.0.1:3000/api/v1/projects', {
+    fetch('https://projectflow-cgjn.onrender.com/api/v1/projects', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Text } from 'components';
 import { useNavigate,useLocation } from 'react-router-dom';
-import { MyDatePicker } from 'components';
 import Navigation from 'pages/Sidebar';
 import { useSpring, animated } from 'react-spring';
 
@@ -52,7 +51,7 @@ const InviteMembers = () => {
       
       // Now you can use the emailData object as needed
       
-      const response = await fetch('http://127.0.0.1:3000/api/v1/projects/sendinvite', {
+      const response = await fetch('https://projectflow-cgjn.onrender.com/api/v1/projects/sendinvite', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -101,7 +100,7 @@ const InviteMembers = () => {
     let token = localStorage.getItem('token');
     console.log(projectData)
 
-    fetch('http://127.0.0.1:3000/api/v1/projects', {
+    fetch('https://projectflow-cgjn.onrender.com/api/v1/projects', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

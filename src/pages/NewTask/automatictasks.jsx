@@ -21,7 +21,7 @@ const AutomaticTasks = () => {
     useEffect(() => {
         const id = localStorage.getItem("userid");
 
-        fetch(`http://127.0.0.1:3000/api/v1/users/${id}/projects`, {
+        fetch(`https://projectflow-cgjn.onrender.com/api/v1/users/${id}/projects`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const AutomaticTasks = () => {
 
         setprojid(selectedAssigneeId);
 
-        fetch(`http://127.0.0.1:3000/api/v1/projects/${selectedAssigneeId}`, {
+        fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${selectedAssigneeId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const AutomaticTasks = () => {
         }
     };
 
-    const handleGenerateTaskClick = () => {
+   /* const handleGenerateTaskClick = () => {
         const generateTasks = () => {
             fetch('http://localhost:8000/api/generate-tasks', {
                 method: 'POST',
@@ -117,7 +117,7 @@ const AutomaticTasks = () => {
     
         setLoading(true);
         generateTasks();
-    };
+    }; */
 
     const handleTaskCheckboxChange = (index) => {
         setTasks(prevTasks => {
@@ -142,7 +142,7 @@ const AutomaticTasks = () => {
         console.log(requestData)
         let token = localStorage.getItem("token");
         axios
-            .post("http://127.0.0.1:3000/api/v1/tasks", requestData, {
+            .post("https://projectflow-cgjn.onrender.com/api/v1/tasks", requestData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
@@ -154,7 +154,7 @@ const AutomaticTasks = () => {
                     setTimeout(() => {
                         setLoading(false);
                         // If tasks are saved successfully, call sendSavedTasksToSlack function
-                        sendSavedTasksToSlack(selectedTasks);
+                        //sendSavedTasksToSlack(selectedTasks);
                         setTasks([]);
                         setMicrophoneClicked(true);
                         alert('Tasks saved successfully!');
@@ -169,7 +169,7 @@ const AutomaticTasks = () => {
             });
     };
 
-    const sendSavedTasksToSlack = (selectedTasks) => {
+   /* const sendSavedTasksToSlack = (selectedTasks) => {
         let token = localStorage.getItem("token");
         axios
             .post("http://localhost:5000/sendTasksToSlack", { tasks: selectedTasks }, { // Call the Slack server endpoint
@@ -191,7 +191,7 @@ const AutomaticTasks = () => {
                 alert('Failed to send tasks to Slack. Please try again later.');
             });
     };
-
+*/
     const handleCancelClick = () => {
         setTasks([]);
         setMicrophoneClicked(true);
@@ -226,7 +226,7 @@ const AutomaticTasks = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleGenerateTaskClick}
+                        //onClick={handleGenerateTaskClick}
                         disabled={isLoading}
                         startIcon={isLoading && <CircularProgress size={24} />}
                     >

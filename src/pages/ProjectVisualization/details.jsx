@@ -12,7 +12,7 @@ const ProjectProgress = ({ progress, statisticsData, tasks }) => {
   let userrole=localStorage.getItem("role")
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

@@ -28,7 +28,7 @@ const MyProfilePage = () => {
 
   const handleLogout = async () => {
   
-  fetch("http://127.0.0.1:3000/api/v1/users/logout", {
+  fetch("https://projectflow-cgjn.onrender.com/api/v1/users/logout", {
     method: "GET",
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -84,7 +84,7 @@ const MyProfilePage = () => {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:3000/api/v1/users/updateMe",
+        "https://projectflow-cgjn.onrender.com/api/v1/users/updateMe",
         {
           method: "PATCH",
           body: formData,
@@ -117,7 +117,7 @@ const MyProfilePage = () => {
       passwordConfirm: confirmpassword,
     };
 
-    fetch("http://127.0.0.1:3000/api/v1/users/updateMyPassword", {
+    fetch("https://projectflow-cgjn.onrender.com/api/v1/users/updateMyPassword", {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

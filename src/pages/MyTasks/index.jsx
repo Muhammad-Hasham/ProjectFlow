@@ -25,7 +25,7 @@ const MyTasksPage = () => {
 
     if (localStorage.getItem('role') === 'Team Member') {
       axios
-        .get('http://127.0.0.1:3000/api/v1/tasks', {
+        .get('https://projectflow-cgjn.onrender.com/api/v1/tasks', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const MyTasksPage = () => {
         });
     } else if (localStorage.getItem('role') === 'Project Manager') {
       axios
-        .get(`http://127.0.0.1:3000/api/v1/users/${id}/tasks`, {
+        .get(`https://projectflow-cgjn.onrender.com/api/v1/users/${id}/tasks`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const MyTasksPage = () => {
   
     axios
       .patch(
-        `http://127.0.0.1:3000/api/v1/tasks/${taskId}`,
+        `https://projectflow-cgjn.onrender.com/api/v1/tasks/${taskId}`,
         {
           status: newStatus,
           updated_By:localStorage.getItem("userid")

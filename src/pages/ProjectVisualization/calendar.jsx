@@ -31,7 +31,7 @@ const CalendarComponent = ({
     const token = localStorage.getItem("token");
 
     // Fetch the project details using a GET request
-    fetch(`http://127.0.0.1:3000/api/v1/projects/${projectId}`, {
+    fetch(`https://projectflow-cgjn.onrender.com/api/v1/projects/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

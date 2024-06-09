@@ -38,7 +38,7 @@ const LogsTable = () => {
     const fetchLogs = async () => {
       try {
         let token = localStorage.getItem('token');
-        const response = await axios.get(`http://127.0.0.1:3000/api/v1/logs?page=${currentPage}&userId=${userIdFilter}&typeofRequest=${typeofRequestFilter}`, {
+        const response = await axios.get(`https://projectflow-cgjn.onrender.com/api/v1/logs?page=${currentPage}&userId=${userIdFilter}&typeofRequest=${typeofRequestFilter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const LogsTable = () => {
     const fetchAllUsers = async () => {
       try {
         let token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:3000/api/v1/logs/names', {
+        const response = await axios.get('https://projectflow-cgjn.onrender.com/api/v1/logs/names', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const LogsTable = () => {
   const handleLogout = async () => {
     try {
       let token = localStorage.getItem('token');
-      const response = await fetch("http://127.0.0.1:3000/api/v1/users/logout", {
+      const response = await fetch("https://projectflow-cgjn.onrender.com/api/v1/users/logout", {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${token}`,

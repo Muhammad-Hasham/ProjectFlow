@@ -23,7 +23,7 @@ const DashboardPage = () => {
 
     if (localStorage.getItem('role') === 'Team Member') {
       axios
-        .get('http://127.0.0.1:3000/api/v1/tasks', {
+        .get('https://projectflow-cgjn.onrender.com/api/v1/tasks', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const DashboardPage = () => {
         });
     } else if (localStorage.getItem('role') === 'Project Manager') {
       axios
-        .get(`http://127.0.0.1:3000/api/v1/users/${id}/tasks`, {
+        .get(`https://projectflow-cgjn.onrender.com/api/v1/users/${id}/tasks`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -59,9 +59,9 @@ const DashboardPage = () => {
     let fetchProjectsUrl = "";
 
     if (role === "Team Member" || role === "Client") {
-      fetchProjectsUrl = "http://127.0.0.1:3000/api/v1/projects";
+      fetchProjectsUrl = "https://projectflow-cgjn.onrender.com/api/v1/projects";
     } else if (role === "Project Manager") {
-      fetchProjectsUrl = `http://127.0.0.1:3000/api/v1/users/${id}/projects`;
+      fetchProjectsUrl = `https://projectflow-cgjn.onrender.com/api/v1/users/${id}/projects`;
     }
    
 
