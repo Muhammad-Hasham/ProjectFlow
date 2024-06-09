@@ -169,10 +169,10 @@ const AutomaticTasks = () => {
             });
     };
 
-   /* const sendSavedTasksToSlack = (selectedTasks) => {
+    const sendSavedTasksToSlack = (selectedTasks) => {
         let token = localStorage.getItem("token");
         axios
-            .post("http://localhost:5000/sendTasksToSlack", { tasks: selectedTasks }, { // Call the Slack server endpoint
+            .post("https://projectflow-slackbackend.onrender.com/sendTasksToSlack", { tasks: selectedTasks }, { // Call the Slack server endpoint
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
@@ -191,7 +191,7 @@ const AutomaticTasks = () => {
                 alert('Failed to send tasks to Slack. Please try again later.');
             });
     };
-*/
+
     const handleCancelClick = () => {
         setTasks([]);
         setMicrophoneClicked(true);
